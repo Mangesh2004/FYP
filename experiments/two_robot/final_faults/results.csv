@@ -1,0 +1,9 @@
+seed,condition,method,sim_time,timed_out,hazards_total,hazards_confirmed,victims_total,victims_found,false_confirmations,localization_error_m,first_detection_time,rooms_inspected,rooms_total,duplicate_inspections,all_rooms_time,mission_complete_time,recovery_time_after_kill,messages_sent,messages_received,distance_m,peer_only_time,peer_lost_time,door_blocked_detected_time,replans,stuck_recoveries,tasks_done_after_fault,suspected_hazards,wall_s,exit_code,crashed
+3,commander_cut,cbba,164.7,False,2,1,1,1,0,0.377,112.74,4,4,0,147.776,160.8,,2827,2885,57.87,34.816,,,2,6,6,2,60.6,0,
+3,commander_cut,central,300.0,True,2,0,1,0,0,,,2,4,0,,,,4217,4275,16.64,34.816,,,0,0,2,1,60.6,0,
+3,door_blocked,cbba,240.1,False,2,0,1,1,0,0.291,137.82,4,4,0,235.552,236.192,,3926,4406,99.38,,,97.312,7,7,6,2,85.1,0,
+3,loss20,cbba,172.64,False,2,1,1,1,0,0.373,112.22,4,4,0,155.776,167.744,,2914,2642,59.19,1.088,,,2,5,,2,61.1,0,
+3,normal,cbba,164.7,False,2,1,1,1,0,0.707,112.74,4,4,0,149.184,160.8,,2830,3158,58.76,,,,2,7,,2,62.1,0,
+3,normal,central,179.58,False,2,2,1,1,0,0.349,101.12,4,4,0,161.92,176.672,,3007,3365,55.57,,,,1,2,,3,61.1,0,
+3,robot_killed,cbba,194.46,False,2,2,1,1,0,0.804,103.97,4,4,0,186.304,191.552,136.304,2101,1149,51.85,,56.64,,2,0,5,2,63.6,0,
+3,robot_killed,static,207.36,False,2,2,1,1,0,0.481,138.91,2,4,0,,204.448,,2202,1167,40.8,,56.64,,0,8,4,2,66.6,0,

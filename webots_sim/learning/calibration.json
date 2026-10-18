@@ -1,0 +1,29 @@
+{
+  "episodes": 26,
+  "sources": [
+    "runs\\fusion_check3\\runs",
+    "runs\\fault_tests\\run4\\runs",
+    "D:\\FYP\\experiments\\pilot\\runs"
+  ],
+  "inspect": {
+    "n": 90,
+    "overhead_s": 41.28985895398973,
+    "s_per_m": 2.766316330009906,
+    "speed_mps": 0.361491557979712,
+    "resid_sd_s": 16.69545613354598
+  },
+  "verify": {
+    "n": 74,
+    "overhead_s": 2.1625140190114593,
+    "s_per_m": 2.69982132112586,
+    "resid_sd_s": 8.218517274546924
+  },
+  "p_suspect_given_present": 0.9821428571428571,
+  "n_present": 56,
+  "false_suspicions_per_room": 0.17777777777777778,
+  "n_rooms": 90,
+  "p_confirm_true": 0.7096774193548387,
+  "n_true_verify": 62,
+  "p_reject_false": 0.9285714285714286,
+  "n_false_verify": 14
+}

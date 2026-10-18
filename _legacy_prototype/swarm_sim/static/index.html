@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUM-T 6-Building Industrial Complex — 2-UGV Decentralized Swarm Studio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --panel-bg: #ffffff;
+      --panel-border: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --blue-primary: #0284c7;
+      --orange-hazmat: #ea580c;
+      --emerald-ok: #059669;
+      --rose-danger: #e11d48;
+      --amber-warn: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 60px 1fr 220px;
+      grid-template-columns: 1fr 485px;
+    }
+    header {
+      grid-column: 1 / 3;
+      background: #ffffff;
+      border-bottom: 1px solid var(--panel-border);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      gap: 14px;
+      z-index: 10;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      background: #e0f2fe;
+      border: 1px solid #0284c7;
+      color: #0369a1;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 5px;
+      letter-spacing: 0.6px;
+    }
+    .brand h1 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .brand-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button, select {
+      background: #ffffff;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      transition: all 0.14s ease;
+    }
+    button:hover, select:hover {
+      border-color: #0284c7;
+      background: #f0f9ff;
+    }
+    button.primary {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+    }
+    button.primary:hover {
+      background: #0369a1;
+    }
+    button.danger {
+      background: #fff1f2;
+      border-color: #fda4af;
+      color: #be123c;
+    }
+    button.danger:hover {
+      background: #ffe4e6;
+    }
+    button.warning {
+      background: #fffbeb;
+      border-color: #fcd34d;
+      color: #b45309;
+    }
+    button.warning:hover {
+      background: #fef3c7;
+    }
+    #viewport-container {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+      position: relative;
+      overflow: hidden;
+      background: #e6eef8;
+    }
+    #hud-overlay {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .hud-pill {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 12px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    }
+    .comms-banner {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 8px 14px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    }
+    .comms-online {
+      background: #ecfdf5;
+      border: 1px solid #34d399;
+      color: #047857;
+    }
+    .comms-denied {
+      background: #fff1f2;
+      border: 1px solid #f43f5e;
+      color: #be123c;
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.65; }
+    }
+    #right-panel {
+      grid-row: 2 / 4;
+      grid-column: 2 / 3;
+      background: #ffffff;
+      border-left: 1px solid var(--panel-border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 14px;
+      gap: 14px;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #0369a1;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+    }
+    .agent-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .agent-card {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .agent-card.dead {
+      background: #fff1f2;
+      border-color: #fda4af;
+    }
+    .cam-box {
+      width: 102px;
+      height: 102px;
+      border-radius: 7px;
+      border: 2px solid #64748b;
+      overflow: hidden;
+      background: #e2e8f0;
+      position: relative;
+    }
+    .cam-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cam-tag {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.85);
+      font-size: 9.5px;
+      font-weight: 700;
+      text-align: center;
+      padding: 2px 3px;
+      color: #ffffff;
+    }
+    .agent-meta h3 {
+      font-size: 13.5px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .agent-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 2px 0 6px 0;
+    }
+    .stat-row {
+      display: flex;
+      gap: 6px;
+      font-size: 11px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 5px;
+    }
+    .badge {
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+    .queue-box {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      padding: 5px 7px;
+      font-size: 10.5px;
+      color: #334155;
+    }
+    .bat-bar {
+      width: 55px;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .bat-fill {
+      height: 100%;
+      background: var(--emerald-ok);
+    }
+    #bottom-panel {
+      grid-row: 3 / 4;
+      grid-column: 1 / 2;
+      background: #ffffff;
+      border-top: 1px solid var(--panel-border);
+      display: grid;
+      grid-template-columns: 1.35fr 0.95fr 1.2fr;
+      gap: 12px;
+      padding: 10px 14px;
+      overflow: hidden;
+    }
+    .panel-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      padding: 8px 10px;
+      overflow-y: auto;
+      font-size: 11px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    th, td {
+      text-align: left;
+      padding: 4px 5px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th { color: #475569; font-weight: 700; background: #f1f5f9; }
+    .log-item {
+      padding: 3.5px 0;
+      border-bottom: 1px solid #e2e8f0;
+      font-family: 'Consolas', monospace;
+      font-size: 10.5px;
+      color: #1e293b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="brand-badge">WEBOTS + PYTORCH STUDIO</span>
+      <div>
+        <h1>6-Building Industrial Complex — 2-UGV Decentralized Swarm Autonomy</h1>
+        <div class="brand-sub" id="ai-meta-label">Connecting to PyTorch Conda Torchvision MobileNetV3 & UDP P2P Mesh...</div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <select id="mode-select" onchange="changeSwarmMode(this.value)">
+        <option value="rover|2_ugv_industrial">2 Specialized 4WD UGVs (UGV-1 Thermal/SAR + UGV-2 Gas/Hazmat)</option>
+        <option value="drone|2_ugv_industrial">2 Specialized Heavy-Lift UAVs (Aerial Industrial Mode)</option>
+      </select>
+      <button class="primary" onclick="sendCmd({action:'toggle_play'})" id="btn-play">Pause</button>
+      <button onclick="sendCmd({action:'step'})">Step</button>
+      <button onclick="sendCmd({action:'reset'})">Reset Complex</button>
+      <button class="warning" onclick="sendCmd({action:'toggle_commander_link'})" id="btn-comms">
+        Sever Commander Link (Test Comms-Denied P2P)
+      </button>
+      <button class="danger" onclick="sendCmd({action:'emergency_fire', room_id:'zone-6-warehouse'})">
+        Erupt Bldg-F Warehouse Fire
+      </button>
+    </div>
+  </header>
+
+  <div id="viewport-container">
+    <div id="hud-overlay">
+      <div class="hud-pill">
+        <strong>Mission Time:</strong> <span id="hud-time">0.00s</span> &bull;
+        <strong>Buildings Verified:</strong> <span id="hud-rooms">0 / 6</span> &bull;
+        <strong>Facility Scale:</strong> 36m &times; 28m Industrial Compound
+      </div>
+      <div class="hud-pill">
+        <strong>3D Camera:</strong> Left-Drag Orbit &bull; Right-Drag Pan &bull; Scroll Zoom
+      </div>
+    </div>
+    <div id="comms-banner" class="comms-banner comms-online">
+      COMMANDER LINK: ONLINE (TELEMETRY + UDP P2P MESH)
+    </div>
+  </div>
+
+  <aside id="right-panel">
+    <div>
+      <div class="section-title">
+        <span>2 Specialized UGVs — Torchvision Camera HUD & CBBA Bundle Queue</span>
+      </div>
+      <div class="agent-grid" id="agent-cards"></div>
+    </div>
+    <div>
+      <div class="section-title">
+        <span>6-Building Industrial Complex Hierarchy & Verification Status</span>
+      </div>
+      <div id="room-status-table"></div>
+    </div>
+  </aside>
+
+  <section id="bottom-panel">
+    <div class="panel-box">
+      <div class="section-title">2-UGV Multi-Building CBBA Bid & Specialty Turn-Taking Matrix</div>
+      <div id="cbba-matrix"></div>
+    </div>
+    <div class="panel-box">
+      <div class="section-title">Live UDP Peer-to-Peer Socket Datagrams (127.0.0.1)</div>
+      <div id="udp-log"></div>
+    </div>
+    <div class="panel-box">
+      <div class="section-title">Swarm Hierarchy Queue & Failover Event Log</div>
+      <div id="event-log"></div>
+    </div>
+  </section>
+
+  <script>
+    let ws = null;
+    let latestState = null;
+
+    function connectWS() {
+      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(`${proto}//${location.host}/ws`);
+      ws.onmessage = (ev) => {
+        latestState = JSON.parse(ev.data);
+        updateUI(latestState);
+        update3DScene(latestState);
+      };
+      ws.onclose = () => setTimeout(connectWS, 1000);
+    }
+
+    function sendCmd(payload) {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(payload));
+      }
+    }
+
+    function changeSwarmMode(val) {
+      const [vehicle_mode, swarm_mode] = val.split('|');
+      sendCmd({ action: 'set_mode', vehicle_mode, swarm_mode });
+    }
+
+    // ---------------- PROCEDURAL PBR CANVAS TEXTURES ----------------
+    function makeConcreteGroundTexture() {
+      const c = document.createElement('canvas');
+      c.width = 512; c.height = 512;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#dde3ea';
+      ctx.fillRect(0, 0, 512, 512);
+      // Subtle concrete aggregate noise
+      for (let i = 0; i < 4500; i++) {
+        ctx.fillStyle = i % 2 === 0 ? 'rgba(148,163,184,0.16)' : 'rgba(255,255,255,0.22)';
+        ctx.fillRect(Math.random() * 512, Math.random() * 512, 2, 2);
+      }
+      // Concrete expansion joint grid
+      ctx.strokeStyle = 'rgba(100,116,139,0.25)';
+      ctx.lineWidth = 2;
+      for (let p = 0; p <= 512; p += 64) {
+        ctx.beginPath(); ctx.moveTo(p, 0); ctx.lineTo(p, 512); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, p); ctx.lineTo(512, p); ctx.stroke();
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(9, 7);
+      return tex;
+    }
+
+    function makeAsphaltRoadTexture() {
+      const c = document.createElement('canvas');
+      c.width = 1024; c.height = 256;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#293241';
+      ctx.fillRect(0, 0, 1024, 256);
+      for (let i = 0; i < 6000; i++) {
+        ctx.fillStyle = i % 2 === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(15,23,42,0.18)';
+        ctx.fillRect(Math.random() * 1024, Math.random() * 256, 2, 2);
+      }
+      // White shoulder lines
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillRect(0, 12, 1024, 6);
+      ctx.fillRect(0, 238, 1024, 6);
+      // Yellow double/dashed centerline
+      ctx.fillStyle = '#facc15';
+      for (let x = 16; x < 1024; x += 64) {
+        ctx.fillRect(x, 124, 36, 8);
+      }
+      // Industrial crosswalk stripes at building entrances (x = 170, 512, 850)
+      ctx.fillStyle = 'rgba(241,245,249,0.75)';
+      [170, 512, 854].forEach((cx) => {
+        for (let y = 26; y < 230; y += 22) {
+          ctx.fillRect(cx - 18, y, 36, 10);
+        }
+      });
+      return new THREE.CanvasTexture(c);
+    }
+
+    function makeCorrugatedWallTexture() {
+      const c = document.createElement('canvas');
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillRect(0, 0, 256, 256);
+      for (let x = 0; x < 256; x += 8) {
+        ctx.fillStyle = x % 16 === 0 ? 'rgba(148,163,184,0.22)' : 'rgba(255,255,255,0.35)';
+        ctx.fillRect(x, 0, 4, 256);
+      }
+      // Baseboard safety stripe
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(0, 230, 256, 26);
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(3, 1);
+      return tex;
+    }
+
+    function makeSoftGlowSpriteTexture(innerRgba, midRgba, outerRgba) {
+      const c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(64, 64, 4, 64, 64, 60);
+      grad.addColorStop(0.0, innerRgba);
+      grad.addColorStop(0.45, midRgba);
+      grad.addColorStop(1.0, outerRgba);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 128);
+      return new THREE.CanvasTexture(c);
+    }
+
+    const fireSpriteTex = makeSoftGlowSpriteTexture(
+      'rgba(255, 250, 190, 1.0)',
+      'rgba(249, 115, 22, 0.85)',
+      'rgba(220, 38, 38, 0.0)'
+    );
+    const smokeSpriteTex = makeSoftGlowSpriteTexture(
+      'rgba(51, 65, 85, 0.65)',
+      'rgba(71, 85, 105, 0.35)',
+      'rgba(100, 116, 139, 0.0)'
+    );
+    const gasSpriteTex = makeSoftGlowSpriteTexture(
+      'rgba(163, 230, 53, 0.78)',
+      'rgba(101, 163, 13, 0.42)',
+      'rgba(77, 124, 15, 0.0)'
+    );
+
+    // ---------------- THREE.JS SCENE & DAYLIGHT LIGHTING ----------------
+    const container = document.getElementById('viewport-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xe6eef8);
+    scene.fog = new THREE.FogExp2(0xe6eef8, 0.0075);
+
+    const camera = new THREE.PerspectiveCamera(44, 1, 0.2, 220);
+    let camTheta = 0.08;
+    let camPhi = 0.84;
+    let camRadius = 34.5;
+    const camTarget = new THREE.Vector3(0, 0.6, 1.0);
+
+    function updateCameraOrbit() {
+      camera.position.x = camTarget.x + camRadius * Math.sin(camPhi) * Math.sin(camTheta);
+      camera.position.y = camTarget.y + camRadius * Math.cos(camPhi);
+      camera.position.z = camTarget.z + camRadius * Math.sin(camPhi) * Math.cos(camTheta);
+      camera.lookAt(camTarget);
+    }
+    updateCameraOrbit();
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    function resizeRenderer() {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resizeRenderer);
+    setTimeout(resizeRenderer, 50);
+
+    // Mouse Orbit & Pan
+    let isDragging = false;
+    let dragButton = 0;
+    let prevMouse = { x: 0, y: 0 };
+    renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
+    renderer.domElement.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragButton = e.button;
+      prevMouse = { x: e.clientX, y: e.clientY };
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - prevMouse.x;
+      const dy = e.clientY - prevMouse.y;
+      prevMouse = { x: e.clientX, y: e.clientY };
+      if (dragButton === 2) {
+        camTarget.x -= dx * 0.03;
+        camTarget.z -= dy * 0.03;
+      } else {
+        camTheta -= dx * 0.0065;
+        camPhi = Math.max(0.22, Math.min(1.42, camPhi - dy * 0.0065));
+      }
+      updateCameraOrbit();
+    });
+    renderer.domElement.addEventListener('wheel', (e) => {
+      camRadius = Math.max(10.0, Math.min(64.0, camRadius + e.deltaY * 0.02));
+      updateCameraOrbit();
+    });
+
+    // Sunlight & Hemisphere Lighting
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x94a3b8, 0.82));
+    const sunLight = new THREE.DirectionalLight(0xfffbeb, 0.92);
+    sunLight.position.set(18, 36, 22);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 2048;
+    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.camera.left = -22;
+    sunLight.shadow.camera.right = 22;
+    sunLight.shadow.camera.top = 18;
+    sunLight.shadow.camera.bottom = -18;
+    scene.add(sunLight);
+
+    // Textured Concrete Facility Ground
+    const groundMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(40, 32),
+      new THREE.MeshStandardMaterial({ map: makeConcreteGroundTexture(), roughness: 0.88 })
+    );
+    groundMesh.rotation.x = -Math.PI / 2;
+    groundMesh.receiveShadow = true;
+    scene.add(groundMesh);
+
+    // Textured Asphalt Roadway with Crosswalks & Curbs
+    const roadMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(35.6, 5.4),
+      new THREE.MeshStandardMaterial({ map: makeAsphaltRoadTexture(), roughness: 0.82 })
+    );
+    roadMesh.rotation.x = -Math.PI / 2;
+    roadMesh.position.set(0, 0.02, 0);
+    roadMesh.receiveShadow = true;
+    scene.add(roadMesh);
+
+    // Raised Concrete Sidewalk Curbs along Avenue
+    const curbMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, roughness: 0.7 });
+    [-2.8, 2.8].forEach((cz) => {
+      const curb = new THREE.Mesh(new THREE.BoxGeometry(35.6, 0.14, 0.25), curbMat);
+      curb.position.set(0, 0.07, cz);
+      scene.add(curb);
+    });
+
+    const staticWorldGroup = new THREE.Group();
+    scene.add(staticWorldGroup);
+    const hazardPropsGroup = new THREE.Group();
+    scene.add(hazardPropsGroup);
+    const dynamicGroup = new THREE.Group();
+    scene.add(dynamicGroup);
+
+    let wallsInitialized = false;
+    let lastHazardSignature = '';
+    const robotMeshes = {};
+    const animatedEmitters = []; // Particle emitters updated at 60 FPS in animate()
+
+    function to3D(ax, ay, az = 0) {
+      return new THREE.Vector3(ax - 18.0, az, ay - 14.0);
+    }
+
+    // ---------------- DETAILED 3D INDUSTRIAL PROPS & TREES ----------------
+    function createRealisticTree(ox, oz) {
+      const g = new THREE.Group();
+      // Concrete planter ring
+      const planter = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.68, 0.72, 0.24, 16),
+        new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.8 })
+      );
+      planter.position.y = 0.12;
+      const soil = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.58, 0.58, 0.26, 16),
+        new THREE.MeshStandardMaterial({ color: 0x451a03, roughness: 0.95 })
+      );
+      soil.position.y = 0.13;
+      g.add(planter, soil);
+
+      // Textured bark trunk + branches
+      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5c3a21, roughness: 0.9 });
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.18, 1.35, 10), trunkMat);
+      trunk.position.y = 0.75;
+      trunk.castShadow = true;
+      g.add(trunk);
+
+      // Multi-layered organic pine/cypress foliage clusters (dodecahedrons + layered cones)
+      const leafColors = [0x15803d, 0x166534, 0x16a34a, 0x14532d];
+      const clusters = [
+        [0, 1.45, 0, 0.68],
+        [0.24, 1.75, 0.18, 0.52],
+        [-0.22, 1.82, -0.15, 0.50],
+        [0.15, 2.10, -0.20, 0.44],
+        [-0.14, 2.18, 0.22, 0.42],
+        [0, 2.48, 0, 0.36],
+      ];
+      clusters.forEach(([lx, ly, lz, rad], idx) => {
+        const crown = new THREE.Mesh(
+          new THREE.DodecahedronGeometry(rad, 1),
+          new THREE.MeshStandardMaterial({
+            color: leafColors[idx % leafColors.length],
+            roughness: 0.78,
+            flatShading: true,
+          })
+        );
+        crown.position.set(lx, ly, lz);
+        crown.rotation.set(idx * 0.5, idx * 0.8, 0);
+        crown.castShadow = true;
+        g.add(crown);
+      });
+
+      g.position.set(ox, 0, oz);
+      return g;
+    }
+
+    function createStreetLamp(ox, oz, sideSign) {
+      const g = new THREE.Group();
+      const poleMat = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.6, roughness: 0.35 });
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 3.2, 10), poleMat);
+      pole.position.y = 1.6;
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.75), poleMat);
+      arm.position.set(0, 3.15, sideSign * 0.35);
+      const lampHead = new THREE.Mesh(
+        new THREE.BoxGeometry(0.22, 0.08, 0.34),
+        new THREE.MeshBasicMaterial({ color: 0xfef08a })
+      );
+      lampHead.position.set(0, 3.12, sideSign * 0.68);
+      g.add(pole, arm, lampHead);
+      g.position.set(ox, 0, oz);
+      return g;
+    }
+
+    function createBuildingMachineryAndRoofTrusses(rm) {
+      const g = new THREE.Group();
+      const [x0, y0, x1, y1] = rm.bounds;
+      const cx = (x0 + x1) / 2 - 18.0;
+      const cz = (y0 + y1) / 2 - 14.0;
+      const bw = x1 - x0;
+      const bh = y1 - y0;
+      const wallH = rm.roof_height * 0.65;
+
+      // Open-cutaway structural steel roof trusses across top of building
+      const trussMat = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.55, roughness: 0.4 });
+      for (let zOff = -bh / 2 + 1.4; zOff <= bh / 2 - 1.2; zOff += 2.6) {
+        const beam = new THREE.Mesh(new THREE.BoxGeometry(bw - 0.2, 0.10, 0.12), trussMat);
+        beam.position.set(cx, wallH - 0.05, cz + zOff);
+        g.add(beam);
+      }
+
+      // Doorway Yellow/Black Safety Hazard Portal Frame
+      const [dx, dy] = rm.doorway;
+      const d3x = dx - 18.0;
+      const d3z = dy - 14.0;
+      const pillarMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.4 });
+      [-1.22, 1.22].forEach((offset) => {
+        const post = new THREE.Mesh(new THREE.BoxGeometry(0.18, wallH, 0.32), pillarMat);
+        post.position.set(d3x + offset, wallH / 2, d3z);
+        g.add(post);
+      });
+
+      // Interior industrial equipment by building type
+      const steelMat = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.65, roughness: 0.32 });
+      const pipeMat = new THREE.MeshStandardMaterial({ color: 0xb91c1c, metalness: 0.4, roughness: 0.4 });
+
+      if (rm.style === 'boiler_plant') {
+        // Horizontal cylindrical steam boiler vessel + red pressure pipes
+        const boiler = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 3.2, 22), steelMat);
+        boiler.rotation.z = Math.PI / 2;
+        boiler.position.set(cx - 1.6, 1.05, cz - 2.3);
+        boiler.castShadow = true;
+        const pipe1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 3.8, 12), pipeMat);
+        pipe1.position.set(cx - 2.8, 1.6, cz - 1.2);
+        g.add(boiler, pipe1);
+      } else if (rm.style === 'chem_lab') {
+        // Twin chemical synthesis reactor vats + yellow containment drums
+        [-1.8, 1.8].forEach((vx) => {
+          const vat = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.72, 0.72, 2.1, 20),
+            new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.7, roughness: 0.25 })
+          );
+          vat.position.set(cx + vx, 1.05, cz - 2.2);
+          vat.castShadow = true;
+          g.add(vat);
+        });
+      } else if (rm.style === 'office_wing') {
+        // Office desks, monitors & collapsed concrete ceiling beam
+        const deskMat = new THREE.MeshStandardMaterial({ color: 0x92400e, roughness: 0.7 });
+        [-2.0, 2.0].forEach((ox) => {
+          const desk = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.75, 0.85), deskMat);
+          desk.position.set(cx + ox, 0.38, cz + 1.5);
+          g.add(desk);
+        });
+        const fallenBeam = new THREE.Mesh(
+          new THREE.BoxGeometry(3.4, 0.35, 0.45),
+          new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.85 })
+        );
+        fallenBeam.position.set(cx - 1.1, 0.42, cz + 2.6);
+        fallenBeam.rotation.set(0.15, 0.35, -0.22);
+        g.add(fallenBeam);
+      } else if (rm.style === 'substation') {
+        // High-Voltage Transformer Cabinet + 3 Ceramic Bushings
+        const xfmr = new THREE.Mesh(
+          new THREE.BoxGeometry(2.2, 1.75, 1.4),
+          new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.6, roughness: 0.35 })
+        );
+        xfmr.position.set(cx, 0.88, cz - 2.3);
+        g.add(xfmr);
+        [-0.6, 0, 0.6].forEach((bx) => {
+          const bushing = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.12, 0.16, 0.85, 14),
+            new THREE.MeshStandardMaterial({ color: 0x7c2d12, roughness: 0.25 })
+          );
+          bushing.position.set(cx + bx, 2.1, cz - 2.3);
+          g.add(bushing);
+        });
+      } else if (rm.style === 'tank_depot') {
+        // Pressurized horizontal LPG bullet tanks on concrete saddles
+        [-1.9, 1.9].forEach((tx) => {
+          const lpg = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.78, 0.78, 3.0, 20),
+            new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.45, roughness: 0.35 })
+          );
+          lpg.rotation.x = Math.PI / 2;
+          lpg.position.set(cx + tx, 0.95, cz + 1.8);
+          g.add(lpg);
+        });
+      } else if (rm.style === 'warehouse') {
+        // Multi-tier industrial pallet racking + wooden cargo boxes
+        const rackMat = new THREE.MeshStandardMaterial({ color: 0x1d4ed8, metalness: 0.4 });
+        const boxMat = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.75 });
+        [-2.2, 2.2].forEach((rx) => {
+          const rack = new THREE.Mesh(new THREE.BoxGeometry(1.1, 2.1, 3.2), rackMat);
+          rack.position.set(cx + rx, 1.05, cz + 1.8);
+          const cargo = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.7, 2.6), boxMat);
+          cargo.position.set(cx + rx, 2.4, cz + 1.8);
+          g.add(rack, cargo);
+        });
+      }
+      return g;
+    }
+
+    function createRealisticHazardAssembly(rm) {
+      const g = new THREE.Group();
+      const [hx, hy, hz] = rm.hazard_pos;
+      const basePos = to3D(hx, hy, 0);
+      g.position.copy(basePos);
+
+      if (rm.hazard_class === 'fire_hazard') {
+        // Ruptured burner grate / charred debris base
+        const grate = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.95, 1.1, 0.18, 18),
+          new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.9 })
+        );
+        grate.position.y = 0.09;
+        g.add(grate);
+
+        // Glowing ember bed
+        const embers = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.75, 0.85, 0.24, 16),
+          new THREE.MeshBasicMaterial({ color: 0xf97316 })
+        );
+        embers.position.y = 0.14;
+        g.add(embers);
+
+        // Dynamic flickering fire PointLight
+        const fireLight = new THREE.PointLight(0xff6b00, 1.8, 9.5);
+        fireLight.position.set(0, 1.4, 0);
+        g.add(fireLight);
+
+        // 48 Animated Volumetric Fire + Smoke Billboard Sprites
+        const particles = [];
+        for (let i = 0; i < 48; i++) {
+          const isSmoke = i >= 30;
+          const mat = new THREE.SpriteMaterial({
+            map: isSmoke ? smokeSpriteTex : fireSpriteTex,
+            transparent: true,
+            opacity: isSmoke ? 0.55 : 0.92,
+            depthWrite: false,
+            blending: isSmoke ? THREE.NormalBlending : THREE.AdditiveBlending,
+          });
+          const sp = new THREE.Sprite(mat);
+          const phase = Math.random();
+          const radius = (Math.random() * 0.55) * (isSmoke ? 1.3 : 0.85);
+          const angle = Math.random() * Math.PI * 2;
+          sp.userData = {
+            isSmoke,
+            phase,
+            speed: isSmoke ? (0.45 + Math.random() * 0.35) : (0.75 + Math.random() * 0.55),
+            baseX: Math.cos(angle) * radius,
+            baseZ: Math.sin(angle) * radius,
+            baseScale: isSmoke ? (1.35 + Math.random() * 0.9) : (0.95 + Math.random() * 0.75),
+          };
+          g.add(sp);
+          particles.push(sp);
+        }
+        animatedEmitters.push({ type: 'fire', particles, light: fireLight });
+
+      } else if (rm.hazard_class === 'gas_hazard') {
+        // Pressurized Yellow/Green Hazmat Cylinders with Ruptured Pipe Manifold
+        const tankMat = new THREE.MeshStandardMaterial({ color: 0x84cc16, metalness: 0.35, roughness: 0.35 });
+        const bandMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5 });
+        [-0.42, 0.42].forEach((tx) => {
+          const cyl = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 1.65, 18), tankMat);
+          cyl.position.set(tx, 0.82, 0);
+          const band = new THREE.Mesh(new THREE.CylinderGeometry(0.33, 0.33, 0.22, 18), bandMat);
+          band.position.set(tx, 1.15, 0);
+          g.add(cyl, band);
+        });
+
+        // 34 Animated Billowing Toxic Gas Cloud Sprites
+        const particles = [];
+        for (let i = 0; i < 34; i++) {
+          const mat = new THREE.SpriteMaterial({
+            map: gasSpriteTex,
+            transparent: true,
+            opacity: 0.55,
+            depthWrite: false,
+          });
+          const sp = new THREE.Sprite(mat);
+          const angle = Math.random() * Math.PI * 2;
+          const rad = 0.2 + Math.random() * 0.85;
+          sp.userData = {
+            phase: Math.random(),
+            speed: 0.32 + Math.random() * 0.28,
+            baseX: Math.cos(angle) * rad,
+            baseZ: Math.sin(angle) * rad,
+            baseScale: 1.15 + Math.random() * 0.95,
+          };
+          g.add(sp);
+          particles.push(sp);
+        }
+        animatedEmitters.push({ type: 'gas', particles });
+
+      } else if (rm.hazard_class === 'trapped_person') {
+        // Articulated 3D Human Worker Figure in High-Vis SAR Vest + Helmet + Pulsing Rescue Beacon
+        const personGroup = new THREE.Group();
+        const vestMat = new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.4 });
+        const reflectiveMat = new THREE.MeshBasicMaterial({ color: 0xfef08a });
+        const pantsMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.7 });
+        const skinMat = new THREE.MeshStandardMaterial({ color: 0xfdba74, roughness: 0.5 });
+        const helmetMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.2, roughness: 0.3 });
+
+        // Torso + Reflective SAR Stripes
+        const torso = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.62, 0.26), vestMat);
+        torso.position.y = 0.78;
+        const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.10, 0.28), reflectiveMat);
+        stripe.position.y = 0.78;
+        // Head + Safety Hardhat
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 14, 14), skinMat);
+        head.position.y = 1.26;
+        const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.18, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.6), helmetMat);
+        helmet.position.y = 1.30;
+        // Arms & Legs
+        const leftArm = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.55, 10), vestMat);
+        leftArm.position.set(-0.34, 0.85, 0);
+        leftArm.rotation.z = 0.45;
+        const rightArm = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.55, 10), vestMat);
+        rightArm.position.set(0.34, 0.88, 0);
+        rightArm.rotation.z = -0.65; // waving arm
+        const leftLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.08, 0.52, 10), pantsMat);
+        leftLeg.position.set(-0.13, 0.26, 0);
+        const rightLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.08, 0.52, 10), pantsMat);
+        rightLeg.position.set(0.13, 0.26, 0);
+
+        personGroup.add(torso, stripe, head, helmet, leftArm, rightArm, leftLeg, rightLeg);
+        g.add(personGroup);
+
+        // Pulsing SAR Locator Ring on Floor
+        const ring = new THREE.Mesh(
+          new THREE.RingGeometry(0.55, 0.78, 28),
+          new THREE.MeshBasicMaterial({ color: 0xe11d48, side: THREE.DoubleSide, transparent: true, opacity: 0.75 })
+        );
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = 0.04;
+        g.add(ring);
+        animatedEmitters.push({ type: 'person', ring, rightArm });
+
+      } else {
+        // Clear Warehouse Zone: Stacked Industrial Pallets + Green Laser Scan Beacon
+        const pallet = new THREE.Mesh(
+          new THREE.BoxGeometry(1.3, 0.16, 1.3),
+          new THREE.MeshStandardMaterial({ color: 0x92400e, roughness: 0.8 })
+        );
+        pallet.position.y = 0.08;
+        const crate1 = new THREE.Mesh(
+          new THREE.BoxGeometry(0.95, 0.75, 0.95),
+          new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.65 })
+        );
+        crate1.position.y = 0.54;
+        const holoRing = new THREE.Mesh(
+          new THREE.RingGeometry(0.65, 0.85, 28),
+          new THREE.MeshBasicMaterial({ color: 0x10b981, side: THREE.DoubleSide })
+        );
+        holoRing.rotation.x = -Math.PI / 2;
+        holoRing.position.y = 0.04;
+        g.add(pallet, crate1, holoRing);
+      }
+
+      return g;
+    }
+
+    function buildStaticArena(state) {
+      while (staticWorldGroup.children.length > 0) {
+        staticWorldGroup.remove(staticWorldGroup.children[0]);
+      }
+
+      const wallTex = makeCorrugatedWallTexture();
+      const extWallMat = new THREE.MeshStandardMaterial({
+        map: wallTex,
+        roughness: 0.52,
+        metalness: 0.12,
+      });
+      const intWallMat = new THREE.MeshStandardMaterial({
+        color: 0xcbd5e1,
+        roughness: 0.65,
+      });
+      const trimMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.4, metalness: 0.4 });
+      const glassMat = new THREE.MeshStandardMaterial({
+        color: 0x38bdf8,
+        roughness: 0.12,
+        metalness: 0.75,
+        transparent: true,
+        opacity: 0.52,
+      });
+
+      state.walls.forEach((w) => {
+        const len = Math.hypot(w.x2 - w.x1, w.y2 - w.y1);
+        const wallH = w.tag === 'perimeter' ? 1.15 : w.height * 0.65;
+        const thick = w.thickness || 0.25;
+        const mat = w.tag === 'interior_wall' ? intWallMat : extWallMat;
+
+        const geo = new THREE.BoxGeometry(len, wallH, thick);
+        const mesh = new THREE.Mesh(geo, mat);
+        const mx = (w.x1 + w.x2) / 2 - 18.0;
+        const mz = (w.y1 + w.y2) / 2 - 14.0;
+        const angle = Math.atan2(w.y2 - w.y1, w.x2 - w.x1);
+        mesh.position.set(mx, wallH / 2, mz);
+        mesh.rotation.y = -angle;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        staticWorldGroup.add(mesh);
+
+        if (w.tag === 'building_wall') {
+          const cap = new THREE.Mesh(new THREE.BoxGeometry(len + 0.06, 0.14, thick + 0.08), trimMat);
+          cap.position.set(mx, wallH + 0.07, mz);
+          cap.rotation.y = -angle;
+          staticWorldGroup.add(cap);
+
+          if (len > 4.5) {
+            const win = new THREE.Mesh(new THREE.BoxGeometry(len * 0.62, wallH * 0.34, thick + 0.04), glassMat);
+            win.position.set(mx, wallH * 0.58, mz);
+            win.rotation.y = -angle;
+            staticWorldGroup.add(win);
+          }
+        }
+      });
+
+      // Add Building Roof Trusses, Doorway Frames & Interior Machinery
+      state.rooms.forEach((rm) => {
+        staticWorldGroup.add(createBuildingMachineryAndRoofTrusses(rm));
+      });
+
+      // Add Realistic Multi-Branch Trees, Streetlights, Tanks & Crates
+      state.obstacles.forEach((o) => {
+        const ox = o.x - 18.0;
+        const oz = o.y - 14.0;
+        if (o.kind === 'tree') {
+          staticWorldGroup.add(createRealisticTree(ox, oz));
+        } else if (o.kind === 'tank') {
+          const tankGroup = new THREE.Group();
+          const cyl = new THREE.Mesh(
+            new THREE.CylinderGeometry(o.radius, o.radius, o.height, 22),
+            new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.6, roughness: 0.3 })
+          );
+          cyl.position.y = o.height / 2;
+          const dome = new THREE.Mesh(
+            new THREE.SphereGeometry(o.radius, 20, 12, 0, Math.PI * 2, 0, Math.PI * 0.5),
+            new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.5, roughness: 0.3 })
+          );
+          dome.position.y = o.height;
+          tankGroup.add(cyl, dome);
+          tankGroup.position.set(ox, 0, oz);
+          staticWorldGroup.add(tankGroup);
+        } else {
+          const crate = new THREE.Mesh(
+            new THREE.BoxGeometry(o.radius * 1.6, o.height, o.radius * 1.6),
+            new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.65 })
+          );
+          crate.position.set(ox, o.height / 2, oz);
+          crate.castShadow = true;
+          staticWorldGroup.add(crate);
+        }
+      });
+
+      // Avenue Streetlights
+      [-14, -5, 5, 14].forEach((lx) => {
+        staticWorldGroup.add(createStreetLamp(lx, -3.1, 1));
+        staticWorldGroup.add(createStreetLamp(lx, 3.1, -1));
+      });
+
+      wallsInitialized = true;
+    }
+
+    function rebuildHazardProps(state) {
+      while (hazardPropsGroup.children.length > 0) {
+        hazardPropsGroup.remove(hazardPropsGroup.children[0]);
+      }
+      animatedEmitters.length = 0;
+      state.rooms.forEach((rm) => {
+        hazardPropsGroup.add(createRealisticHazardAssembly(rm));
+      });
+    }
+
+    function createRobot3DObject(r) {
+      const group = new THREE.Group();
+      const color = new THREE.Color(r.color);
+      if (r.vehicle_mode === 'drone') {
+        const core = new THREE.Mesh(
+          new THREE.BoxGeometry(0.72, 0.22, 0.72),
+          new THREE.MeshStandardMaterial({ color, metalness: 0.45, roughness: 0.3 })
+        );
+        core.position.y = 1.45;
+        group.add(core);
+        const armGeo = new THREE.CylinderGeometry(0.035, 0.035, 1.35);
+        armGeo.rotateZ(Math.PI / 2);
+        const armMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.6 });
+        const arm1 = new THREE.Mesh(armGeo, armMat);
+        arm1.position.y = 1.45;
+        arm1.rotation.y = Math.PI / 4;
+        const arm2 = arm1.clone();
+        arm2.rotation.y = -Math.PI / 4;
+        group.add(arm1, arm2);
+        const rotorMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.5, side: THREE.DoubleSide });
+        [[-0.46, -0.46], [0.46, -0.46], [-0.46, 0.46], [0.46, 0.46]].forEach(([rx, rz]) => {
+          const disc = new THREE.Mesh(new THREE.RingGeometry(0.08, 0.32, 20), rotorMat);
+          disc.rotation.x = Math.PI / 2;
+          disc.position.set(rx, 1.58, rz);
+          group.add(disc);
+        });
+      } else {
+        // Articulated 4WD Heavy Industrial UGV Rover
+        const chassis = new THREE.Mesh(
+          new THREE.BoxGeometry(1.12, 0.30, 0.76),
+          new THREE.MeshStandardMaterial({ color, metalness: 0.35, roughness: 0.38 })
+        );
+        chassis.position.y = 0.25;
+        chassis.castShadow = true;
+        group.add(chassis);
+
+        // Front Steel Bull-Bar & Dual LED Headlights
+        const bumper = new THREE.Mesh(
+          new THREE.BoxGeometry(0.14, 0.18, 0.80),
+          new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.7, roughness: 0.3 })
+        );
+        bumper.position.set(0.58, 0.22, 0);
+        group.add(bumper);
+
+        // Sensor Mast & Dual-Lens Thermal/Optical Gimbal Head
+        const cabin = new THREE.Mesh(
+          new THREE.BoxGeometry(0.56, 0.24, 0.58),
+          new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.55, roughness: 0.3 })
+        );
+        cabin.position.set(-0.06, 0.50, 0);
+        group.add(cabin);
+
+        const lidarPuck = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.15, 0.15, 0.16, 20),
+          new THREE.MeshStandardMaterial({ color: 0x0284c7, metalness: 0.8, roughness: 0.2 })
+        );
+        lidarPuck.position.set(0.16, 0.70, 0);
+        group.add(lidarPuck);
+
+        const camPod = new THREE.Mesh(
+          new THREE.BoxGeometry(0.20, 0.14, 0.26),
+          new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.3, roughness: 0.3 })
+        );
+        camPod.position.set(0.36, 0.54, 0);
+        group.add(camPod);
+
+        // 4 Off-Road Treaded Tires with Alloy Hubs
+        const wheelGeo = new THREE.CylinderGeometry(0.21, 0.21, 0.16, 20);
+        wheelGeo.rotateX(Math.PI / 2);
+        const wheelMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.9 });
+        const hubGeo = new THREE.CylinderGeometry(0.10, 0.10, 0.17, 14);
+        hubGeo.rotateX(Math.PI / 2);
+        const hubMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.7 });
+        [[-0.36, -0.43], [0.36, -0.43], [-0.36, 0.43], [0.36, 0.43]].forEach(([wx, wz]) => {
+          const wMesh = new THREE.Mesh(wheelGeo, wheelMat);
+          wMesh.position.set(wx, 0.21, wz);
+          const hMesh = new THREE.Mesh(hubGeo, hubMat);
+          hMesh.position.set(wx, 0.21, wz);
+          group.add(wMesh, hMesh);
+        });
+      }
+      return group;
+    }
+
+    function update3DScene(state) {
+      if (!wallsInitialized) buildStaticArena(state);
+
+      const sig = state.rooms.map((r) => `${r.id}:${r.hazard_class}`).join('|');
+      if (sig !== lastHazardSignature) {
+        rebuildHazardProps(state);
+        lastHazardSignature = sig;
+      }
+
+      while (dynamicGroup.children.length > 0) {
+        dynamicGroup.remove(dynamicGroup.children[0]);
+      }
+
+      // Building interior floor status tint
+      state.rooms.forEach((rm) => {
+        const [x0, y0, x1, y1] = rm.bounds;
+        const cx = (x0 + x1) / 2 - 18.0;
+        const cz = (y0 + y1) / 2 - 14.0;
+        const bw = x1 - x0 - 0.35;
+        const bh = y1 - y0 - 0.35;
+        const colorMap = {
+          fire_hazard: 0xef4444,
+          gas_hazard: 0x65a30d,
+          trapped_person: 0xc026d3,
+          clear_room: 0x059669,
+        };
+        const rColor = rm.completed_by ? 0x10b981 : (colorMap[rm.hazard_class] || 0x0284c7);
+
+        const pad = new THREE.Mesh(
+          new THREE.PlaneGeometry(bw, bh),
+          new THREE.MeshBasicMaterial({
+            color: rColor,
+            transparent: true,
+            opacity: rm.completed_by ? 0.24 : 0.10,
+          })
+        );
+        pad.rotation.x = -Math.PI / 2;
+        pad.position.set(cx, 0.025, cz);
+        dynamicGroup.add(pad);
+      });
+
+      // Render 2 Specialized UGVs, LiDAR Fan, and A* Roadway/Doorway Paths
+      state.robots.forEach((r) => {
+        const key = `${r.id}_${r.vehicle_mode}`;
+        if (!robotMeshes[key]) {
+          Object.keys(robotMeshes).forEach((k) => {
+            if (k.startsWith(r.id + '_')) {
+              scene.remove(robotMeshes[k]);
+              delete robotMeshes[k];
+            }
+          });
+          robotMeshes[key] = createRobot3DObject(r);
+          scene.add(robotMeshes[key]);
+        }
+        const mesh = robotMeshes[key];
+        mesh.position.set(r.x - 18.0, 0.0, r.y - 14.0);
+        mesh.rotation.set(0, -r.yaw, 0);
+
+        if (r.operational) {
+          const rColor = new THREE.Color(r.color);
+          const lidarMat = new THREE.LineBasicMaterial({ color: rColor, transparent: true, opacity: 0.22 });
+          const pts = [];
+          r.lidar_hits.forEach(([lx, ly]) => {
+            pts.push(new THREE.Vector3(r.x - 18.0, 0.55, r.y - 14.0));
+            pts.push(new THREE.Vector3(lx - 18.0, 0.35, ly - 14.0));
+          });
+          dynamicGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), lidarMat));
+
+          if (r.path && r.path.length > 0) {
+            const pathPts = [new THREE.Vector3(r.x - 18.0, 0.14, r.y - 14.0)];
+            r.path.forEach(([px, py]) => pathPts.push(new THREE.Vector3(px - 18.0, 0.14, py - 14.0)));
+            const pathGeo = new THREE.BufferGeometry().setFromPoints(pathPts);
+            const pathMat = new THREE.LineBasicMaterial({ color: rColor, linewidth: 2 });
+            dynamicGroup.add(new THREE.Line(pathGeo, pathMat));
+          }
+        }
+      });
+
+      // P2P UDP Link Line between UGV-1 and UGV-2
+      const liveRobots = state.robots.filter((r) => r.operational && r.comms_online);
+      if (liveRobots.length >= 2) {
+        const meshPts = [
+          to3D(liveRobots[0].x, liveRobots[0].y, 0.85),
+          to3D(liveRobots[1].x, liveRobots[1].y, 0.85),
+        ];
+        const linkMat = new THREE.LineBasicMaterial({ color: 0x0284c7, transparent: true, opacity: 0.6 });
+        dynamicGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(meshPts), linkMat));
+      }
+    }
+
+    // ---------------- 60 FPS VOLUMETRIC FIRE, SMOKE & GAS PARTICLE ANIMATION ----------------
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      animatedEmitters.forEach((em) => {
+        if (em.type === 'fire') {
+          if (em.light) {
+            em.light.intensity = 1.65 + 0.45 * Math.sin(t * 17.0) + 0.25 * Math.cos(t * 29.0);
+          }
+          em.particles.forEach((sp, idx) => {
+            const u = sp.userData;
+            const cycle = (t * u.speed + u.phase) % 1.0;
+            const maxH = u.isSmoke ? 3.6 : 2.15;
+            sp.position.y = 0.25 + cycle * maxH;
+            const swirl = (u.isSmoke ? 0.35 : 0.14) * Math.sin(t * 4.5 + idx);
+            sp.position.x = u.baseX * (0.6 + 0.8 * cycle) + swirl;
+            sp.position.z = u.baseZ * (0.6 + 0.8 * cycle) + Math.cos(t * 3.8 + idx) * 0.12;
+            const s = u.baseScale * (u.isSmoke ? (0.7 + 1.15 * cycle) : (1.15 - 0.65 * cycle));
+            sp.scale.set(s, s, 1);
+            sp.material.opacity = u.isSmoke
+              ? Math.sin(cycle * Math.PI) * 0.55
+              : Math.pow(1.0 - cycle, 0.65) * 0.95;
+          });
+        } else if (em.type === 'gas') {
+          em.particles.forEach((sp, idx) => {
+            const u = sp.userData;
+            const cycle = (t * u.speed + u.phase) % 1.0;
+            sp.position.y = 0.35 + cycle * 2.3;
+            sp.position.x = u.baseX * (0.8 + 1.1 * cycle) + 0.22 * Math.sin(t * 2.4 + idx);
+            sp.position.z = u.baseZ * (0.8 + 1.1 * cycle) + 0.22 * Math.cos(t * 2.1 + idx);
+            const s = u.baseScale * (0.75 + 0.95 * cycle);
+            sp.scale.set(s, s, 1);
+            sp.material.opacity = Math.sin(cycle * Math.PI) * 0.52;
+          });
+        } else if (em.type === 'person') {
+          const pulse = 1.0 + 0.22 * Math.sin(t * 5.0);
+          em.ring.scale.set(pulse, pulse, 1);
+          em.rightArm.rotation.z = -0.65 + 0.35 * Math.sin(t * 4.2);
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // ---------------- WHITE STUDIO UI DASHBOARD UPDATES ----------------
+    function updateUI(state) {
+      document.getElementById('hud-time').textContent = `${state.sim_time.toFixed(2)}s`;
+      document.getElementById('hud-rooms').textContent = `${state.completed_rooms} / ${state.total_rooms}`;
+      document.getElementById('btn-play').textContent = state.running ? 'Pause' : 'Play';
+
+      const meta = state.ai_metadata || {};
+      document.getElementById('ai-meta-label').textContent =
+        `AI Stack: ${meta.backbone || 'torchvision.mobilenet_v3_small'} (${(meta.device || 'cuda').toUpperCase()}) + ${meta.localizer || 'OpenCV_Contour_Saliency'} + ${meta.policy_net || 'SwarmTacticalPolicyNet_MLP'}`;
+
+      const banner = document.getElementById('comms-banner');
+      const btnComms = document.getElementById('btn-comms');
+      if (state.commander_link_active) {
+        banner.className = 'comms-banner comms-online';
+        banner.textContent = 'COMMANDER LINK: ONLINE (TELEMETRY + UDP P2P MESH)';
+        btnComms.textContent = 'Sever Commander Link (Test Comms-Denied P2P)';
+      } else {
+        banner.className = 'comms-banner comms-denied';
+        banner.textContent = 'COMMANDER LINK SEVERED — 2 UGVS OPERATING ON 100% P2P UDP AUTONOMY!';
+        btnComms.textContent = 'Restore Commander Link';
+      }
+
+      const cardsHtml = state.robots.map((r) => {
+        const batPct = Math.round(r.battery * 100);
+        const toggleBtn = r.operational
+          ? `<button class="danger" style="padding:3px 8px;font-size:10.5px" onclick="sendCmd({action:'kill_agent',agent_id:'${r.id}'})">Kill Power</button>`
+          : `<button class="primary" style="padding:3px 8px;font-size:10.5px" onclick="sendCmd({action:'revive_agent',agent_id:'${r.id}'})">Revive UGV</button>`;
+        const qList = (r.bundle_queue && r.bundle_queue.length > 0)
+          ? r.bundle_queue.map((z, idx) => `${idx + 1}. <strong>${z}</strong>`).join(' &rarr; ')
+          : '<em>All queued buildings verified</em>';
+        return `
+          <div class="agent-card ${r.operational ? '' : 'dead'}">
+            <div class="cam-box">
+              <img src="${r.camera_jpeg}" alt="cam-${r.id}" />
+              <div class="cam-tag">${r.vision_class.replace('_', ' ')} (${Math.round(r.vision_conf * 100)}%)</div>
+            </div>
+            <div class="agent-meta">
+              <h3>
+                <span style="color:${r.color}">${r.name}</span>
+                ${toggleBtn}
+              </h3>
+              <div class="agent-sub">${r.specialty} &bull; UDP <code>127.0.0.1:${r.udp_port}</code></div>
+              <div class="stat-row">
+                <span class="badge">Active: ${r.assigned_room || 'STANDBY'}</span>
+                <span class="badge">${r.status_phase}</span>
+                <span>Bat: <strong>${batPct}%</strong> <span class="bat-bar"><span class="bat-fill" style="width:${batPct}%"></span></span></span>
+                <span style="color:#64748b">Odom: ${r.odometry_m}m | P2P TX:${r.packets_sent}</span>
+              </div>
+              <div class="queue-box">
+                <strong>CBBA Multi-Building Queue:</strong> ${qList}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('agent-cards').innerHTML = cardsHtml;
+
+      const roomRows = state.rooms.map((rm) => {
+        const pct = Math.round(rm.scan_progress * 100);
+        const statusBadge = rm.completed_by
+          ? `<span style="color:#059669;font-weight:700">VERIFIED (${rm.completed_by} @ ${rm.completed_at}s)</span>`
+          : `<span style="color:#d97706;font-weight:600">${pct}% Scanned</span>`;
+        return `
+          <tr>
+            <td><strong>${rm.name}</strong> (T${rm.tier})</td>
+            <td>${rm.hazard_class.replace('_', ' ')}</td>
+            <td><code>${rm.required_sensor}</code></td>
+            <td>${statusBadge}</td>
+          </tr>
+        `;
+      }).join('');
+      document.getElementById('room-status-table').innerHTML = `
+        <table>
+          <thead><tr><th>Building Zone</th><th>Hazard</th><th>Specialty</th><th>Status</th></tr></thead>
+          <tbody>${roomRows}</tbody>
+        </table>
+      `;
+
+      const roomHeaders = state.rooms.map((rm) => `<th>${rm.id.replace('zone-', 'Z')} (T${rm.tier})</th>`).join('');
+      const cbbaRows = state.robots.map((r) => {
+        const cols = state.rooms.map((rm) => {
+          const d = (r.decisions || {})[rm.id];
+          if (!d) return '<td>-</td>';
+          const inQueue = (r.bundle_queue || []).includes(rm.id);
+          const color = inQueue ? '#059669' : (d.should_pass ? '#94a3b8' : '#0284c7');
+          const tag = inQueue ? `Q#${r.bundle_queue.indexOf(rm.id) + 1}` : (d.should_pass ? 'YIELD' : 'BID');
+          return `<td style="color:${color}" title="${d.reasoning}"><strong>${d.bid.toFixed(2)}</strong> [${tag}/${d.mode.slice(0,4)}]</td>`;
+        }).join('');
+        return `<tr><td><strong style="color:${r.color}">${r.id}</strong></td>${cols}</tr>`;
+      }).join('');
+      document.getElementById('cbba-matrix').innerHTML = `
+        <table>
+          <thead><tr><th>UGV</th>${roomHeaders}</tr></thead>
+          <tbody>${cbbaRows}</tbody>
+        </table>
+      `;
+
+      document.getElementById('udp-log').innerHTML = state.packets.slice().reverse().map((p) => `
+        <div class="log-item">
+          <span style="color:#0284c7;font-weight:700">[#${p.seq} @ ${p.time.toFixed(1)}s]</span>
+          <strong>${p.from} &rarr; ${p.to}</strong> (${p.bytes}B): ${p.summary}
+        </div>
+      `).join('');
+
+      document.getElementById('event-log').innerHTML = state.events.slice().reverse().map((e) => `
+        <div class="log-item">
+          <span style="color:#ea580c;font-weight:700">[${e.time.toFixed(1)}s]</span>
+          <strong>[${e.kind}]</strong> ${e.message}
+        </div>
+      `).join('');
+    }
+
+    connectWS();
+  </script>
+</body>
+</html>

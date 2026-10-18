@@ -1,0 +1,92 @@
+{
+  "seed": 5,
+  "condition": "normal",
+  "method": "cbba",
+  "max_time": 300.0,
+  "hazards": [
+    {
+      "id": "FIRE_0",
+      "type": "fire",
+      "room": "R3",
+      "pos": [
+        -2.25,
+        -2.65
+      ],
+      "yaw": 0.2749575877807522,
+      "strength": 1.0295764751712404
+    },
+    {
+      "id": "FIRE_1",
+      "type": "fire",
+      "room": "R4",
+      "pos": [
+        6.35,
+        -2.65
+      ],
+      "yaw": -3.130440865476559,
+      "strength": 1.1485618978897127
+    }
+  ],
+  "victims": [
+    {
+      "id": "VICTIM_0",
+      "room": "R2",
+      "pos": [
+        4.75,
+        1.75
+      ],
+      "yaw": 2.9315100320057503
+    }
+  ],
+  "distractors": [
+    {
+      "id": "DISTRACT_2",
+      "room": "R4",
+      "pos": [
+        1.55,
+        -3.45
+      ],
+      "yaw": -2.7267613623432743
+    },
+    {
+      "id": "DISTRACT_0",
+      "room": "R3",
+      "pos": [
+        -5.45,
+        -1.85
+      ],
+      "yaw": -0.1725466369705897
+    },
+    {
+      "id": "DISTRACT_1",
+      "room": "R2",
+      "pos": [
+        4.75,
+        3.35
+      ],
+      "yaw": -0.8407877352629569
+    }
+  ],
+  "blocked_doors": [],
+  "spawns": {
+    "A": [
+      -6.3,
+      0.45
+    ],
+    "B": [
+      -6.3,
+      -0.45
+    ]
+  },
+  "spawn_yaw": {
+    "A": 0.3141688735765328,
+    "B": -0.19928483500717276
+  },
+  "noise_scale": 0.637,
+  "packet_loss": 0.0,
+  "faults": [],
+  "incident_report": {
+    "room": "R3",
+    "text": "Smoke alarm reported in R3"
+  }
+}

@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "mission": {
+    "mission_id": "emergency",
+    "seed": 42,
+    "duration_ticks": 64,
+    "tick_seconds": 0.5,
+    "objectives": [
+      "Verify hazards",
+      "Locate possible trapped person",
+      "Inspect clear room"
+    ]
+  },
+  "locations": [
+    {
+      "id": "room-1",
+      "name": "Room 1",
+      "type": "room",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 4,
+        "height": 4
+      }
+    },
+    {
+      "id": "room-2",
+      "name": "Room 2",
+      "type": "room",
+      "bounds": {
+        "x": 6,
+        "y": 0,
+        "width": 4,
+        "height": 4
+      }
+    },
+    {
+      "id": "room-3",
+      "name": "Room 3",
+      "type": "room",
+      "bounds": {
+        "x": 0,
+        "y": 6,
+        "width": 4,
+        "height": 4
+      }
+    },
+    {
+      "id": "room-4",
+      "name": "Room 4",
+      "type": "room",
+      "bounds": {
+        "x": 6,
+        "y": 6,
+        "width": 4,
+        "height": 4
+      }
+    },
+    {
+      "id": "corridor",
+      "name": "Shared Corridor",
+      "type": "corridor",
+      "bounds": {
+        "x": 0,
+        "y": 4,
+        "width": 10,
+        "height": 2
+      }
+    }
+  ],
+  "passages": [
+    {
+      "id": "door-1",
+      "source": "room-1",
+      "target": "corridor",
+      "opening": {
+        "x1": 1,
+        "y1": 4,
+        "x2": 2,
+        "y2": 4
+      },
+      "travel_ticks": 1
+    },
+    {
+      "id": "door-2",
+      "source": "room-2",
+      "target": "corridor",
+      "opening": {
+        "x1": 7,
+        "y1": 4,
+        "x2": 8,
+        "y2": 4
+      },
+      "travel_ticks": 1
+    },
+    {
+      "id": "door-3",
+      "source": "room-3",
+      "target": "corridor",
+      "opening": {
+        "x1": 1,
+        "y1": 6,
+        "x2": 2,
+        "y2": 6
+      },
+      "travel_ticks": 1
+    },
+    {
+      "id": "door-4",
+      "source": "room-4",
+      "target": "corridor",
+      "opening": {
+        "x1": 7,
+        "y1": 6,
+        "x2": 8,
+        "y2": 6
+      },
+      "travel_ticks": 1
+    },
+    {
+      "id": "entry",
+      "source": "corridor",
+      "target": null,
+      "opening": {
+        "x1": 0,
+        "y1": 4.5,
+        "x2": 0,
+        "y2": 5.5
+      },
+      "travel_ticks": 1
+    }
+  ],
+  "agents": [
+    {
+      "id": "A",
+      "name": "Thermal Scout",
+      "location": "corridor",
+      "capabilities": {
+        "sensing": [
+          "thermal"
+        ],
+        "operational": [
+          "exploration"
+        ]
+      },
+      "battery": 0.98,
+      "availability": "available",
+      "resources": [
+        {
+          "name": "support-kits",
+          "amount": 0,
+          "capacity": 2
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    {
+      "id": "B",
+      "name": "Gas Scout",
+      "location": "corridor",
+      "capabilities": {
+        "sensing": [
+          "gas"
+        ],
+        "operational": [
+          "exploration"
+        ]
+      },
+      "battery": 0.9,
+      "availability": "available",
+      "resources": [
+        {
+          "name": "support-kits",
+          "amount": 0,
+          "capacity": 2
+        }
+      ],
+      "position": {
+        "x": 3.5,
+        "y": 5
+      }
+    },
+    {
+      "id": "C",
+      "name": "Search Scout",
+      "location": "corridor",
+      "capabilities": {
+        "sensing": [
+          "visual",
+          "thermal"
+        ],
+        "operational": [
+          "exploration"
+        ]
+      },
+      "battery": 0.94,
+      "availability": "available",
+      "resources": [
+        {
+          "name": "support-kits",
+          "amount": 0,
+          "capacity": 2
+        }
+      ],
+      "position": {
+        "x": 6,
+        "y": 5
+      }
+    },
+    {
+      "id": "D",
+      "name": "Support Scout",
+      "location": "corridor",
+      "capabilities": {
+        "sensing": [],
+        "operational": [
+          "exploration",
+          "simulated-assistance"
+        ]
+      },
+      "battery": 1,
+      "availability": "available",
+      "resources": [
+        {
+          "name": "support-kits",
+          "amount": 2,
+          "capacity": 2
+        }
+      ],
+      "position": {
+        "x": 8.5,
+        "y": 5
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "type": "fire-verification",
+      "location": "room-1",
+      "requirements": {
+        "capabilities": {
+          "sensing": [
+            "thermal"
+          ],
+          "operational": [
+            "exploration"
+          ]
+        },
+        "minimum_battery": 0.1,
+        "resources": []
+      },
+      "severity": 0.2,
+      "urgency": 0.3,
+      "deadline": 40,
+      "status": "pending",
+      "duration_ticks": 2
+    },
+    {
+      "id": "task-2",
+      "type": "gas-inspection",
+      "location": "room-2",
+      "requirements": {
+        "capabilities": {
+          "sensing": [
+            "gas"
+          ],
+          "operational": [
+            "exploration"
+          ]
+        },
+        "minimum_battery": 0.1,
+        "resources": []
+      },
+      "severity": 0.6,
+      "urgency": 0.5,
+      "deadline": 40,
+      "status": "pending",
+      "duration_ticks": 2
+    },
+    {
+      "id": "task-3",
+      "type": "person-search",
+      "location": "room-3",
+      "requirements": {
+        "capabilities": {
+          "sensing": [
+            "visual"
+          ],
+          "operational": [
+            "exploration"
+          ]
+        },
+        "minimum_battery": 0.1,
+        "resources": []
+      },
+      "severity": 0.3,
+      "urgency": 0.3,
+      "deadline": 40,
+      "status": "pending",
+      "duration_ticks": 3
+    },
+    {
+      "id": "task-4",
+      "type": "routine-inspection",
+      "location": "room-4",
+      "requirements": {
+        "capabilities": {
+          "sensing": [],
+          "operational": [
+            "exploration"
+          ]
+        },
+        "minimum_battery": 0.1,
+        "resources": []
+      },
+      "severity": 0.1,
+      "urgency": 0.1,
+      "deadline": null,
+      "status": "pending",
+      "duration_ticks": 2
+    }
+  ],
+  "conditions": [
+    {
+      "location_id": "room-1",
+      "subject": "fire",
+      "value": "clear"
+    },
+    {
+      "location_id": "room-2",
+      "subject": "gas",
+      "value": "clear"
+    },
+    {
+      "location_id": "room-3",
+      "subject": "person",
+      "value": "absent"
+    },
+    {
+      "location_id": "room-4",
+      "subject": "hazard",
+      "value": "clear"
+    }
+  ],
+  "events": [
+    {
+      "id": "fire-escalates",
+      "tick": 12,
+      "action": "set_condition",
+      "target": "room-1",
+      "description": "Fire becomes severe; agents must sense or receive evidence",
+      "subject": "fire",
+      "value": "severe"
+    },
+    {
+      "id": "urgent-objective",
+      "tick": 12,
+      "action": "discover_task",
+      "target": "emergency-verification",
+      "description": "An urgent verification is announced only to B",
+      "task": {
+        "id": "emergency-verification",
+        "type": "fire-verification",
+        "location": "room-1",
+        "requirements": {
+          "capabilities": {
+            "sensing": [
+              "thermal"
+            ],
+            "operational": [
+              "exploration"
+            ]
+          },
+          "minimum_battery": 0.1,
+          "resources": []
+        },
+        "severity": 1,
+        "urgency": 1,
+        "deadline": 40,
+        "status": "pending",
+        "duration_ticks": 2
+      },
+      "recipient": "B",
+      "recoverable": true
+    }
+  ],
+  "priority": {
+    "weights": {
+      "urgency": 0.25,
+      "deadline": 0.2,
+      "environment": 0.35,
+      "importance": 0.15,
+      "uncertainty": 0.05
+    },
+    "deadline_window_ticks": 8,
+    "freshness_ticks": 4,
+    "unknown_risk": 0.5,
+    "default_importance": 0.5,
+    "rules": [
+      {
+        "task_type": "fire-verification",
+        "subject": "fire",
+        "importance": 0.9,
+        "severities": {
+          "present": 0.8,
+          "severe": 1,
+          "clear": 0,
+          "cleared": 0,
+          "absent": 0
+        }
+      },
+      {
+        "task_type": "gas-inspection",
+        "subject": "gas",
+        "importance": 0.65,
+        "severities": {
+          "present": 0.7,
+          "severe": 1,
+          "clear": 0,
+          "cleared": 0,
+          "absent": 0
+        }
+      },
+      {
+        "task_type": "person-search",
+        "subject": "person",
+        "importance": 1,
+        "severities": {
+          "possible": 0.9,
+          "present": 1,
+          "absent": 0
+        }
+      },
+      {
+        "task_type": "routine-inspection",
+        "subject": "hazard",
+        "importance": 0.15,
+        "severities": {
+          "clear": 0,
+          "present": 0.6,
+          "severe": 1
+        }
+      }
+    ]
+  },
+  "demonstration": {
+    "id": "emergency",
+    "name": "Escalating Emergency",
+    "description": "An initially clear inspection mission develops a severe fire; an urgent verification is announced during ongoing work.",
+    "objective": "Watch local evidence and priorities change; available agents handle new work without preemption.",
+    "expected": {
+      "completed_objectives": 5,
+      "incomplete_objectives": 0,
+      "minimum_moving_agents": 4,
+      "requires_recovery": false
+    }
+  },
+  "communication": {
+    "latency_ticks": 1,
+    "loss_probability": 0,
+    "ttl_ticks": 8,
+    "links": null,
+    "disconnections": []
+  }
+}

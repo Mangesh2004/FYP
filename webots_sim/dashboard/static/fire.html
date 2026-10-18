@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Robot A · fire search</title>
+<style>
+:root{font-family:'Segoe UI',sans-serif;color:#162b40;background:#edf2f6;line-height:1.45}*{box-sizing:border-box}body{margin:0}header{padding:16px 28px;background:#162b40;color:white;display:flex;align-items:center;justify-content:space-between}h1{font-size:22px;margin:0}header p{margin:2px 0;color:#c4d2df}main{max-width:1560px;margin:auto;padding:20px;display:grid;grid-template-columns:minmax(470px,1.4fr) minmax(350px,1fr);gap:18px}section{background:white;padding:18px;border:1px solid #ced9e3}h2{font-size:17px;margin:0 0 10px}h3{font-size:14px;margin:12px 0 6px}.muted{color:#526b80;font-size:13px}#camera{width:100%;max-height:440px;object-fit:contain;background:#142b40;aspect-ratio:4/3;display:block}#cameraMeta{margin-top:8px}#decision{font-size:25px;font-weight:650;padding:12px 0;color:#aa4c04}.confirmed #decision{color:#087443}.rule{padding:10px 12px;background:#edf2f6;border-left:4px solid #486b8e}.readings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.value{font-size:23px;font-weight:600}.readings small{display:block;color:#526b80}.bar{height:8px;background:#dce4eb;overflow:hidden}.bar span{display:block;height:100%;background:#c26719}canvas{max-width:100%;display:block}#heat{width:100%;height:65px;margin-top:10px}#lidar{width:100%;height:270px;background:#f5f8fb}#events{height:270px;overflow:auto;font-size:13px}#events p{margin:0;padding:7px 0;border-bottom:1px solid #dde5ec}#events time{display:inline-block;min-width:52px;color:#526b80;font-variant-numeric:tabular-nums}.extras{display:flex;gap:20px;flex-wrap:wrap;padding-top:12px;font-size:13px}.extras strong{display:block}.note{grid-column:1/-1;font-size:12px;color:#526b80;margin:0}#connection{font-size:14px}#raw{font-size:12px;color:#526b80;margin:8px 0}#detections{font-size:13px;margin-top:6px}.status{border-left:5px solid #c26719}.status.confirmed{border-left-color:#087443}@media(max-width:900px){main{grid-template-columns:1fr;padding:10px}header{padding:12px 16px;display:block}#camera{max-height:360px}.note{grid-column:auto}}
+@media(min-width:901px){header{padding:10px 22px}h1{font-size:20px}header p{font-size:13px}main{padding:12px;gap:12px}section{padding:12px}h2{font-size:15px;margin-bottom:6px}#camera{max-height:300px}#decision{font-size:21px;padding:4px 0}#reason{font-size:14px;margin:4px 0 8px}.rule{font-size:12px;padding:8px 10px}.readings{gap:4px;margin:8px 0}.readings small{font-size:11px}.value{font-size:20px}#heat{height:38px;margin-top:4px}#raw{font-size:11px;margin:6px 0}#phase{font-size:12px}#lidar{height:175px}#events{height:215px;font-size:12px}.extras{padding-top:8px;font-size:11px;gap:12px}.extras strong{display:inline;margin-left:5px}#cameraMeta,#detections,#laserMeta{font-size:12px}.note{font-size:11px}}
+</style></head><body>
+<header><div><h1>Robot A / fire search</h1><p>Search room R1 → inspect evidence → confirm and stop</p></div><div id="connection" role="status">Connecting to robot…</div></header>
+<main>
+<section><h2>Robot camera & detections</h2><img id="camera" alt="Waiting for the robot camera and detector"><div id="cameraMeta" class="muted">Waiting for camera frames</div><div id="detections"></div></section>
+<section class="status" id="status"><h2>Robot decision</h2><div id="decision" aria-live="polite">Waiting for the search controller</div><p id="reason">No hazard is preassigned to the robot. It searches the assigned room.</p><div class="rule" id="rule">Confirmation requires camera and thermal evidence together.</div>
+<div class="readings"><div><small>Thermal signal now</small><div id="heatValue" class="value">—</div></div><div><small>Verification median</small><div id="median" class="value">—</div></div><div><small>Fresh sensor samples</small><div id="samples" class="value">—</div></div><div><small>Detailed camera frames</small><div id="frames" class="value">—</div></div></div>
+<div class="bar"><span id="thermalBar" style="width:0"></span></div><canvas id="heat" width="600" height="75" aria-label="Recent thermal signal"></canvas><div id="raw">Four thermal light sensor readings will appear here.</div><div class="muted" id="phase"></div></section>
+<section><h2>Lidar / measured distances</h2><div id="laserMeta" class="muted">Waiting for laser measurements</div><canvas id="lidar" width="700" height="360" aria-label="Live lidar ranges around the robot"></canvas><div class="extras"><div>GPS position<strong id="gps">—</strong></div><div>IMU roll / pitch / yaw<strong id="imu">—</strong></div><div>Motion command<strong id="motion">—</strong></div></div></section>
+<section><h2>Evidence & decisions over time</h2><div id="events" role="log">Waiting for robot events</div></section>
+<p class="note">Live simulated devices. Boxes come from the trained Faster R-CNN detector. Thermal sensing uses Webots light sensors as a heat proxy. The lidar plot uses actual range measurements. This observer cannot command the robot.</p>
+</main><script>
+const $=id=>document.getElementById(id),num=(x,n=3)=>Number.isFinite(x)?x.toFixed(n):'—';
+let lastT=-1,changedAt=Date.now(),socketOpen=false,thermal=[];
+const phaseNames={goto:'Moving to a clear verification viewpoint',face:'Aiming at the camera detection',search:'Looking for the hazard in the camera',measure:'Stationary: collecting camera and thermal evidence'};
+function laser(l){
+ const c=$('lidar');c.width=c.clientWidth;c.height=c.clientHeight;
+ const g=c.getContext('2d'),cx=c.width/2,cy=c.height/2,r=Math.min(cx,cy)-22,max=l?.max_range_m||8;
+ g.clearRect(0,0,c.width,c.height);g.strokeStyle='#c9d6e1';g.fillStyle='#526b80';g.font='12px Segoe UI';g.textAlign='left';
+ for(let k=1;k<=4;k++){g.beginPath();g.arc(cx,cy,r*k/4,0,2*Math.PI);g.stroke();g.fillText(num(max*k/4,1)+' m',cx+r*k/4+3,cy-3)}
+ g.beginPath();g.moveTo(cx-r,cy);g.lineTo(cx+r,cy);g.moveTo(cx,cy-r);g.lineTo(cx,cy+r);g.stroke();
+ (l?.ranges_m||[]).forEach((d,i)=>{if(!Number.isFinite(d))return;const a=l.angles_rad[i];g.fillStyle=d<.65?'#c14028':'#1c7894';g.beginPath();g.arc(cx-d*Math.sin(a)/max*r,cy-d*Math.cos(a)/max*r,2.3,0,7);g.fill()});
+ g.fillStyle='#162b40';g.beginPath();g.moveTo(cx,cy-10);g.lineTo(cx-7,cy+8);g.lineTo(cx+7,cy+8);g.closePath();g.fill();g.fillText('Front',cx+10,cy-12);
+ $('laserMeta').textContent=l?`${l.valid_count}/${l.ray_count} finite ranges · nearest ${num(l.nearest_m,2)} m · scan age ${num(l.age_s,2)} s`:'Lidar data unavailable';
+}
+function heatPlot(t,v,threshold){
+ if(!thermal.length||t!==thermal.at(-1)[0])thermal.push([t,v]);thermal=thermal.filter(p=>t-p[0]<45);
+ const c=$('heat'),g=c.getContext('2d'),scale=Math.max(threshold*2,...thermal.map(p=>p[1]));g.clearRect(0,0,c.width,c.height);
+ g.strokeStyle='#bdc9d4';g.setLineDash([5,4]);const y=c.height-8-threshold/scale*(c.height-16);g.beginPath();g.moveTo(0,y);g.lineTo(c.width,y);g.stroke();g.setLineDash([]);
+ g.strokeStyle='#c26719';g.lineWidth=2;g.beginPath();thermal.forEach(([s,h],i)=>{const x=(s-t+45)/45*c.width,yy=c.height-8-h/scale*(c.height-16);i?g.lineTo(x,yy):g.moveTo(x,yy)});g.stroke();
+}
+function eventText(e){
+ if(e.ev==='finding')return `${e.confirmed?'CONFIRMED':'Suspected'} ${e.kind}: ${e.evidence||''}`;
+ if(e.ev==='verification_attempt')return `${e.confirmed?'Confirm':'Retry'}: median ${num(e.sensor)} / threshold ${num(e.threshold)}; ${e.close_visual_frames} detailed frames; ${e.sample_count} samples`;
+ if(e.ev==='verification_retry'||e.ev==='verification_inconclusive')return `${e.ev==='verification_retry'?'Retry':'Inconclusive'}: ${e.reason}`;
+ if(e.ev==='task_start')return `Start ${e.task}`;
+ if(e.ev==='suspected_hazard')return `Camera suspects ${e.kind} in ${e.room}; verification requested`;
+ if(e.ev==='demo_hold')return e.reason;
+ if(e.ev==='search_assignment')return `Search assigned: ${e.rooms.join(', ')}`;
+ if(e.ev==='detector_loaded')return `Detector ready on ${e.device}`;
+ return null;
+}
+function render(st){
+ const a=st.agents?.A;if(!a)return;
+ if(a.t!==lastT){lastT=a.t;changedAt=Date.now()}
+ const v=a.verification||{},confirmed=(a.findings||[]).find(f=>f.kind==='fire'&&f.confirmed),attempt=v.phase==='measure'?null:v.last_attempt;
+ const evidence=attempt||v,threshold=v.threshold||.3;
+ if(a.camera_jpg)$('camera').src='data:image/jpeg;base64,'+a.camera_jpg;
+ $('camera').alt=`Robot camera with detector boxes at ${num(a.camera_t,2)} seconds`;
+ $('cameraMeta').textContent=`Detector frame at ${num(a.camera_t,2)} s · age ${num(Math.max(0,a.t-a.camera_t),2)} s · ${a.detector||''}`;
+ $('detections').textContent=(a.dets||[]).map(d=>`${d.cls} ${(d.score*100).toFixed(1)}%`).join(' | ')||'No detection in the latest frame';
+ $('status').classList.toggle('confirmed',!!confirmed);
+ $('decision').textContent=confirmed?'Fire confirmed — robot stopped':a.state==='VERIFY'?'Verifying suspected fire':a.state==='DONE'?'Search ended without confirmation':'Searching room R1';
+ $('reason').textContent=confirmed?confirmed.evidence:(a.state==='VERIFY'?phaseNames[v.phase]:null)||`Inspecting the room with camera and lidar. Task: ${a.task||'selecting search task'}`;
+ $('rule').textContent=`Thermal median > ${num(threshold)} + at least ${v.required_samples||8} fresh samples + ${v.required_frames||3} detailed camera frames, less than ${v.required_camera_age_s||1} s old.`;
+ $('heatValue').textContent=num(a.heat);$('median').textContent=num(evidence.sensor??evidence.median);
+ $('samples').textContent=`${evidence.sample_count||0} / ${v.required_samples||8}`;$('frames').textContent=`${evidence.close_visual_frames||0} / ${v.required_frames||3}`;
+ $('phase').textContent=`State: ${a.state} · Phase: ${v.phase||'holding'} · View ${v.view||1} · ${confirmed?'Confirmation evidence retained':(v.camera_fresh?'Detailed camera evidence fresh':'Waiting for fresh detailed camera evidence')}`;
+ $('thermalBar').style.width=Math.min(100,a.heat/(threshold*2)*100)+'%';heatPlot(a.t,a.heat,threshold);
+ $('raw').textContent='Raw thermal light: '+Object.entries(a.sensors?.thermal_raw||{}).map(([k,v])=>`${k.replace('thermal_','')} ${num(v)}`).join(' · ');
+ laser(a.sensors?.lidar);$('gps').textContent=(a.sensors?.gps_xyz||[]).map(x=>num(x,2)).join(', ')+' m';$('imu').textContent=(a.sensors?.imu_rpy||[]).map(x=>num(x*180/Math.PI,1)+'°').join(', ');
+ $('motion').textContent=(a.motion_command||[]).map(x=>num(x,2)).join(', ')+' (m/s, rad/s)';
+ const fragment=document.createDocumentFragment();(st.timeline||[]).slice().reverse().forEach(e=>{const text=eventText(e);if(!text)return;const p=document.createElement('p'),time=document.createElement('time');time.textContent=num(e.t,1)+' s ';p.append(time,document.createTextNode(text));fragment.append(p)});$('events').replaceChildren(fragment);
+}
+function connect(){const ws=new WebSocket(`${location.protocol==='https:'?'wss':'ws'}://${location.host}/ws`);ws.onopen=()=>{socketOpen=true};ws.onmessage=e=>render(JSON.parse(e.data));ws.onclose=()=>{socketOpen=false;setTimeout(connect,1500)};ws.onerror=()=>ws.close()}
+setInterval(()=>{$('connection').textContent=!socketOpen?'Disconnected — reconnecting…':lastT<0?'Waiting for robot telemetry':Date.now()-changedAt>3500?'Robot feed paused / stale':`Live · simulation ${num(lastT,1)} s`},500);connect();
+</script></body></html>

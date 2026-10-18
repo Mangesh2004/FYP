@@ -1,0 +1,88 @@
+#VRML_SIM R2025a utf8
+
+WorldInfo {
+  info [
+    "Phase 0: prove a conda-Python controller can read a real Camera and Lidar."
+  ]
+  title "Phase 0 sensor check"
+  basicTimeStep 32
+}
+Viewpoint {
+  orientation -0.3 0 0.95 2.6
+  position -2.5 -2.5 2.2
+}
+DirectionalLight {
+  direction 0.4 -0.5 -1
+  intensity 1.2
+}
+Solid {
+  translation 0 0 -0.05
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.55 0.57 0.6
+        roughness 0.9
+      }
+      geometry Box {
+        size 12 12 0.1
+      }
+    }
+  ]
+  name "floor"
+  boundingObject Box {
+    size 12 12 0.1
+  }
+}
+Solid {
+  translation 2.0 0 0.6
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.92 0.08 0.06
+        roughness 0.4
+      }
+      geometry Box {
+        size 0.15 2.4 1.2
+      }
+    }
+  ]
+  name "red_wall"
+  boundingObject Box {
+    size 0.15 2.4 1.2
+  }
+}
+Robot {
+  translation 0 0 0.15
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.15 0.35 0.7
+        roughness 0.5
+      }
+      geometry Box {
+        size 0.3 0.2 0.12
+      }
+    }
+    Camera {
+      translation 0.16 0 0.06
+      name "camera"
+      fieldOfView 1.2
+      width 64
+      height 48
+      near 0.05
+    }
+    Lidar {
+      translation 0 0 0.1
+      name "lidar"
+      horizontalResolution 36
+      fieldOfView 6.28
+      verticalFieldOfView 0.2
+      numberOfLayers 1
+      minRange 0.1
+      maxRange 6
+    }
+  ]
+  name "probe"
+  controller "phase0_sensor_check"
+  supervisor TRUE
+}

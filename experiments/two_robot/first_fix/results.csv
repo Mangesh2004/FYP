@@ -1,0 +1,2 @@
+seed,condition,method,sim_time,timed_out,hazards_total,hazards_confirmed,victims_total,victims_found,false_confirmations,localization_error_m,first_detection_time,rooms_inspected,rooms_total,duplicate_inspections,all_rooms_time,mission_complete_time,recovery_time_after_kill,messages_sent,messages_received,distance_m,peer_only_time,peer_lost_time,door_blocked_detected_time,replans,stuck_recoveries,tasks_done_after_fault,suspected_hazards,wall_s,exit_code,crashed
+3,normal,cbba,300.0,True,2,1,1,1,0,0.627,99.74,3,4,0,,,,4723,5325,50.94,,,,2,29,,2,93.6,0,

@@ -1,0 +1,520 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+  info [
+    "36m x 28m Multi-Building Industrial & Office Disaster Complex"
+    "2 Specialized Autonomous UGVs (UGV-1 Alpha-SAR & UGV-2 Beta-Hazmat)"
+    "Uses C:/Users/mange/anaconda3/envs/pytorch/python.exe via runtime.ini"
+  ]
+  title "MUM-T 6-Building Industrial Complex — 2-UGV Decentralized Swarm"
+  basicTimeStep 32
+}
+
+Viewpoint {
+  orientation -0.56 0.56 0.61 1.92
+  position 18.0 -16.0 29.5
+}
+
+TexturedBackground {
+  texture "noon_cloudy_countryside"
+  skybox TRUE
+}
+
+TexturedBackgroundLight {
+  texture "noon_cloudy_countryside"
+  castShadows TRUE
+}
+
+RectangleArena {
+  translation 18 14 0
+  floorSize 36 28
+  floorTileSize 2 2
+  wallHeight 2.2
+}
+
+# Central East-West Asphalt Roadway Avenue
+Solid {
+  translation 18 14 0.01
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.24 0.27 0.31
+        roughness 0.85
+        metalness 0.05
+      }
+      geometry Box {
+        size 35.4 5.2 0.02
+      }
+    }
+  ]
+  name "central_asphalt_avenue"
+}
+
+# Center Roadway Yellow Dashed Divider Strip
+Solid {
+  translation 18 14 0.025
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.95 0.78 0.15
+        roughness 0.5
+      }
+      geometry Box {
+        size 32.0 0.14 0.01
+      }
+    }
+  ]
+  name "avenue_center_line"
+}
+
+# ==================== BUILDING 1: REFINERY BOILER HALL (NW) ====================
+Solid {
+  translation 6.0 1.5 2.1
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.78 0.82 0.87 roughness 0.6 }
+      geometry Box { size 9.0 0.25 4.2 }
+    }
+  ]
+  name "b1_north_wall"
+}
+Solid {
+  translation 1.5 5.75 2.1
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.78 0.82 0.87 roughness 0.6 }
+      geometry Box { size 0.25 8.5 4.2 }
+    }
+  ]
+  name "b1_west_wall"
+}
+Solid {
+  translation 10.5 5.75 2.1
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.78 0.82 0.87 roughness 0.6 }
+      geometry Box { size 0.25 8.5 4.2 }
+    }
+  ]
+  name "b1_east_wall"
+}
+Solid {
+  translation 3.15 10.0 2.1
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.78 0.82 0.87 roughness 0.6 }
+      geometry Box { size 3.3 0.25 4.2 }
+    }
+  ]
+  name "b1_south_left"
+}
+Solid {
+  translation 8.85 10.0 2.1
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.78 0.82 0.87 roughness 0.6 }
+      geometry Box { size 3.3 0.25 4.2 }
+    }
+  ]
+  name "b1_south_right"
+}
+# Building 1 Active Boiler Fire Hazard
+Solid {
+  translation 6.0 3.2 0.9
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.98 0.26 0.05
+        emissiveColor 0.90 0.22 0.04
+      }
+      geometry Cone { bottomRadius 0.75 height 1.8 }
+    }
+  ]
+  name "zone_1_boiler_fire"
+}
+
+# ==================== BUILDING 4: HV POWER SUBSTATION (NC) ====================
+Solid {
+  translation 18.0 1.5 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.82 0.85 0.89 roughness 0.5 }
+      geometry Box { size 8.0 0.25 3.6 }
+    }
+  ]
+  name "b4_north_wall"
+}
+Solid {
+  translation 14.0 5.75 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.82 0.85 0.89 roughness 0.5 }
+      geometry Box { size 0.25 8.5 3.6 }
+    }
+  ]
+  name "b4_west_wall"
+}
+Solid {
+  translation 22.0 5.75 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.82 0.85 0.89 roughness 0.5 }
+      geometry Box { size 0.25 8.5 3.6 }
+    }
+  ]
+  name "b4_east_wall"
+}
+Solid {
+  translation 15.4 10.0 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.82 0.85 0.89 roughness 0.5 }
+      geometry Box { size 2.8 0.25 3.6 }
+    }
+  ]
+  name "b4_south_left"
+}
+Solid {
+  translation 20.6 10.0 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.82 0.85 0.89 roughness 0.5 }
+      geometry Box { size 2.8 0.25 3.6 }
+    }
+  ]
+  name "b4_south_right"
+}
+Solid {
+  translation 18.0 3.2 0.9
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.95 0.38 0.08
+        emissiveColor 0.75 0.25 0.05
+      }
+      geometry Cylinder { radius 0.65 height 1.7 }
+    }
+  ]
+  name "zone_4_substation_overheat"
+}
+
+# ==================== BUILDING 2: CHEMICAL SYNTHESIS LAB (NE) ====================
+Solid {
+  translation 30.0 1.5 1.95
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.88 0.92 0.95 roughness 0.4 }
+      geometry Box { size 9.0 0.25 3.9 }
+    }
+  ]
+  name "b2_north_wall"
+}
+Solid {
+  translation 25.5 5.75 1.95
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.88 0.92 0.95 roughness 0.4 }
+      geometry Box { size 0.25 8.5 3.9 }
+    }
+  ]
+  name "b2_west_wall"
+}
+Solid {
+  translation 34.5 5.75 1.95
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.88 0.92 0.95 roughness 0.4 }
+      geometry Box { size 0.25 8.5 3.9 }
+    }
+  ]
+  name "b2_east_wall"
+}
+Solid {
+  translation 27.15 10.0 1.95
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.88 0.92 0.95 roughness 0.4 }
+      geometry Box { size 3.3 0.25 3.9 }
+    }
+  ]
+  name "b2_south_left"
+}
+Solid {
+  translation 32.85 10.0 1.95
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.88 0.92 0.95 roughness 0.4 }
+      geometry Box { size 3.3 0.25 3.9 }
+    }
+  ]
+  name "b2_south_right"
+}
+Solid {
+  translation 30.0 3.2 0.9
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.52 0.88 0.12
+        emissiveColor 0.35 0.65 0.08
+      }
+      geometry Cylinder { radius 0.65 height 1.7 }
+    }
+  ]
+  name "zone_2_chemlab_gas"
+}
+
+# ==================== BUILDING 3: COLLAPSED ADMIN OFFICES (SW) ====================
+Solid {
+  translation 6.0 26.5 2.0
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.92 0.94 0.96 roughness 0.45 }
+      geometry Box { size 9.0 0.25 4.0 }
+    }
+  ]
+  name "b3_south_wall"
+}
+Solid {
+  translation 1.5 22.25 2.0
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.92 0.94 0.96 roughness 0.45 }
+      geometry Box { size 0.25 8.5 4.0 }
+    }
+  ]
+  name "b3_west_wall"
+}
+Solid {
+  translation 10.5 22.25 2.0
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.92 0.94 0.96 roughness 0.45 }
+      geometry Box { size 0.25 8.5 4.0 }
+    }
+  ]
+  name "b3_east_wall"
+}
+Solid {
+  translation 3.15 18.0 2.0
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.92 0.94 0.96 roughness 0.45 }
+      geometry Box { size 3.3 0.25 4.0 }
+    }
+  ]
+  name "b3_north_left"
+}
+Solid {
+  translation 8.85 18.0 2.0
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.92 0.94 0.96 roughness 0.45 }
+      geometry Box { size 3.3 0.25 4.0 }
+    }
+  ]
+  name "b3_north_right"
+}
+Solid {
+  translation 6.0 24.8 0.9
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.88 0.18 0.72
+        emissiveColor 0.45 0.08 0.35
+      }
+      geometry Cylinder { radius 0.45 height 1.75 }
+    }
+  ]
+  name "zone_3_offices_person"
+}
+
+# ==================== BUILDING 6: CENTRAL LOGISTICS WAREHOUSE (SC) ====================
+Solid {
+  translation 18.0 26.5 2.2
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.80 0.84 0.88 roughness 0.55 }
+      geometry Box { size 8.0 0.25 4.4 }
+    }
+  ]
+  name "b6_south_wall"
+}
+Solid {
+  translation 14.0 22.25 2.2
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.80 0.84 0.88 roughness 0.55 }
+      geometry Box { size 0.25 8.5 4.4 }
+    }
+  ]
+  name "b6_west_wall"
+}
+Solid {
+  translation 22.0 22.25 2.2
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.80 0.84 0.88 roughness 0.55 }
+      geometry Box { size 0.25 8.5 4.4 }
+    }
+  ]
+  name "b6_east_wall"
+}
+Solid {
+  translation 15.4 18.0 2.2
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.80 0.84 0.88 roughness 0.55 }
+      geometry Box { size 2.8 0.25 4.4 }
+    }
+  ]
+  name "b6_north_left"
+}
+Solid {
+  translation 20.6 18.0 2.2
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.80 0.84 0.88 roughness 0.55 }
+      geometry Box { size 2.8 0.25 4.4 }
+    }
+  ]
+  name "b6_north_right"
+}
+Solid {
+  translation 18.0 24.8 0.8
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.10 0.72 0.45
+        emissiveColor 0.05 0.35 0.22
+      }
+      geometry Box { size 1.1 1.1 1.5 }
+    }
+  ]
+  name "zone_6_warehouse_clear"
+}
+
+# ==================== BUILDING 5: PRESSURIZED TANK DEPOT (SE) ====================
+Solid {
+  translation 30.0 26.5 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.85 0.88 0.91 roughness 0.5 }
+      geometry Box { size 9.0 0.25 3.6 }
+    }
+  ]
+  name "b5_south_wall"
+}
+Solid {
+  translation 25.5 22.25 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.85 0.88 0.91 roughness 0.5 }
+      geometry Box { size 0.25 8.5 3.6 }
+    }
+  ]
+  name "b5_west_wall"
+}
+Solid {
+  translation 34.5 22.25 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.85 0.88 0.91 roughness 0.5 }
+      geometry Box { size 0.25 8.5 3.6 }
+    }
+  ]
+  name "b5_east_wall"
+}
+Solid {
+  translation 27.15 18.0 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.85 0.88 0.91 roughness 0.5 }
+      geometry Box { size 3.3 0.25 3.6 }
+    }
+  ]
+  name "b5_north_left"
+}
+Solid {
+  translation 32.85 18.0 1.8
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.85 0.88 0.91 roughness 0.5 }
+      geometry Box { size 3.3 0.25 3.6 }
+    }
+  ]
+  name "b5_north_right"
+}
+Solid {
+  translation 30.0 24.8 0.9
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.52 0.88 0.12
+        emissiveColor 0.30 0.58 0.06
+      }
+      geometry Cylinder { radius 0.65 height 1.7 }
+    }
+  ]
+  name "zone_5_gasdepot_target"
+}
+
+# ==================== 2 SPECIALIZED AUTONOMOUS 4WD UGV ROBOTS ====================
+DEF UGV_1 Solid {
+  translation 15.0 13.2 0.28
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.01 0.52 0.78
+        metalness 0.45
+        roughness 0.35
+      }
+      geometry Box { size 0.88 0.64 0.34 }
+    }
+    Transform {
+      translation 0.12 0 0.26
+      children [
+        Shape {
+          appearance PBRAppearance { baseColor 0.15 0.20 0.28 metalness 0.7 }
+          geometry Cylinder { radius 0.14 height 0.18 }
+        }
+      ]
+    }
+  ]
+  name "UGV_1_Alpha_SAR"
+}
+
+DEF UGV_2 Solid {
+  translation 21.0 14.8 0.28
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.92 0.35 0.05
+        metalness 0.45
+        roughness 0.35
+      }
+      geometry Box { size 0.88 0.64 0.34 }
+    }
+    Transform {
+      translation 0.12 0 0.26
+      children [
+        Shape {
+          appearance PBRAppearance { baseColor 0.15 0.20 0.28 metalness 0.7 }
+          geometry Cylinder { radius 0.14 height 0.18 }
+        }
+      ]
+    }
+  ]
+  name "UGV_2_Beta_Hazmat"
+}
+
+# Master Swarm Supervisor & Telemetry Bridge
+Robot {
+  translation 18 14 0.1
+  supervisor TRUE
+  controller "ugv_swarm_controller"
+  name "IndustrialSwarmSupervisor"
+}

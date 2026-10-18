@@ -1,0 +1,2785 @@
+{
+  "verified_at_utc": "2026-10-17T18:54:15.632313+00:00",
+  "summary": {
+    "pytest_passed": 139,
+    "local_tests": 100,
+    "physical_tests": 19,
+    "mission_fault_checks": 10,
+    "hazard_matrix_checks": 10,
+    "full_mission_episodes": 15,
+    "cbba_missions": 12,
+    "randomized_layouts": 8,
+    "hazard_matrix_runs": 10,
+    "matrix_hazards": 22,
+    "matrix_hazards_confirmed": 22,
+    "matrix_false_confirmations": 0,
+    "cbba_hazards": 26,
+    "cbba_hazards_confirmed": 26,
+    "cbba_false_confirmations": 0,
+    "cbba_contact_steps": 0,
+    "cbba_doorway_overlap_steps": 0,
+    "hazard_report_error_mean_m": 0.3781211629790111,
+    "hazard_report_error_max_m": 0.8547514258543241,
+    "cbba_max_tilt_deg": 7.146793753393324
+  },
+  "pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "139",
+    "time": "134.985",
+    "timestamp": "2026-10-18T00:21:54.927539+05:30",
+    "hostname": "MANGESH01"
+  },
+  "command": "FYP_HAZARD_DIR=FYP_FAULT_DIR=experiments/hazard_confirmation/accepted; python -m pytest -q --basetemp=runs/hazard_accepted_pytest --junitxml=experiments/hazard_confirmation/full_suite_accepted.xml",
+  "investigation": {
+    "created_at_utc": "2026-10-17T18:50:32.422983+00:00",
+    "causes": [
+      "Euclidean proximity and failed navigation could start verification across a wall.",
+      "Fixed approach vectors could land outside the hazard room or against obstacles.",
+      "Old map coordinates could point the camera away from the detected object.",
+      "A missing camera match permanently rejected strong sensor evidence.",
+      "Averages admitted isolated sensor spikes; stale samples were not explicitly excluded.",
+      "Distant box-height estimates could produce inaccurate confirmed locations.",
+      "Visual-only person reports accepted low-detail observations with the same range ambiguity.",
+      "Abandoned doorway approaches retained granted reservations and exhausted staging failures, preventing further room inspection."
+    ],
+    "fixes": [
+      "Require reaching a room-safe, locally clear viewpoint, with bounded retries.",
+      "Aim from current camera bearings; search when the object is not reacquired.",
+      "Require eight finite fresh sensor samples and three independent detailed camera observations.",
+      "Use median sensor readings and preserve contradictory strong sensor evidence across views.",
+      "Refine tentative positions and move closer when the image lacks detail.",
+      "Confirmed positions use only detailed camera frames and their own freshness timestamp.",
+      "Apply the detailed-frame rule to visual-only person reports.",
+      "Log readings, thresholds, sample counts, camera quality and decisions.",
+      "Cancel abandoned reservations only with 0.9m approach-side clearance, including after a later safe retreat."
+    ],
+    "baseline_runs": [
+      {
+        "path": "D:\\FYP\\experiments\\two_robot\\final_repeats\\runs\\s000_normal_cbba\\metrics.json",
+        "metrics": {
+          "seed": 0,
+          "condition": "normal",
+          "method": "cbba",
+          "sim_time": 201.41,
+          "timed_out": false,
+          "hazards_total": 3,
+          "hazards_confirmed": 2,
+          "victims_total": 1,
+          "victims_found": 1,
+          "false_confirmations": 0,
+          "localization_error_m": 0.258,
+          "first_detection_time": 116.32,
+          "rooms_inspected": 4,
+          "rooms_total": 4,
+          "duplicate_inspections": 0,
+          "all_rooms_time": 175.328,
+          "mission_complete_time": 197.504,
+          "recovery_time_after_kill": null,
+          "messages_sent": 3309,
+          "messages_received": 3709,
+          "distance_m": 58.99,
+          "true_distance_m": {
+            "A": 34.49,
+            "B": 23.97
+          },
+          "peer_only_time": null,
+          "peer_lost_time": null,
+          "door_blocked_detected_time": null,
+          "replans": 0,
+          "stuck_recoveries": 6,
+          "tasks_done_after_fault": null,
+          "suspected_hazards": 5,
+          "safety": {
+            "samples": 6293,
+            "contact_steps": 0,
+            "doorway_overlap_steps": 0,
+            "minimum_separation": 0.5246960551588997,
+            "max_tilt_deg": {
+              "A": 6.654448629964929,
+              "B": 3.3390979903113
+            },
+            "z_range": {
+              "A": [
+                0.08707145671356936,
+                0.0975
+              ],
+              "B": [
+                0.08703272829287059,
+                0.0975
+              ]
+            }
+          }
+        }
+      },
+      {
+        "path": "D:\\FYP\\experiments\\two_robot\\final_repeats\\runs\\s001_normal_cbba\\metrics.json",
+        "metrics": {
+          "seed": 1,
+          "condition": "normal",
+          "method": "cbba",
+          "sim_time": 200.42,
+          "timed_out": false,
+          "hazards_total": 2,
+          "hazards_confirmed": 1,
+          "victims_total": 1,
+          "victims_found": 1,
+          "false_confirmations": 0,
+          "localization_error_m": 0.398,
+          "first_detection_time": 139.01,
+          "rooms_inspected": 4,
+          "rooms_total": 4,
+          "duplicate_inspections": 0,
+          "all_rooms_time": 190.176,
+          "mission_complete_time": 196.512,
+          "recovery_time_after_kill": null,
+          "messages_sent": 3295,
+          "messages_received": 3695,
+          "distance_m": 61.58,
+          "true_distance_m": {
+            "A": 25.65,
+            "B": 36.27
+          },
+          "peer_only_time": null,
+          "peer_lost_time": null,
+          "door_blocked_detected_time": null,
+          "replans": 3,
+          "stuck_recoveries": 4,
+          "tasks_done_after_fault": null,
+          "suspected_hazards": 6,
+          "safety": {
+            "samples": 6262,
+            "contact_steps": 0,
+            "doorway_overlap_steps": 0,
+            "minimum_separation": 0.6161236928793785,
+            "max_tilt_deg": {
+              "A": 3.7531198034429267,
+              "B": 3.6205452508703906
+            },
+            "z_range": {
+              "A": [
+                0.08772804460437443,
+                0.0975
+              ],
+              "B": [
+                0.08758351410892207,
+                0.0975
+              ]
+            }
+          }
+        }
+      },
+      {
+        "path": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_normal_cbba\\metrics.json",
+        "metrics": {
+          "seed": 3,
+          "condition": "normal",
+          "method": "cbba",
+          "sim_time": 164.7,
+          "timed_out": false,
+          "hazards_total": 2,
+          "hazards_confirmed": 1,
+          "victims_total": 1,
+          "victims_found": 1,
+          "false_confirmations": 0,
+          "localization_error_m": 0.707,
+          "first_detection_time": 112.74,
+          "rooms_inspected": 4,
+          "rooms_total": 4,
+          "duplicate_inspections": 0,
+          "all_rooms_time": 149.184,
+          "mission_complete_time": 160.8,
+          "recovery_time_after_kill": null,
+          "messages_sent": 2830,
+          "messages_received": 3158,
+          "distance_m": 58.76,
+          "true_distance_m": {
+            "A": 20.37,
+            "B": 38.63
+          },
+          "peer_only_time": null,
+          "peer_lost_time": null,
+          "door_blocked_detected_time": null,
+          "replans": 2,
+          "stuck_recoveries": 7,
+          "tasks_done_after_fault": null,
+          "suspected_hazards": 2,
+          "safety": {
+            "samples": 5146,
+            "contact_steps": 0,
+            "doorway_overlap_steps": 0,
+            "minimum_separation": 0.8061316412175241,
+            "max_tilt_deg": {
+              "A": 3.3112643184360544,
+              "B": 5.5821409597404
+            },
+            "z_range": {
+              "A": [
+                0.087042986520763,
+                0.0975
+              ],
+              "B": [
+                0.08704645085875004,
+                0.0975
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "reproduced_gas_miss": {
+      "sensor_ppm": 487.466,
+      "visual_hits": 0,
+      "confirmed": false
+    },
+    "wall_facing_camera": "D:\\FYP\\experiments\\hazard_confirmation\\diagnostic\\runs\\s000_normal_cbba\\verification_frames\\B_85.088.jpg",
+    "calibration_file": "D:\\FYP\\experiments\\hazard_confirmation\\calibration\\results.json",
+    "calibration": {
+      "actual_distance_m": 5.4,
+      "box_estimated_range_m": 3.6976,
+      "lidar_reading_m": 5.6513
+    },
+    "rejected_candidate_dirs": [
+      "D:\\FYP\\experiments\\hazard_confirmation\\final",
+      "D:\\FYP\\experiments\\hazard_confirmation\\final_verified",
+      "D:\\FYP\\experiments\\hazard_confirmation\\verified"
+    ],
+    "rejected_full_suite": {
+      "tests": 136,
+      "passed": 133,
+      "failed_seeds": [
+        5,
+        11,
+        1000
+      ],
+      "report": "D:\\FYP\\experiments\\hazard_confirmation\\full_suite_verified.xml",
+      "reason": "Two stuck reservations and one unfinished longer survey at 300s."
+    },
+    "hazard_matrix_time_budget_s": 600,
+    "regression_test": "D:\\FYP\\webots_sim\\tests\\test_hazard_verification.py",
+    "acceptance_test": "D:\\FYP\\webots_sim\\tests\\test_hazards_webots.py",
+    "unchanged": "Detector weights and score threshold, specialty-sensor thresholds, world and motor guard.",
+    "projection_reference": "https://www.cyberbotics.com/doc/reference/camera?tab=c",
+    "limits": [
+      "Box-size localization remains approximate; detailed views constrain the tested failure mode.",
+      "Thermal sensing uses Webots LightSensor; gas uses a simulated plume model.",
+      "Terminal inconclusive tasks are logged and closed for this mission, without automatic reopening.",
+      "Randomized scene layouts share the public building floor plan.",
+      "The existing observer uses a 1.6m hazard-match radius; its thresholds were not changed."
+    ]
+  },
+  "source_manifest": {
+    "at_utc": "2026-10-17T18:39:56.296766+00:00",
+    "sha256": {
+      "D:\\FYP\\webots_sim\\swarm\\allocation.py": "187823aac7e8bc40ad8e00bc748c32273a6add5f2e6a79adc8dde84c73804dbc",
+      "D:\\FYP\\webots_sim\\swarm\\blueprint.py": "37e697444c32d0dd2caa2040bd070172522e9ca805fdae7965b6e20f9ac73972",
+      "D:\\FYP\\webots_sim\\swarm\\fusion.py": "9e57005fb7b69f8890171adac4af18af6e307a5a71b9248ded492c2315172d9d",
+      "D:\\FYP\\webots_sim\\swarm\\io_util.py": "6c58c4d1b5117a3493eb1cc43a08d3aad29d5fe252ddc3279fb7461d90301a8d",
+      "D:\\FYP\\webots_sim\\swarm\\mapping.py": "c15fa9bb22dba9d61db0efd58479fab134d516d22388ec43a62aa2b3cc84573e",
+      "D:\\FYP\\webots_sim\\swarm\\motion.py": "e2c74e0f0396d56666c1885d241b1d6e2e907f2db2f66e15adc017251ea14a15",
+      "D:\\FYP\\webots_sim\\swarm\\perception.py": "3a77669f825f2ec08875b2aa4900d354d72a6e98a51463b5f054cdc5198db2e0",
+      "D:\\FYP\\webots_sim\\swarm\\planning.py": "f305539e2d4ca09ccfe89c9d2f077507882d847d77edca6947795301a11d43c4",
+      "D:\\FYP\\webots_sim\\swarm\\radio.py": "5cddbcff60d5f1189cccf291e7a1ba02f2c23ace14540f0dea98a389130c1196",
+      "D:\\FYP\\webots_sim\\swarm\\tasks.py": "0004c5b3ef9417db4006e6dc5e23a5ec15bbef51536d63e227bb812bc64000fd",
+      "D:\\FYP\\webots_sim\\swarm\\traffic.py": "e4010c535aae964070f5b4849e46f92b32e514f24c04015e6e139bd7958cecb4",
+      "D:\\FYP\\webots_sim\\swarm\\__init__.py": "6edc47a4767245bbcb611df92a888327ab8a105441e2cbf184b7e2ac3ca95847",
+      "D:\\FYP\\webots_sim\\tests\\conftest.py": "fb87a67f8b40e2301f7bced9304dc706daace7febf456172c99193c28d721a6c",
+      "D:\\FYP\\webots_sim\\tests\\test_allocation_radio.py": "53ab68aa45682c249e465ecb639118ad12a1f4252f9d8af5723576b6d1d4060e",
+      "D:\\FYP\\webots_sim\\tests\\test_coordination_webots.py": "36254bffcb059e82d492edaf6b09197715e84723a0bd2a56f2c97ddf83b9f8b4",
+      "D:\\FYP\\webots_sim\\tests\\test_dashboard.py": "844b1ce637f9a3eac3d5001bcfab5d84d5b99727f52f2276d5565d39e2256aba",
+      "D:\\FYP\\webots_sim\\tests\\test_episode_gas.py": "9efe232fd8533a7a9aaf472ac56d69b5c9ef5a86e0aacd8a91355f0f4abf4f36",
+      "D:\\FYP\\webots_sim\\tests\\test_faults_webots.py": "9e23bc41579effd25b2afb1f0c55c42410ae5314a3e32c65baab11b8e700ec33",
+      "D:\\FYP\\webots_sim\\tests\\test_fusion.py": "f6c58f12868e0d035442806c498f79e9c0a3880afe4c151e2c1ee70f867c925f",
+      "D:\\FYP\\webots_sim\\tests\\test_hazards_webots.py": "9947a9b6ccf0c47b73e0d26a56efe1e8f33efc702fc2befa1f14c22a4fa1868c",
+      "D:\\FYP\\webots_sim\\tests\\test_hazard_verification.py": "320ecfa6dc3b13a79337fddd0a7ef7aa3de035082d1023681f8dba6172eb31da",
+      "D:\\FYP\\webots_sim\\tests\\test_io_util.py": "229e33ce6b78e093624bfd402fcddda29d24585b8088fae70789e8c1a2a94e69",
+      "D:\\FYP\\webots_sim\\tests\\test_learning.py": "09cb49b018b17f553a40c588cc9597f0ade71590ead480d1a970c5091265e22d",
+      "D:\\FYP\\webots_sim\\tests\\test_mapping_planning.py": "6d5f21f3f2c57dcca5cb0f3870536ea0842ac5d9d704760b56ea434bb7e4c7d5",
+      "D:\\FYP\\webots_sim\\tests\\test_map_metric.py": "94214d79e56062da4ff85d45e12da07af21abcade0160afc7ec88fdfc5d2bb10",
+      "D:\\FYP\\webots_sim\\tests\\test_mission_safety.py": "064436347e2052b06a2ab87d1b2c1083c51bfdd00e3968b17df3dfe8eb10ed83",
+      "D:\\FYP\\webots_sim\\tests\\test_motion_safety.py": "0e3dc4c950b50a66dcac5f6a0f6ed08506023804dd0e915ecb0bec13ea7199d1",
+      "D:\\FYP\\webots_sim\\tests\\test_no_ground_truth.py": "117b002131e494115721be8a14176a1d828262d48e0f1624eb9cf23172bb2b86",
+      "D:\\FYP\\webots_sim\\tests\\test_single_robot_stability.py": "88d3e29fcb962d00825a2210ce5db1eab934f3aaf248072b029992bd7c74635b",
+      "D:\\FYP\\webots_sim\\tests\\test_traffic.py": "4c5141120b1671844df5c8078bf7b3d2f725e3f4322dc17220207f9482e900ad",
+      "D:\\FYP\\webots_sim\\tests\\test_world_file.py": "2b00a49105bf2bda259a83da8531e1fe9b2c5aa62e92f43c3f0ef0531b193b47",
+      "D:\\FYP\\webots_sim\\tests\\__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "D:\\FYP\\webots_sim\\controllers\\agent\\agent.py": "842d4f6ac494b01b623fe0ca6c033f111136c446cf3eb428e56ccb67c9fbd5fb",
+      "D:\\FYP\\webots_sim\\controllers\\mission_supervisor\\mission_supervisor.py": "ad946fd4112ade40cf2b64d48bd363c023e5d2aae6028efc700cf4b2928015d2",
+      "D:\\FYP\\webots_sim\\worlds\\facility.wbt": "da322ddbefae86555343adb24c87940df227998c9ed2be517538bb6fb4d6b3e8",
+      "D:\\FYP\\webots_sim\\models\\detector_frcnn_mnv3.pt": "e7cbe596a8970b90bdc6969ad6f2061f441758fd3977e290219448f13a8b7ffa",
+      "D:\\FYP\\webots_sim\\models\\task_policy.pt": "1d53a2ab89d9e7087add5f2bc98bd50bc9539748eaf1912ab56a4bec2e2810c1"
+    },
+    "hazard_matrix_max_time_s": 600,
+    "standard_fault_max_time_s": 300
+  },
+  "unchanged_from_previous_milestone": {
+    "D:\\FYP\\webots_sim\\swarm\\motion.py": "e2c74e0f0396d56666c1885d241b1d6e2e907f2db2f66e15adc017251ea14a15",
+    "D:\\FYP\\webots_sim\\worlds\\facility.wbt": "da322ddbefae86555343adb24c87940df227998c9ed2be517538bb6fb4d6b3e8",
+    "D:\\FYP\\webots_sim\\models\\detector_frcnn_mnv3.pt": "e7cbe596a8970b90bdc6969ad6f2061f441758fd3977e290219448f13a8b7ffa",
+    "D:\\FYP\\webots_sim\\models\\task_policy.pt": "1d53a2ab89d9e7087add5f2bc98bd50bc9539748eaf1912ab56a4bec2e2810c1"
+  },
+  "episodes": [
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s000_normal_cbba",
+      "metrics": {
+        "seed": 0,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 205.38,
+        "timed_out": false,
+        "hazards_total": 3,
+        "hazards_confirmed": 3,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.216,
+        "first_detection_time": 64.61,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 172.224,
+        "mission_complete_time": 201.472,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3427,
+        "messages_received": 3837,
+        "distance_m": 78.29,
+        "true_distance_m": {
+          "A": 41.32,
+          "B": 36.5
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 0,
+        "stuck_recoveries": 0,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 4,
+        "safety": {
+          "samples": 6417,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5311978661183568,
+          "max_tilt_deg": {
+            "A": 6.396716394923858,
+            "B": 2.842532161440882
+          },
+          "z_range": {
+            "A": [
+              0.08707145671356936,
+              0.0975
+            ],
+            "B": [
+              0.08703272829287059,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 91.3,
+        "port": 1607
+      },
+      "hazard_report_errors_m": [
+        0.39962482405376154,
+        0.5842088667591413,
+        0.12165525060596442,
+        0.16031219541881367
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 76.16,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@1.5,2.5",
+          "view": 0,
+          "pose": [
+            2.8308727091470405,
+            3.5800900395419912,
+            -2.261397641811611
+          ],
+          "target": [
+            1.72,
+            2.65
+          ],
+          "sensor": 0.8271393094027921,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 201.024,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-1.0,2.5",
+          "view": 2,
+          "pose": [
+            0.8290152616711489,
+            2.1854706348930333,
+            1.0494255230332346
+          ],
+          "target": [
+            0.4394903990103174,
+            3.0601215985122154
+          ],
+          "sensor": 2.564276204461559,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 78.656,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@-5.5,2.0",
+          "view": 0,
+          "pose": [
+            -3.2422160564215265,
+            1.834427860021671,
+            3.1362503412506144
+          ],
+          "target": [
+            -5.49,
+            1.81
+          ],
+          "sensor": 269.79999999999995,
+          "threshold": 60.0,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 183.52,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@5.5,-2.5",
+          "view": 0,
+          "pose": [
+            4.017609720710913,
+            -2.384161614625868,
+            -0.1394894556454336
+          ],
+          "target": [
+            5.56,
+            -2.35
+          ],
+          "sensor": 374.79,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 0,
+      "attempts": 7,
+      "rooms_with_hazards": [
+        "R1",
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s001_normal_cbba",
+      "metrics": {
+        "seed": 1,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 266.88,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.328,
+        "first_detection_time": 58.4,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 225.568,
+        "mission_complete_time": 262.976,
+        "recovery_time_after_kill": null,
+        "messages_sent": 4123,
+        "messages_received": 4656,
+        "distance_m": 71.62,
+        "true_distance_m": {
+          "A": 33.62,
+          "B": 38.42
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 3,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 6,
+        "safety": {
+          "samples": 8339,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5297920100677459,
+          "max_tilt_deg": {
+            "A": 6.059635917853632,
+            "B": 3.007207215410666
+          },
+          "z_range": {
+            "A": [
+              0.08772804460437443,
+              0.0975
+            ],
+            "B": [
+              0.08758351410892207,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 110.9,
+        "port": 1600
+      },
+      "hazard_report_errors_m": [
+        0.8130190649671138,
+        0.07211102550927985,
+        0.04999999999999991,
+        0.1252996408614166
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 58.4,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-3.0,2.5",
+          "view": 1,
+          "pose": [
+            -4.439131894257723,
+            2.076401670692747,
+            0.608698038655968
+          ],
+          "target": [
+            -2.76,
+            2.37
+          ],
+          "sensor": 0.3378477892849222,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 7,
+          "close_visual_frames": 7,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 139.616,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-1.0,3.5",
+          "view": 0,
+          "pose": [
+            -1.5905026886515792,
+            1.7585819721095026,
+            2.1599610667896885
+          ],
+          "target": [
+            -0.78,
+            3.28
+          ],
+          "sensor": 0.6894641614244035,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 159.968,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@2.5,1.5",
+          "view": 0,
+          "pose": [
+            0.904508324498276,
+            1.9493576860994186,
+            -0.31823060408647885
+          ],
+          "target": [
+            2.58,
+            1.53
+          ],
+          "sensor": 1.0298577381710627,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 181.44,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@1.0,2.5",
+          "view": 0,
+          "pose": [
+            2.59600518589846,
+            2.6936135321060934,
+            -1.7239577066303355
+          ],
+          "target": [
+            1.02,
+            2.34
+          ],
+          "sensor": 1.938219356953322,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 2,
+      "attempts": 5,
+      "rooms_with_hazards": [
+        "R1",
+        "R2"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_commander_cut_cbba",
+      "metrics": {
+        "seed": 3,
+        "condition": "commander_cut",
+        "method": "cbba",
+        "sim_time": 159.74,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.237,
+        "first_detection_time": 102.66,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 146.72,
+        "mission_complete_time": 155.84,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2751,
+        "messages_received": 2808,
+        "distance_m": 59.48,
+        "true_distance_m": {
+          "A": 21.69,
+          "B": 37.95
+        },
+        "peer_only_time": 34.816,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 1,
+        "stuck_recoveries": 1,
+        "tasks_done_after_fault": 6,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 4991,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8120050558085062,
+          "max_tilt_deg": {
+            "A": 2.9556960884651593,
+            "B": 3.5836314794845543
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 80.3,
+        "port": 1640
+      },
+      "hazard_report_errors_m": [
+        0.4143669871020131,
+        0.12041594578792306
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 102.656,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,2.5",
+          "view": 0,
+          "pose": [
+            2.963426905375649,
+            2.2058898025943487,
+            2.9156198700482814
+          ],
+          "target": [
+            0.85,
+            2.37
+          ],
+          "sensor": 377.78499999999997,
+          "threshold": 60.0,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 155.552,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,-1.5",
+          "view": 0,
+          "pose": [
+            3.458364589711851,
+            -2.238193969735023,
+            2.883996073087442
+          ],
+          "target": [
+            0.75,
+            -1.68
+          ],
+          "sensor": 141.58,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 0,
+      "attempts": 2,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_commander_cut_central",
+      "metrics": {
+        "seed": 3,
+        "condition": "commander_cut",
+        "method": "central",
+        "sim_time": 300.0,
+        "timed_out": true,
+        "hazards_total": 2,
+        "hazards_confirmed": 0,
+        "victims_total": 1,
+        "victims_found": 0,
+        "false_confirmations": 0,
+        "localization_error_m": null,
+        "first_detection_time": null,
+        "rooms_inspected": 2,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": null,
+        "mission_complete_time": null,
+        "recovery_time_after_kill": null,
+        "messages_sent": 4216,
+        "messages_received": 4274,
+        "distance_m": 16.68,
+        "true_distance_m": {
+          "A": 8.35,
+          "B": 8.35
+        },
+        "peer_only_time": 34.816,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 0,
+        "stuck_recoveries": 0,
+        "tasks_done_after_fault": 2,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 9374,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8102441598889178,
+          "max_tilt_deg": {
+            "A": 2.661852699140911,
+            "B": 2.6455719069628056
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 73.6,
+        "port": 1647
+      },
+      "hazard_report_errors_m": [],
+      "confirmed_hazard_evidence": [],
+      "inconclusive_attempts": 0,
+      "attempts": 0,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_door_blocked_cbba",
+      "metrics": {
+        "seed": 3,
+        "condition": "door_blocked",
+        "method": "cbba",
+        "sim_time": 245.06,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.247,
+        "first_detection_time": 91.74,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 178.272,
+        "mission_complete_time": 241.152,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3963,
+        "messages_received": 4448,
+        "distance_m": 113.0,
+        "true_distance_m": {
+          "A": 35.31,
+          "B": 77.4
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": 146.912,
+        "replans": 5,
+        "stuck_recoveries": 0,
+        "tasks_done_after_fault": 7,
+        "suspected_hazards": 3,
+        "safety": {
+          "samples": 7657,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8142841487104012,
+          "max_tilt_deg": {
+            "A": 5.891083884569661,
+            "B": 5.495034779709298
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 83.1,
+        "port": 1640
+      },
+      "hazard_report_errors_m": [
+        0.420119030752,
+        0.15000000000000013,
+        0.7657675887630658
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 192.8,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,2.5",
+          "view": 1,
+          "pose": [
+            3.0822373573233035,
+            2.6659290379797245,
+            -3.1142142804420367
+          ],
+          "target": [
+            1.21,
+            2.4
+          ],
+          "sensor": 350.03,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 216.0,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,-1.5",
+          "view": 0,
+          "pose": [
+            2.832914281314569,
+            -1.9933081443450251,
+            2.973677161148983
+          ],
+          "target": [
+            0.77,
+            -1.57
+          ],
+          "sensor": 204.53,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 240.16,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@-1.0,-2.0",
+          "view": 0,
+          "pose": [
+            -0.8483780135961676,
+            -3.314343330058266,
+            0.725741784500298
+          ],
+          "target": [
+            -1.2,
+            -1.83
+          ],
+          "sensor": 192.36,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 7,
+          "close_visual_frames": 7,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 0,
+      "attempts": 3,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_loss20_cbba",
+      "metrics": {
+        "seed": 3,
+        "condition": "loss20",
+        "method": "cbba",
+        "sim_time": 173.63,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.22,
+        "first_detection_time": 104.26,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 160.032,
+        "mission_complete_time": 169.728,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2908,
+        "messages_received": 2641,
+        "distance_m": 57.38,
+        "true_distance_m": {
+          "A": 20.03,
+          "B": 37.77
+        },
+        "peer_only_time": 1.088,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 1,
+        "stuck_recoveries": 5,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 5425,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8191283757792566,
+          "max_tilt_deg": {
+            "A": 4.339966078305364,
+            "B": 4.172049654101217
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 67.1,
+        "port": 1640
+      },
+      "hazard_report_errors_m": [
+        0.4177319714841083,
+        0.13000000000000012
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 104.256,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,2.5",
+          "view": 0,
+          "pose": [
+            2.9324041331411967,
+            2.1856757484575224,
+            2.910119722528427
+          ],
+          "target": [
+            0.83,
+            2.31
+          ],
+          "sensor": 382.6,
+          "threshold": 60.0,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 169.248,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,-2.0",
+          "view": 0,
+          "pose": [
+            3.608034193150276,
+            -2.2775208523558264,
+            2.8574195843017343
+          ],
+          "target": [
+            0.91,
+            -1.76
+          ],
+          "sensor": 129.14,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 0,
+      "attempts": 2,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_normal_cbba",
+      "metrics": {
+        "seed": 3,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 217.28,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.224,
+        "first_detection_time": 122.46,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 213.184,
+        "mission_complete_time": 213.376,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3667,
+        "messages_received": 4101,
+        "distance_m": 67.79,
+        "true_distance_m": {
+          "A": 33.43,
+          "B": 33.86
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 10,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 3,
+        "safety": {
+          "samples": 6789,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.519339734804956,
+          "max_tilt_deg": {
+            "A": 5.073448715258702,
+            "B": 5.521906105201694
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 89.3,
+        "port": 1607
+      },
+      "hazard_report_errors_m": [
+        0.41785164831552346,
+        0.10049875621120899
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 168.352,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,2.5",
+          "view": 0,
+          "pose": [
+            3.2028562414055872,
+            1.979273310178317,
+            2.8178911435019294
+          ],
+          "target": [
+            1.2,
+            2.37
+          ],
+          "sensor": 309.46,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 201.568,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@0.5,-1.5",
+          "view": 0,
+          "pose": [
+            2.854229808895408,
+            -2.0368714703191153,
+            2.925522325826165
+          ],
+          "target": [
+            0.75,
+            -1.61
+          ],
+          "sensor": 199.51,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 1,
+      "attempts": 4,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_normal_central",
+      "metrics": {
+        "seed": 3,
+        "condition": "normal",
+        "method": "central",
+        "sim_time": 159.74,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.215,
+        "first_detection_time": 97.22,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 145.152,
+        "mission_complete_time": 156.832,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2737,
+        "messages_received": 3053,
+        "distance_m": 51.9,
+        "true_distance_m": {
+          "A": 20.01,
+          "B": 32.16
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 0,
+        "stuck_recoveries": 4,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 4991,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5193474891212607,
+          "max_tilt_deg": {
+            "A": 2.774773432345911,
+            "B": 3.5992997245960154
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 65.6,
+        "port": 1640
+      },
+      "hazard_report_errors_m": [
+        0.3982461550347978,
+        0.11180339887498958
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 97.216,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@0.5,2.5",
+          "view": 0,
+          "pose": [
+            2.8011651737902983,
+            2.1983594175812486,
+            2.9384258658963454
+          ],
+          "target": [
+            0.46,
+            2.34
+          ],
+          "sensor": 407.57,
+          "threshold": 60.0,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 155.488,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,-1.5",
+          "view": 0,
+          "pose": [
+            3.608222654069637,
+            -2.3024457207750593,
+            2.8688021036424862
+          ],
+          "target": [
+            0.97,
+            -1.59
+          ],
+          "sensor": 128.51,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 0,
+      "attempts": 2,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_robot_killed_cbba",
+      "metrics": {
+        "seed": 3,
+        "condition": "robot_killed",
+        "method": "cbba",
+        "sim_time": 277.79,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.226,
+        "first_detection_time": 148.1,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 250.944,
+        "mission_complete_time": 274.88,
+        "recovery_time_after_kill": 200.944,
+        "messages_sent": 2697,
+        "messages_received": 1232,
+        "distance_m": 56.79,
+        "true_distance_m": {
+          "A": 9.91,
+          "B": 47.04
+        },
+        "peer_only_time": null,
+        "peer_lost_time": 56.64,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 2,
+        "tasks_done_after_fault": 5,
+        "suspected_hazards": 3,
+        "safety": {
+          "samples": 8680,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8191283757792566,
+          "max_tilt_deg": {
+            "A": 2.662216200971298,
+            "B": 5.605779159215644
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 106.8,
+        "port": 1647
+      },
+      "hazard_report_errors_m": [
+        0.42047592083257257,
+        0.10198039027185579
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 148.096,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,2.5",
+          "view": 0,
+          "pose": [
+            2.81658142210451,
+            2.001062556597111,
+            2.8253430885488986
+          ],
+          "target": [
+            0.84,
+            2.33
+          ],
+          "sensor": 388.92,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 273.952,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,-2.0",
+          "view": 1,
+          "pose": [
+            3.0856512518162695,
+            -2.354500406234793,
+            2.8072723607104395
+          ],
+          "target": [
+            1.08,
+            -1.84
+          ],
+          "sensor": 172.2,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 7,
+          "close_visual_frames": 7,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 1,
+      "attempts": 3,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s003_robot_killed_static",
+      "metrics": {
+        "seed": 3,
+        "condition": "robot_killed",
+        "method": "static",
+        "sim_time": 151.81,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.231,
+        "first_detection_time": 95.23,
+        "rooms_inspected": 2,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": null,
+        "mission_complete_time": 148.896,
+        "recovery_time_after_kill": null,
+        "messages_sent": 1789,
+        "messages_received": 1111,
+        "distance_m": 38.49,
+        "true_distance_m": {
+          "A": 8.62,
+          "B": 30.0
+        },
+        "peer_only_time": null,
+        "peer_lost_time": 56.64,
+        "door_blocked_detected_time": null,
+        "replans": 1,
+        "stuck_recoveries": 2,
+        "tasks_done_after_fault": 4,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 4743,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5191723244385411,
+          "max_tilt_deg": {
+            "A": 2.8188887068913266,
+            "B": 3.596727052929558
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 55.6,
+        "port": 1640
+      },
+      "hazard_report_errors_m": [
+        0.4044749683231336,
+        0.14035668847618213
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 95.232,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@0.5,2.5",
+          "view": 0,
+          "pose": [
+            3.175426928861092,
+            2.4844087407046285,
+            -3.136991457704283
+          ],
+          "target": [
+            0.44,
+            2.54
+          ],
+          "sensor": 331.355,
+          "threshold": 60.0,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 148.512,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.0,-1.5",
+          "view": 0,
+          "pose": [
+            3.608368223262108,
+            -2.2881834552962337,
+            2.850079424419349
+          ],
+          "target": [
+            0.93,
+            -1.74
+          ],
+          "sensor": 126.95,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 7,
+          "close_visual_frames": 7,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 0,
+      "attempts": 2,
+      "rooms_with_hazards": [
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s005_normal_cbba",
+      "metrics": {
+        "seed": 5,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 257.95,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.361,
+        "first_detection_time": 124.93,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 227.264,
+        "mission_complete_time": 254.048,
+        "recovery_time_after_kill": null,
+        "messages_sent": 4107,
+        "messages_received": 4621,
+        "distance_m": 73.06,
+        "true_distance_m": {
+          "A": 46.64,
+          "B": 26.31
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 7,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 5,
+        "safety": {
+          "samples": 8060,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5379033191414428,
+          "max_tilt_deg": {
+            "A": 5.590850985141587,
+            "B": 4.597273629818545
+          },
+          "z_range": {
+            "A": [
+              0.09260932212101144,
+              0.0975
+            ],
+            "B": [
+              0.09382259275190755,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 86.7,
+        "port": 1600
+      },
+      "hazard_report_errors_m": [
+        0.1431782106327637,
+        0.5797413216254298,
+        0.7116881339463232
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 124.928,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-3.0,-2.0",
+          "view": 1,
+          "pose": [
+            -4.199595355649649,
+            -2.1696362839266374,
+            -0.3752741408020591
+          ],
+          "target": [
+            -2.79,
+            -1.79
+          ],
+          "sensor": 0.5499451005670835,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 129.728,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-1.5,-2.5",
+          "view": 0,
+          "pose": [
+            -4.057507805687228,
+            -2.215978733838361,
+            -0.30377565131705925
+          ],
+          "target": [
+            -1.35,
+            -2.67
+          ],
+          "sensor": 0.5975035212627795,
+          "threshold": 0.3,
+          "sample_count": 29,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 253.44,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@6.0,-2.5",
+          "view": 0,
+          "pose": [
+            4.334549606784192,
+            -1.9098499920429906,
+            -0.25558170511891387
+          ],
+          "target": [
+            6.24,
+            -2.62
+          ],
+          "sensor": 0.5266283785331418,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 2,
+      "attempts": 9,
+      "rooms_with_hazards": [
+        "R3",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s008_normal_cbba",
+      "metrics": {
+        "seed": 8,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 205.38,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 0,
+        "victims_found": 0,
+        "false_confirmations": 0,
+        "localization_error_m": 0.236,
+        "first_detection_time": 24.16,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 147.584,
+        "mission_complete_time": 201.472,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3290,
+        "messages_received": 3696,
+        "distance_m": 49.43,
+        "true_distance_m": {
+          "A": 17.63,
+          "B": 32.0
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 1,
+        "stuck_recoveries": 7,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 3,
+        "safety": {
+          "samples": 6417,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 1.0607546878295822,
+          "max_tilt_deg": {
+            "A": 5.146904054364578,
+            "B": 3.6518107199234557
+          },
+          "z_range": {
+            "A": [
+              0.0870712680857747,
+              0.0975
+            ],
+            "B": [
+              0.09267218300580361,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 87.8,
+        "port": 1600
+      },
+      "hazard_report_errors_m": [
+        0.22203603311174488,
+        0.25059928172283336
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 24.16,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-5.0,-2.5",
+          "view": 0,
+          "pose": [
+            -3.75898853782601,
+            -1.8556926573890735,
+            -2.5624463525052583
+          ],
+          "target": [
+            -5.08,
+            -2.53
+          ],
+          "sensor": 0.5957584229651954,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 68.576,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@1.5,2.5",
+          "view": 0,
+          "pose": [
+            0.9257221505734625,
+            3.9134809569785136,
+            -1.46074107393598
+          ],
+          "target": [
+            1.31,
+            2.48
+          ],
+          "sensor": 414.53999999999996,
+          "threshold": 60.0,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 1,
+      "attempts": 2,
+      "rooms_with_hazards": [
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s011_normal_cbba",
+      "metrics": {
+        "seed": 11,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 205.38,
+        "timed_out": false,
+        "hazards_total": 3,
+        "hazards_confirmed": 3,
+        "victims_total": 0,
+        "victims_found": 0,
+        "false_confirmations": 0,
+        "localization_error_m": 0.366,
+        "first_detection_time": 67.17,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 146.368,
+        "mission_complete_time": 201.472,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3340,
+        "messages_received": 3750,
+        "distance_m": 60.98,
+        "true_distance_m": {
+          "A": 29.8,
+          "B": 30.39
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 1,
+        "stuck_recoveries": 0,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 5,
+        "safety": {
+          "samples": 6417,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.6149538562249508,
+          "max_tilt_deg": {
+            "A": 6.212924139765144,
+            "B": 4.530953660106368
+          },
+          "z_range": {
+            "A": [
+              0.08762564606261286,
+              0.0975
+            ],
+            "B": [
+              0.08704562567789795,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 76.2,
+        "port": 1600
+      },
+      "hazard_report_errors_m": [
+        0.14142135623730964,
+        0.5852349955359819,
+        0.37161808352124087
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 67.168,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@2.5,-3.5",
+          "view": 0,
+          "pose": [
+            0.902663881586965,
+            -2.888390658256526,
+            -0.16902399828714992
+          ],
+          "target": [
+            2.48,
+            -3.35
+          ],
+          "sensor": 0.8384810358482786,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 106.272,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@-4.0,1.5",
+          "view": 0,
+          "pose": [
+            -2.737954123429131,
+            2.0708309241677147,
+            -2.974359726320156
+          ],
+          "target": [
+            -4.21,
+            1.29
+          ],
+          "sensor": 252.185,
+          "threshold": 60.0,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 200.48,
+          "ev": "verification_attempt",
+          "agent": "B",
+          "task": "verify:gas@2.0,2.0",
+          "view": 0,
+          "pose": [
+            0.8241864208937923,
+            3.217367256145327,
+            -1.1527546552167502
+          ],
+          "target": [
+            1.87,
+            1.81
+          ],
+          "sensor": 360.87,
+          "threshold": 60.0,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 2,
+      "attempts": 6,
+      "rooms_with_hazards": [
+        "R1",
+        "R2",
+        "R4"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s1000_normal_cbba",
+      "metrics": {
+        "seed": 1000,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 377.98,
+        "timed_out": false,
+        "hazards_total": 3,
+        "hazards_confirmed": 3,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.546,
+        "first_detection_time": 29.47,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 275.488,
+        "mission_complete_time": 374.08,
+        "recovery_time_after_kill": null,
+        "messages_sent": 5839,
+        "messages_received": 6597,
+        "distance_m": 101.31,
+        "true_distance_m": {
+          "A": 52.26,
+          "B": 47.3
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 3,
+        "stuck_recoveries": 13,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 7,
+        "safety": {
+          "samples": 11811,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5037929347451124,
+          "max_tilt_deg": {
+            "A": 6.373360270459716,
+            "B": 7.146793753393324
+          },
+          "z_range": {
+            "A": [
+              0.08735899429540916,
+              0.0975
+            ],
+            "B": [
+              0.08743980321136438,
+              0.0975
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 121.8,
+        "port": 1607
+      },
+      "hazard_report_errors_m": [
+        0.8547514258543241,
+        0.7253275122315438,
+        0.4045985664828784,
+        0.48166378315169206,
+        0.16155494421403505
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 29.472,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-3.0,-1.5",
+          "view": 0,
+          "pose": [
+            -4.988830941929838,
+            -2.31085075384628,
+            -0.03571346666335615
+          ],
+          "target": [
+            -3.25,
+            -1.74
+          ],
+          "sensor": 0.3143107267321379,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 172.512,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-5.0,3.0",
+          "view": 0,
+          "pose": [
+            -3.0030740707047654,
+            1.9543537353124023,
+            2.8125665494785683
+          ],
+          "target": [
+            -4.92,
+            2.76
+          ],
+          "sensor": 0.42180176642222655,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 209.12,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@2.5,3.5",
+          "view": 0,
+          "pose": [
+            1.2811196029044187,
+            1.9805333919121333,
+            1.039776380405372
+          ],
+          "target": [
+            2.28,
+            3.3
+          ],
+          "sensor": 0.7661447816923839,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 244.128,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-0.5,3.5",
+          "view": 1,
+          "pose": [
+            1.0006972469941784,
+            2.158833038644082,
+            0.5770696720956849
+          ],
+          "target": [
+            1.3781731975651001,
+            3.056484236614272
+          ],
+          "sensor": 0.7249163333156551,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 342.528,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@-2.0,-3.0",
+          "view": 0,
+          "pose": [
+            -0.7942421703819583,
+            -2.0961160774730248,
+            -3.030315709512574
+          ],
+          "target": [
+            -2.22,
+            -3.01
+          ],
+          "sensor": 0.9522225024599676,
+          "threshold": 0.3,
+          "sample_count": 27,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 2,
+      "attempts": 8,
+      "rooms_with_hazards": [
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "directory": "D:\\FYP\\experiments\\hazard_confirmation\\accepted\\runs\\s1001_normal_cbba",
+      "metrics": {
+        "seed": 1001,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 128.99,
+        "timed_out": false,
+        "hazards_total": 1,
+        "hazards_confirmed": 1,
+        "victims_total": 2,
+        "victims_found": 2,
+        "false_confirmations": 0,
+        "localization_error_m": 0.124,
+        "first_detection_time": 48.74,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 107.52,
+        "mission_complete_time": 125.088,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2352,
+        "messages_received": 2607,
+        "distance_m": 43.99,
+        "true_distance_m": {
+          "A": 24.3,
+          "B": 19.76
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 1,
+        "stuck_recoveries": 0,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 4030,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.9175731532951931,
+          "max_tilt_deg": {
+            "A": 6.62526616773428,
+            "B": 2.7830156429701716
+          },
+          "z_range": {
+            "A": [
+              0.08716822960008938,
+              0.0975
+            ],
+            "B": [
+              0.08776251281462066,
+              0.09749999999999999
+            ]
+          }
+        }
+      },
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 73.3,
+        "port": 1607
+      },
+      "hazard_report_errors_m": [
+        0.1399999999999999,
+        0.8420213774008352
+      ],
+      "confirmed_hazard_evidence": [
+        {
+          "t": 110.592,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@0.5,2.5",
+          "view": 0,
+          "pose": [
+            3.030361351701275,
+            1.801700222140834,
+            -2.8481210209174725
+          ],
+          "target": [
+            0.65,
+            2.52
+          ],
+          "sensor": 0.8139708592516526,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        {
+          "t": 124.288,
+          "ev": "verification_attempt",
+          "agent": "A",
+          "task": "verify:fire@2.5,1.5",
+          "view": 0,
+          "pose": [
+            4.036115165693005,
+            2.3757994310257344,
+            -2.802861168288425
+          ],
+          "target": [
+            2.72,
+            1.68
+          ],
+          "sensor": 0.314139200230821,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        }
+      ],
+      "inconclusive_attempts": 0,
+      "attempts": 2,
+      "rooms_with_hazards": [
+        "R2"
+      ]
+    }
+  ],
+  "physical_cases": [
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_two_robots_finish_without0\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "opposed",
+      "loss": 0.0
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_two_robots_finish_without1\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "opposed",
+      "loss": 0.2
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_two_robots_finish_without2\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7141479809906053,
+      "minimum_separation": 1.0037309378976822,
+      "doorway_overlap_steps": 0,
+      "sim_time": 24.992,
+      "case": "same_direction",
+      "loss": 0.0
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_two_robots_finish_without3\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7141479809720677,
+      "minimum_separation": 1.0037309378976822,
+      "doorway_overlap_steps": 0,
+      "sim_time": 25.216,
+      "case": "same_direction",
+      "loss": 0.2
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_two_robots_finish_without4\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "staging_obstacle",
+      "loss": 0.0
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_two_robots_finish_without5\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "staging_obstacle",
+      "loss": 0.2
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n0\\primitives\\result.json",
+      "case": "primitives",
+      "mode": "primitives",
+      "sim_seconds": 17.024,
+      "samples": 531,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        1.6494995123339828,
+        0.009035226603502696,
+        0.09488717795112661
+      ],
+      "max_tilt_deg": 2.6811426274630614,
+      "z_range": [
+        0.09437052363492371,
+        0.09523533633153566
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n1\\wall\\result.json",
+      "case": "wall",
+      "mode": "navigate",
+      "sim_seconds": 17.568,
+      "samples": 548,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        2.4336538804452945,
+        0.36470109494408887,
+        0.0946680500914159
+      ],
+      "max_tilt_deg": 2.501610521289269,
+      "z_range": [
+        0.09457163797652063,
+        0.09540392086030144
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n10\\doorway\\result.json",
+      "case": "doorway",
+      "mode": "navigate",
+      "sim_seconds": 19.328,
+      "samples": 603,
+      "initial": [
+        -0.0013004435625210975,
+        0.0003267134755117595,
+        0.09688072020045534
+      ],
+      "final": [
+        0.33019667863675906,
+        0.11106389847838397,
+        0.0947274306398172
+      ],
+      "max_tilt_deg": 2.6385521609607254,
+      "z_range": [
+        0.09440093893427805,
+        0.09554656662241016
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n11\\doorway\\result.json",
+      "case": "doorway",
+      "mode": "navigate",
+      "sim_seconds": 19.008,
+      "samples": 593,
+      "initial": [
+        -0.0012978813771575767,
+        -0.00033674780654234515,
+        0.09688072020045535
+      ],
+      "final": [
+        0.3329244679774739,
+        0.11858100819885857,
+        0.09472499414082153
+      ],
+      "max_tilt_deg": 2.6409598086467896,
+      "z_range": [
+        0.09439896272596164,
+        0.09555340827972877
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n12\\close_turn\\result.json",
+      "case": "close_turn",
+      "mode": "spin",
+      "sim_seconds": 5.984,
+      "samples": 186,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        0.0011623003994615938,
+        0.006883719787390271,
+        0.09489073635808398
+      ],
+      "max_tilt_deg": 2.21931777011761,
+      "z_range": [
+        0.09481444627224975,
+        0.09489104691821987
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n2\\low_obstacle\\result.json",
+      "case": "low_obstacle",
+      "mode": "navigate",
+      "sim_seconds": 23.296,
+      "samples": 727,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        2.282081086053697,
+        0.27812442507976337,
+        0.09461285856645732
+      ],
+      "max_tilt_deg": 2.586171463948488,
+      "z_range": [
+        0.09441868061884498,
+        0.09519275878930386
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n3\\recover\\result.json",
+      "case": "recover",
+      "mode": "recover",
+      "sim_seconds": 9.6,
+      "samples": 299,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        2.171308516392038,
+        0.09350094006897595,
+        0.09479728021942961
+      ],
+      "max_tilt_deg": 2.3365358403981324,
+      "z_range": [
+        0.09467668690809294,
+        0.0952255988071708
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 38,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n4\\doorway\\result.json",
+      "case": "doorway",
+      "mode": "navigate",
+      "sim_seconds": 18.624,
+      "samples": 581,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        0.3341357159144699,
+        0.11326634967014587,
+        0.09472141693024998
+      ],
+      "max_tilt_deg": 2.6362289666907284,
+      "z_range": [
+        0.09439843322758223,
+        0.0955534506845011
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n5\\facility\\result.json",
+      "case": "facility",
+      "mode": "navigate",
+      "sim_seconds": 44.128,
+      "samples": 1378,
+      "initial": [
+        -6.301262265604335,
+        0.44998211778446257,
+        0.09633553344878729
+      ],
+      "final": [
+        -5.70123168745048,
+        0.3544075557576572,
+        0.0946980433683847
+      ],
+      "max_tilt_deg": 2.6431096569407186,
+      "z_range": [
+        0.09463617780193871,
+        0.09555347279940647
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n6\\low_obstacle\\result.json",
+      "case": "low_obstacle",
+      "mode": "navigate",
+      "sim_seconds": 26.784,
+      "samples": 836,
+      "initial": [
+        -0.0012613298388925859,
+        0.0004549089929894966,
+        0.09688072020045535
+      ],
+      "final": [
+        2.375773915255597,
+        0.3323515977923697,
+        0.09470730418967459
+      ],
+      "max_tilt_deg": 2.4057544695875355,
+      "z_range": [
+        0.09447169713098219,
+        0.09530580709270944
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n7\\low_obstacle\\result.json",
+      "case": "low_obstacle",
+      "mode": "navigate",
+      "sim_seconds": 19.744,
+      "samples": 616,
+      "initial": [
+        -0.0012577786922331122,
+        -0.00046463740244181637,
+        0.09688072020045532
+      ],
+      "final": [
+        2.3112518261036983,
+        0.28984164080667935,
+        0.09466596868033252
+      ],
+      "max_tilt_deg": 2.417010175479621,
+      "z_range": [
+        0.09438806451658333,
+        0.09531888152397935
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n8\\recover\\result.json",
+      "case": "recover",
+      "mode": "recover",
+      "sim_seconds": 9.824,
+      "samples": 306,
+      "initial": [
+        -0.0013265636839423847,
+        0.00019525354498379187,
+        0.09688072020045534
+      ],
+      "final": [
+        2.1698208271523565,
+        0.08918541608096146,
+        0.09479918293852838
+      ],
+      "max_tilt_deg": 2.336817672403799,
+      "z_range": [
+        0.09464616213518275,
+        0.09522243933836111
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 38,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\hazard_accepted_pytest\\test_single_robot_motion_has_n9\\recover\\result.json",
+      "case": "recover",
+      "mode": "recover",
+      "sim_seconds": 9.76,
+      "samples": 304,
+      "initial": [
+        -0.0013250160603840086,
+        -0.0002054935378739374,
+        0.09688072020045535
+      ],
+      "final": [
+        2.1764213228580807,
+        0.09926186712458156,
+        0.09479748737170829
+      ],
+      "max_tilt_deg": 2.2795415157529537,
+      "z_range": [
+        0.09467504204813504,
+        0.09515859641516461
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 38,
+      "completed": true
+    }
+  ],
+  "review": "Independent read-only review checked frame quality, evidence freshness, bounded retries, person reporting and safe abandoned-reservation release.",
+  "limits": [
+    "Finite simulation verification on the same building floor plan with randomized hazards, spawns and distractors; not universal performance or real-hardware calibration.",
+    "Evaluator match radius remains 1.6m. Individual report errors are included above; camera box-size localization remains approximate.",
+    "Inconclusive suspected tasks are explicitly logged and closed for this mission; later observations do not automatically reopen them.",
+    "Gas transport is a plume approximation and thermal sensing uses Webots LightSensor, so these tests do not establish physical sensor accuracy.",
+    "Full episodes end after logical mission completion, before both rally returns are necessarily finished.",
+    "Seeded geometry and radio loss do not make every native/noisy sensor trajectory deterministic.",
+    "The hazard layout matrix permits 600 simulation seconds for multi-view verification and room inspection; the original 300s candidate failures are preserved.",
+    "Central commander-loss and static robot-loss are deliberate incomplete negative controls."
+  ]
+}

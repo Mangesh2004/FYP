@@ -1,0 +1,1205 @@
+{
+  "verified_at_utc": "2026-10-17T16:29:53.409426+00:00",
+  "scope": "Two-robot physical avoidance, doorway coordination, room inspection completion, and bounded injected faults.",
+  "environment": {
+    "python": "C:/Users/mange/anaconda3/envs/pytorch/python.exe",
+    "webots": "R2025a",
+    "workers": 1
+  },
+  "causes_fixed": [
+    "Stale moving-peer heartbeat obstacles could leave solid ghosts and stop progress.",
+    "Opposing doorway requests needed a shared priority order, explicit ACKs, staging, and safe release.",
+    "Overlapping approaches to different doors could make both robots yield.",
+    "Obstructed staging and planner fallback arrivals could conceal a frozen or failed attempt.",
+    "Close side-obstacle measurements inside a conservative disk prohibited clearance-increasing escape.",
+    "Unreachable tasks were incorrectly recorded as successful completion."
+  ],
+  "changes": [
+    "Repeated ordered doorway reservations and ACKs, with lost-message tolerance and serial-number replay rejection.",
+    "Yielding chooses a locally clear staging position; exhausted targets report blocked instead of false arrival.",
+    "Only slow straight motion that increases measured close-obstacle clearance can escape the conservative disk.",
+    "All motor commands still pass the swept-footprint guard; failed task attempts remain open.",
+    "Observer-only physical contact, tilt, separation, and doorway occupancy metrics are written for full missions."
+  ],
+  "commands": [
+    "python -m pytest -q -m \"not webots and not pair_robot and not single_robot\" --junitxml=runs/coordination/final_unit.xml",
+    "python -m pytest -q -m \"pair_robot or single_robot\" --basetemp runs/coordination/final_physical --junitxml=runs/coordination/final_physical.xml",
+    "python -m pytest -q -m pair_robot --basetemp runs/coordination/final_pair --junitxml=runs/coordination/final_pair.xml",
+    "FYP_FAULT_DIR=D:/FYP/experiments/two_robot/final_faults python -m pytest -q -s -m webots --junitxml=D:/FYP/experiments/two_robot/final_faults.xml",
+    "python tools/run_batch.py --out D:/FYP/experiments/two_robot/final_repeats --seeds 0 1 --conditions normal --methods cbba --workers 1"
+  ],
+  "test_suites": {
+    "local": {
+      "path": "D:\\FYP\\webots_sim\\runs\\coordination\\final_unit.xml",
+      "tests": 83,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 10.108
+    },
+    "physical_initial": {
+      "path": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical.xml",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 101.728
+    },
+    "doorway_final": {
+      "path": "D:\\FYP\\webots_sim\\runs\\coordination\\final_pair.xml",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 36.163
+    },
+    "mission_faults": {
+      "path": "D:\\FYP\\experiments\\two_robot\\final_faults.xml",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 524.609
+    }
+  },
+  "summary": {
+    "distinct_pytest_cases_passed": 112,
+    "local": 83,
+    "single_robot": 13,
+    "doorway": 6,
+    "mission_fault_checks": 10,
+    "full_mission_episodes": 10,
+    "cbba_episodes": 7,
+    "cbba_completed_four_rooms": 7,
+    "cbba_contact_steps": 0,
+    "cbba_door_overlap_steps": 0,
+    "cbba_max_tilt_deg": 6.654448629964929,
+    "cbba_completion_time_range": [
+      160.8,
+      236.192
+    ],
+    "dependency_warning_count": 6
+  },
+  "single_robot": [
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n0\\primitives\\result.json",
+      "case": "primitives",
+      "mode": "primitives",
+      "sim_seconds": 17.024,
+      "samples": 531,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        1.6494995123339828,
+        0.009035226603502696,
+        0.09488717795112661
+      ],
+      "max_tilt_deg": 2.6811426274630614,
+      "z_range": [
+        0.09437052363492371,
+        0.09523533633153566
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n1\\wall\\result.json",
+      "case": "wall",
+      "mode": "navigate",
+      "sim_seconds": 17.568,
+      "samples": 548,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        2.4336538804452945,
+        0.36470109494408887,
+        0.0946680500914159
+      ],
+      "max_tilt_deg": 2.501610521289269,
+      "z_range": [
+        0.09457163797652063,
+        0.09540392086030144
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n10\\doorway\\result.json",
+      "case": "doorway",
+      "mode": "navigate",
+      "sim_seconds": 19.328,
+      "samples": 603,
+      "initial": [
+        -0.0013004435625210975,
+        0.0003267134755117595,
+        0.09688072020045534
+      ],
+      "final": [
+        0.33019667863675906,
+        0.11106389847838397,
+        0.0947274306398172
+      ],
+      "max_tilt_deg": 2.6385521609607254,
+      "z_range": [
+        0.09440093893427805,
+        0.09554656662241016
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n11\\doorway\\result.json",
+      "case": "doorway",
+      "mode": "navigate",
+      "sim_seconds": 19.008,
+      "samples": 593,
+      "initial": [
+        -0.0012978813771575767,
+        -0.00033674780654234515,
+        0.09688072020045535
+      ],
+      "final": [
+        0.3329244679774739,
+        0.11858100819885857,
+        0.09472499414082153
+      ],
+      "max_tilt_deg": 2.6409598086467896,
+      "z_range": [
+        0.09439896272596164,
+        0.09555340827972877
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n12\\close_turn\\result.json",
+      "case": "close_turn",
+      "mode": "spin",
+      "sim_seconds": 5.984,
+      "samples": 186,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        0.0011623003994615938,
+        0.006883719787390271,
+        0.09489073635808398
+      ],
+      "max_tilt_deg": 2.21931777011761,
+      "z_range": [
+        0.09481444627224975,
+        0.09489104691821987
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n2\\low_obstacle\\result.json",
+      "case": "low_obstacle",
+      "mode": "navigate",
+      "sim_seconds": 23.296,
+      "samples": 727,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        2.282081086053697,
+        0.27812442507976337,
+        0.09461285856645732
+      ],
+      "max_tilt_deg": 2.586171463948488,
+      "z_range": [
+        0.09441868061884498,
+        0.09519275878930386
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n3\\recover\\result.json",
+      "case": "recover",
+      "mode": "recover",
+      "sim_seconds": 9.6,
+      "samples": 299,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        2.171308516392038,
+        0.09350094006897595,
+        0.09479728021942961
+      ],
+      "max_tilt_deg": 2.3365358403981324,
+      "z_range": [
+        0.09467668690809294,
+        0.0952255988071708
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 38,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n4\\doorway\\result.json",
+      "case": "doorway",
+      "mode": "navigate",
+      "sim_seconds": 18.624,
+      "samples": 581,
+      "initial": [
+        -0.0013408461288437548,
+        -5.178141391191668e-06,
+        0.09688072020045534
+      ],
+      "final": [
+        0.3341357159144699,
+        0.11326634967014587,
+        0.09472141693024998
+      ],
+      "max_tilt_deg": 2.6362289666907284,
+      "z_range": [
+        0.09439843322758223,
+        0.0955534506845011
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n5\\facility\\result.json",
+      "case": "facility",
+      "mode": "navigate",
+      "sim_seconds": 44.128,
+      "samples": 1378,
+      "initial": [
+        -6.301262265604335,
+        0.44998211778446257,
+        0.09633553344878729
+      ],
+      "final": [
+        -5.70123168745048,
+        0.3544075557576572,
+        0.0946980433683847
+      ],
+      "max_tilt_deg": 2.6431096569407186,
+      "z_range": [
+        0.09463617780193871,
+        0.09555347279940647
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n6\\low_obstacle\\result.json",
+      "case": "low_obstacle",
+      "mode": "navigate",
+      "sim_seconds": 26.784,
+      "samples": 836,
+      "initial": [
+        -0.0012613298388925859,
+        0.0004549089929894966,
+        0.09688072020045535
+      ],
+      "final": [
+        2.375773915255597,
+        0.3323515977923697,
+        0.09470730418967459
+      ],
+      "max_tilt_deg": 2.4057544695875355,
+      "z_range": [
+        0.09447169713098219,
+        0.09530580709270944
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n7\\low_obstacle\\result.json",
+      "case": "low_obstacle",
+      "mode": "navigate",
+      "sim_seconds": 19.744,
+      "samples": 616,
+      "initial": [
+        -0.0012577786922331122,
+        -0.00046463740244181637,
+        0.09688072020045532
+      ],
+      "final": [
+        2.3112518261036983,
+        0.28984164080667935,
+        0.09466596868033252
+      ],
+      "max_tilt_deg": 2.417010175479621,
+      "z_range": [
+        0.09438806451658333,
+        0.09531888152397935
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 0,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n8\\recover\\result.json",
+      "case": "recover",
+      "mode": "recover",
+      "sim_seconds": 9.824,
+      "samples": 306,
+      "initial": [
+        -0.0013265636839423847,
+        0.00019525354498379187,
+        0.09688072020045534
+      ],
+      "final": [
+        2.1698208271523565,
+        0.08918541608096146,
+        0.09479918293852838
+      ],
+      "max_tilt_deg": 2.336817672403799,
+      "z_range": [
+        0.09464616213518275,
+        0.09522243933836111
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 38,
+      "completed": true
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_physical\\test_single_robot_motion_has_n9\\recover\\result.json",
+      "case": "recover",
+      "mode": "recover",
+      "sim_seconds": 9.76,
+      "samples": 304,
+      "initial": [
+        -0.0013250160603840086,
+        -0.0002054935378739374,
+        0.09688072020045535
+      ],
+      "final": [
+        2.1764213228580807,
+        0.09926186712458156,
+        0.09479748737170829
+      ],
+      "max_tilt_deg": 2.2795415157529537,
+      "z_range": [
+        0.09467504204813504,
+        0.09515859641516461
+      ],
+      "contact_steps": 0,
+      "goals_remaining": 0,
+      "stuck_recoveries": 0,
+      "safety_stops": 38,
+      "completed": true
+    }
+  ],
+  "doorway_cases": [
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_pair\\test_two_robots_finish_without0\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "opposed",
+      "loss": 0.0
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_pair\\test_two_robots_finish_without1\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "opposed",
+      "loss": 0.2
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_pair\\test_two_robots_finish_without2\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7141479809906053,
+      "minimum_separation": 1.0037309378976822,
+      "doorway_overlap_steps": 0,
+      "sim_time": 24.992,
+      "case": "same_direction",
+      "loss": 0.0
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_pair\\test_two_robots_finish_without3\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7141479809720677,
+      "minimum_separation": 1.0037309378976822,
+      "doorway_overlap_steps": 0,
+      "sim_time": 25.216,
+      "case": "same_direction",
+      "loss": 0.2
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_pair\\test_two_robots_finish_without4\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "staging_obstacle",
+      "loss": 0.0
+    },
+    {
+      "result_file": "D:\\FYP\\webots_sim\\runs\\coordination\\final_pair\\test_two_robots_finish_without5\\result.json",
+      "completed": true,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.7133897361077435,
+      "minimum_separation": 0.5697283850907372,
+      "doorway_overlap_steps": 0,
+      "sim_time": 31.904,
+      "case": "staging_obstacle",
+      "loss": 0.2
+    }
+  ],
+  "full_missions": [
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_commander_cut_cbba\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 60.6,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "commander_cut",
+        "method": "cbba",
+        "sim_time": 164.7,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 1,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.377,
+        "first_detection_time": 112.74,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 147.776,
+        "mission_complete_time": 160.8,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2827,
+        "messages_received": 2885,
+        "distance_m": 57.87,
+        "true_distance_m": {
+          "A": 19.3,
+          "B": 38.79
+        },
+        "peer_only_time": 34.816,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 6,
+        "tasks_done_after_fault": 6,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 5146,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8191283757792566,
+          "max_tilt_deg": {
+            "A": 3.8537903318825246,
+            "B": 5.611906502244338
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_commander_cut_central\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 60.6,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "commander_cut",
+        "method": "central",
+        "sim_time": 300.0,
+        "timed_out": true,
+        "hazards_total": 2,
+        "hazards_confirmed": 0,
+        "victims_total": 1,
+        "victims_found": 0,
+        "false_confirmations": 0,
+        "localization_error_m": null,
+        "first_detection_time": null,
+        "rooms_inspected": 2,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": null,
+        "mission_complete_time": null,
+        "recovery_time_after_kill": null,
+        "messages_sent": 4217,
+        "messages_received": 4275,
+        "distance_m": 16.64,
+        "true_distance_m": {
+          "A": 8.32,
+          "B": 8.34
+        },
+        "peer_only_time": 34.816,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 0,
+        "stuck_recoveries": 0,
+        "tasks_done_after_fault": 2,
+        "suspected_hazards": 1,
+        "safety": {
+          "samples": 9374,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.7961056223633907,
+          "max_tilt_deg": {
+            "A": 2.6454735207636833,
+            "B": 2.656095913835208
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_door_blocked_cbba\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 85.1,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "door_blocked",
+        "method": "cbba",
+        "sim_time": 240.1,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 0,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.291,
+        "first_detection_time": 137.82,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 235.552,
+        "mission_complete_time": 236.192,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3926,
+        "messages_received": 4406,
+        "distance_m": 99.38,
+        "true_distance_m": {
+          "A": 39.01,
+          "B": 60.52
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": 97.312,
+        "replans": 7,
+        "stuck_recoveries": 7,
+        "tasks_done_after_fault": 6,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 7502,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8224561501017242,
+          "max_tilt_deg": {
+            "A": 2.9331106178706086,
+            "B": 3.82827932119259
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_loss20_cbba\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 61.1,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "loss20",
+        "method": "cbba",
+        "sim_time": 172.64,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 1,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.373,
+        "first_detection_time": 112.22,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 155.776,
+        "mission_complete_time": 167.744,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2914,
+        "messages_received": 2642,
+        "distance_m": 59.19,
+        "true_distance_m": {
+          "A": 19.8,
+          "B": 39.73
+        },
+        "peer_only_time": 1.088,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 5,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 5394,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8175280016330525,
+          "max_tilt_deg": {
+            "A": 4.29761175550716,
+            "B": 5.574098573491203
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_normal_cbba\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 62.1,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 164.7,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 1,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.707,
+        "first_detection_time": 112.74,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 149.184,
+        "mission_complete_time": 160.8,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2830,
+        "messages_received": 3158,
+        "distance_m": 58.76,
+        "true_distance_m": {
+          "A": 20.37,
+          "B": 38.63
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 7,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 5146,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8061316412175241,
+          "max_tilt_deg": {
+            "A": 3.3112643184360544,
+            "B": 5.5821409597404
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_normal_central\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 61.1,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "normal",
+        "method": "central",
+        "sim_time": 179.58,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.349,
+        "first_detection_time": 101.12,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 161.92,
+        "mission_complete_time": 176.672,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3007,
+        "messages_received": 3365,
+        "distance_m": 55.57,
+        "true_distance_m": {
+          "A": 22.82,
+          "B": 32.85
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 1,
+        "stuck_recoveries": 2,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 3,
+        "safety": {
+          "samples": 5611,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.7887161969470198,
+          "max_tilt_deg": {
+            "A": 2.783371983390367,
+            "B": 5.599749261605917
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_robot_killed_cbba\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 63.6,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "robot_killed",
+        "method": "cbba",
+        "sim_time": 194.46,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.804,
+        "first_detection_time": 103.97,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 186.304,
+        "mission_complete_time": 191.552,
+        "recovery_time_after_kill": 136.304,
+        "messages_sent": 2101,
+        "messages_received": 1149,
+        "distance_m": 51.85,
+        "true_distance_m": {
+          "A": 9.91,
+          "B": 42.05
+        },
+        "peer_only_time": null,
+        "peer_lost_time": 56.64,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 0,
+        "tasks_done_after_fault": 5,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 6076,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8129201603372431,
+          "max_tilt_deg": {
+            "A": 2.664398911099788,
+            "B": 3.5835185380093026
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_robot_killed_static\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 66.6,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 3,
+        "condition": "robot_killed",
+        "method": "static",
+        "sim_time": 207.36,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.481,
+        "first_detection_time": 138.91,
+        "rooms_inspected": 2,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": null,
+        "mission_complete_time": 204.448,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2202,
+        "messages_received": 1167,
+        "distance_m": 40.8,
+        "true_distance_m": {
+          "A": 8.59,
+          "B": 32.14
+        },
+        "peer_only_time": null,
+        "peer_lost_time": 56.64,
+        "door_blocked_detected_time": null,
+        "replans": 0,
+        "stuck_recoveries": 8,
+        "tasks_done_after_fault": 4,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 6479,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.514013266090878,
+          "max_tilt_deg": {
+            "A": 2.7621997217495253,
+            "B": 5.7225153341180155
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_repeats\\runs\\s000_normal_cbba\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 72.6,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 0,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 201.41,
+        "timed_out": false,
+        "hazards_total": 3,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.258,
+        "first_detection_time": 116.32,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 175.328,
+        "mission_complete_time": 197.504,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3309,
+        "messages_received": 3709,
+        "distance_m": 58.99,
+        "true_distance_m": {
+          "A": 34.49,
+          "B": 23.97
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 0,
+        "stuck_recoveries": 6,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 5,
+        "safety": {
+          "samples": 6293,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5246960551588997,
+          "max_tilt_deg": {
+            "A": 6.654448629964929,
+            "B": 3.3390979903113
+          },
+          "z_range": {
+            "A": [
+              0.08707145671356936,
+              0.0975
+            ],
+            "B": [
+              0.08703272829287059,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "result_file": "D:\\FYP\\experiments\\two_robot\\final_repeats\\runs\\s001_normal_cbba\\metrics.json",
+      "batch": {
+        "exit_code": 0,
+        "wall_s": 92.2,
+        "port": 1330
+      },
+      "metrics": {
+        "seed": 1,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 200.42,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 1,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.398,
+        "first_detection_time": 139.01,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 190.176,
+        "mission_complete_time": 196.512,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3295,
+        "messages_received": 3695,
+        "distance_m": 61.58,
+        "true_distance_m": {
+          "A": 25.65,
+          "B": 36.27
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 3,
+        "stuck_recoveries": 4,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 6,
+        "safety": {
+          "samples": 6262,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.6161236928793785,
+          "max_tilt_deg": {
+            "A": 3.7531198034429267,
+            "B": 3.6205452508703906
+          },
+          "z_range": {
+            "A": [
+              0.08772804460437443,
+              0.0975
+            ],
+            "B": [
+              0.08758351410892207,
+              0.0975
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "baseline": {
+    "physical_file": "D:\\FYP\\webots_sim\\runs\\coordination\\before\\test_two_robots_finish_without0\\result.json",
+    "physical": {
+      "completed": false,
+      "contact_steps": 0,
+      "max_tilt_deg": 2.4864385302640297,
+      "minimum_separation": 1.369699933309099,
+      "doorway_overlap_steps": 0,
+      "sim_time": 90.016,
+      "case": "opposed",
+      "loss": 0.0
+    },
+    "mission_file": "D:\\FYP\\experiments\\two_robot\\before\\runs\\s003_normal_cbba\\metrics.json",
+    "mission": {
+      "seed": 3,
+      "condition": "normal",
+      "method": "cbba",
+      "sim_time": 164.7,
+      "timed_out": false,
+      "hazards_total": 2,
+      "hazards_confirmed": 0,
+      "victims_total": 1,
+      "victims_found": 1,
+      "false_confirmations": 0,
+      "localization_error_m": 0.07,
+      "first_detection_time": 64.1,
+      "rooms_inspected": 3,
+      "rooms_total": 4,
+      "duplicate_inspections": 0,
+      "all_rooms_time": null,
+      "mission_complete_time": 160.8,
+      "recovery_time_after_kill": null,
+      "messages_sent": 494,
+      "messages_received": 822,
+      "distance_m": 34.87,
+      "true_distance_m": {
+        "A": 17.32,
+        "B": 17.7
+      },
+      "peer_only_time": null,
+      "peer_lost_time": null,
+      "door_blocked_detected_time": null,
+      "replans": 1,
+      "stuck_recoveries": 15,
+      "tasks_done_after_fault": null,
+      "suspected_hazards": 2
+    }
+  },
+  "review": "Independent read-only review found no remaining concrete blocker after exhausted-target and door-plane regression fixes.",
+  "source_sha256": {
+    "D:\\FYP\\webots_sim\\controllers\\agent\\agent.py": "433151b35b59cd1de901c4df2277e9981f68b2478b11dca94a8029754b9edc2b",
+    "D:\\FYP\\webots_sim\\swarm\\traffic.py": "ace3d843f6f227c4612a878bfeb6ede53bc005bd0529b5ac38df8008990b028d",
+    "D:\\FYP\\webots_sim\\swarm\\motion.py": "e2c74e0f0396d56666c1885d241b1d6e2e907f2db2f66e15adc017251ea14a15",
+    "D:\\FYP\\webots_sim\\swarm\\tasks.py": "0004c5b3ef9417db4006e6dc5e23a5ec15bbef51536d63e227bb812bc64000fd",
+    "D:\\FYP\\webots_sim\\swarm\\planning.py": "f305539e2d4ca09ccfe89c9d2f077507882d847d77edca6947795301a11d43c4",
+    "D:\\FYP\\webots_sim\\truth\\motion_audit.py": "dfc102ee2ee496a96d735dfcf60d721e46602e832bf8457e3af1802a407062a1",
+    "D:\\FYP\\webots_sim\\controllers\\mission_supervisor\\mission_supervisor.py": "ea6e7d4f0f2d3b9743f1f2f48bfa1edca6e2e6b2e6ae198abf14f1553cf1387b",
+    "D:\\FYP\\webots_sim\\controllers\\coordination_probe\\coordination_probe.py": "5e1266738485d71709c480ad62bb16bff7986e251a21073e1d8dde6d18ef39fa",
+    "D:\\FYP\\webots_sim\\controllers\\coordination_probe\\runtime.ini": "93b22c804f099193879721e596925cdcbd2963e429ed460c94578d867ce7a9e6",
+    "D:\\FYP\\webots_sim\\tools\\check_coordination.py": "d0d8ac12d37be8274d6426b425e80d49a6e8534bfe8429d5c21b1dd832dc6d37",
+    "D:\\FYP\\webots_sim\\tools\\check_stability.py": "d41f1331739e3c9a61b8d95a83302b29ae6f85aecefae7f95f3afcfad8d27b14",
+    "D:\\FYP\\webots_sim\\tools\\build_world.py": "e6d2f1fd2814fe7c2fe18d18d36bb7359999cf60fa61b01905a01a46a7d24616",
+    "D:\\FYP\\webots_sim\\tests\\test_traffic.py": "0ac537e2919447b2fe2b17c8124ddbf725cf77fddf1ddc070684b5f10a5133f5",
+    "D:\\FYP\\webots_sim\\tests\\test_motion_safety.py": "0e3dc4c950b50a66dcac5f6a0f6ed08506023804dd0e915ecb0bec13ea7199d1",
+    "D:\\FYP\\webots_sim\\tests\\test_mission_safety.py": "064436347e2052b06a2ab87d1b2c1083c51bfdd00e3968b17df3dfe8eb10ed83",
+    "D:\\FYP\\webots_sim\\tests\\test_faults_webots.py": "9e23bc41579effd25b2afb1f0c55c42410ae5314a3e32c65baab11b8e700ec33",
+    "D:\\FYP\\webots_sim\\tests\\test_coordination_webots.py": "36254bffcb059e82d492edaf6b09197715e84723a0bd2a56f2c97ddf83b9f8b4",
+    "D:\\FYP\\webots_sim\\tests\\test_single_robot_stability.py": "88d3e29fcb962d00825a2210ce5db1eab934f3aaf248072b029992bd7c74635b",
+    "D:\\FYP\\webots_sim\\pytest.ini": "069646e448e365ec5f1e79f4cd44898aa42ec7adf4ef1170a7eba0bfec00f5db",
+    "D:\\FYP\\webots_sim\\worlds\\facility.wbt": "da322ddbefae86555343adb24c87940df227998c9ed2be517538bb6fb4d6b3e8",
+    "D:\\FYP\\webots_sim\\config\\blueprint.json": "46bb91dfb5fcb7f794800d06789a15d0115d7db938acdc554120e47edf086ef2",
+    "D:\\FYP\\webots_sim\\models\\detector_frcnn_mnv3.pt": "e7cbe596a8970b90bdc6969ad6f2061f441758fd3977e290219448f13a8b7ffa",
+    "D:\\FYP\\webots_sim\\models\\task_policy.pt": "1d53a2ab89d9e7087add5f2bc98bd50bc9539748eaf1912ab56a4bec2e2810c1"
+  },
+  "limits": [
+    "Finite flat-floor simulation cases, three layouts, and 20% base packet loss do not establish universal collision avoidance or real-hardware reliability.",
+    "Door reservations expire silent peers after six seconds; safety under an arbitrary network partition is not guaranteed by the reservation protocol.",
+    "Low range sensors are simulated robot hardware. Thin objects between discrete rays and other untested geometry remain outside this evidence.",
+    "Full missions end shortly after logical mission completion; arrival of both robots back at rally points was not asserted.",
+    "Room inspection completion is distinct from correct hazard detection: seed 3 fault runs confirmed between 0/2 and 2/2 hazards. Camera/specialty-sensor validation remains the next milestone.",
+    "Episode geometry and injected radio loss are seeded; production NumPy sensor noise is stochastic, so same-seed runs need not have identical trajectories.",
+    "Central commander-loss and static robot-loss runs deliberately time out or leave rooms unfinished as negative controls."
+  ]
+}

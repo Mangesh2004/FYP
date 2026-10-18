@@ -1,0 +1,1 @@
+{"t": 0.032, "ev": "episode_start", "seed": 3, "condition": "normal", "method": "learned", "hazards": [["gas", "R2"], ["gas", "R4"]], "victims": ["R4"], "blocked": [], "loss": 0.0, "noise": 0.789, "faults": []}

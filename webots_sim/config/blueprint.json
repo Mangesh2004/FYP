@@ -1,0 +1,220 @@
+{
+  "map_bounds": [
+    -11.0,
+    -6.0,
+    8.0,
+    6.0
+  ],
+  "building": [
+    -7.0,
+    -5.0,
+    7.0,
+    5.0
+  ],
+  "corridor": [
+    -7.0,
+    -1.0,
+    7.0,
+    1.0
+  ],
+  "entrance": {
+    "pos": [
+      -7.0,
+      0.0
+    ],
+    "width": 2.0
+  },
+  "rooms": {
+    "R1": {
+      "name": "Chemistry Lab",
+      "rect": [
+        -7.0,
+        1.0,
+        0.0,
+        5.0
+      ],
+      "center": [
+        -3.5,
+        3.0
+      ]
+    },
+    "R2": {
+      "name": "Storage Hall",
+      "rect": [
+        0.0,
+        1.0,
+        7.0,
+        5.0
+      ],
+      "center": [
+        3.5,
+        3.0
+      ]
+    },
+    "R3": {
+      "name": "Control Office",
+      "rect": [
+        -7.0,
+        -5.0,
+        0.0,
+        -1.0
+      ],
+      "center": [
+        -3.5,
+        -3.0
+      ]
+    },
+    "R4": {
+      "name": "Plant Room",
+      "rect": [
+        0.0,
+        -5.0,
+        7.0,
+        -1.0
+      ],
+      "center": [
+        3.5,
+        -3.0
+      ]
+    }
+  },
+  "doors": {
+    "D1": {
+      "between": [
+        "CORRIDOR",
+        "R1"
+      ],
+      "pos": [
+        -3.5,
+        1.0
+      ],
+      "width": 1.2,
+      "wall": "h",
+      "approach": [
+        [
+          -3.5,
+          0.19999999999999996
+        ],
+        [
+          -3.5,
+          1.8
+        ]
+      ]
+    },
+    "D2": {
+      "between": [
+        "CORRIDOR",
+        "R2"
+      ],
+      "pos": [
+        3.5,
+        1.0
+      ],
+      "width": 1.2,
+      "wall": "h",
+      "approach": [
+        [
+          3.5,
+          0.19999999999999996
+        ],
+        [
+          3.5,
+          1.8
+        ]
+      ]
+    },
+    "D3": {
+      "between": [
+        "CORRIDOR",
+        "R3"
+      ],
+      "pos": [
+        -3.5,
+        -1.0
+      ],
+      "width": 1.2,
+      "wall": "h",
+      "approach": [
+        [
+          -3.5,
+          -1.8
+        ],
+        [
+          -3.5,
+          -0.19999999999999996
+        ]
+      ]
+    },
+    "D4": {
+      "between": [
+        "CORRIDOR",
+        "R4"
+      ],
+      "pos": [
+        3.5,
+        -1.0
+      ],
+      "width": 1.2,
+      "wall": "h",
+      "approach": [
+        [
+          3.5,
+          -1.8
+        ],
+        [
+          3.5,
+          -0.19999999999999996
+        ]
+      ]
+    },
+    "D12": {
+      "between": [
+        "R1",
+        "R2"
+      ],
+      "pos": [
+        0.0,
+        3.0
+      ],
+      "width": 1.1,
+      "wall": "v",
+      "approach": [
+        [
+          -0.8,
+          3.0
+        ],
+        [
+          0.8,
+          3.0
+        ]
+      ]
+    },
+    "D34": {
+      "between": [
+        "R3",
+        "R4"
+      ],
+      "pos": [
+        0.0,
+        -3.0
+      ],
+      "width": 1.1,
+      "wall": "v",
+      "approach": [
+        [
+          -0.8,
+          -3.0
+        ],
+        [
+          0.8,
+          -3.0
+        ]
+      ]
+    }
+  },
+  "commander": [
+    -9.6,
+    2.4
+  ],
+  "note": "Public floor plan given to responders before entry. Contains no hazard, victim or blockage information."
+}

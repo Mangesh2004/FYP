@@ -1,0 +1,49 @@
+# Local Python environments and build outputs
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.coverage
+htmlcov/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated live telemetry, temporary worlds and local diagnostics
+/webots_sim/runs/
+/webots_sim/_ref/
+/webots_sim/phase0_camera.jpg
+/webots_sim/phase0_log.txt
+/webots_sim/worlds/_*.wbt
+/webots_sim/worlds/.*.wbproj
+/webots_sim/worlds/.*.jpg
+*.log
+*.err
+*.mp4
+*.avi
+*.mov
+
+# Keep experiment reports and scripts, omit raw episodes and redundant checkpoints
+/experiments/**/runs/
+/experiments/hazard_confirmation/*/
+/experiments/learning/*.pt
+/experiments/learning/curves_*.json
+
+# Nested Git metadata stays local; the earlier simulator is committed as source files
+/manasi/.git/

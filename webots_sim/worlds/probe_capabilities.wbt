@@ -1,0 +1,152 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/humans/pedestrian/protos/Pedestrian.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/gas_canister/protos/GasCanister.proto"
+
+WorldInfo {
+  basicTimeStep 32
+}
+Viewpoint {
+  orientation -0.3 0.3 0.9 1.6
+  position 0 -8 6
+}
+TexturedBackground {
+  texture "noon_park_empty"
+}
+DirectionalLight {
+  direction 0 0 -1
+  intensity 2
+  castShadows FALSE
+}
+Solid {
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.6 0.6 0.6 roughness 1 metalness 0 }
+      geometry Plane { size 20 20 }
+    }
+  ]
+  name "ground"
+  boundingObject Plane { size 20 20 }
+}
+DEF WALL Solid {
+  translation 1.5 0 -5
+  children [
+    Shape {
+      appearance PBRAppearance { baseColor 0.8 0.8 0.75 roughness 1 metalness 0 }
+      geometry DEF WALLBOX Box { size 0.2 2 1.2 }
+    }
+  ]
+  name "wall"
+  boundingObject USE WALLBOX
+}
+DEF HEAT Solid {
+  translation 2 0 0.3
+  children [
+    DEF HEAT_LIGHT PointLight {
+      attenuation 0 0 1
+      color 1 0.5 0.1
+      intensity 3
+      location 0 0 0.2
+    }
+    Shape {
+      appearance PBRAppearance { baseColor 1 0.4 0 emissiveColor 1 0.4 0 }
+      geometry Cone { bottomRadius 0.2 height 0.5 }
+    }
+  ]
+  name "heat"
+  model "fire"
+  recognitionColors [ 1 0.3 0 ]
+}
+DEF HEAT_BOUNDED Solid {
+  translation 0 -2 -5
+  children [
+    DEF HEATB_LIGHT PointLight {
+      attenuation 0 0 1
+      color 1 0.5 0.1
+      intensity 3
+      location 0 0 0.2
+      on FALSE
+    }
+    Shape {
+      appearance PBRAppearance { baseColor 1 0.4 0 emissiveColor 1 0.4 0 }
+      geometry Cone { bottomRadius 0.2 height 0.5 }
+    }
+  ]
+  name "heat_bounded"
+  boundingObject Cylinder { height 0.5 radius 0.2 }
+}
+DEF GAS_WRAPPER Solid {
+  translation 1.0 -1.2 0
+  children [
+    GasCanister {
+      enablePhysics FALSE
+    }
+  ]
+  name "gas_wrapper"
+  model "gas_leak"
+  recognitionColors [ 0 1 0 ]
+}
+Pedestrian {
+  translation 1.6 0.9 1.27
+  rotation 0 0 1 3.14
+  name "victim"
+  controller "<none>"
+}
+DEF PROBE Pioneer3dx {
+  translation 0 0 0.0975
+  name "probe"
+  controller "probe_capabilities"
+  supervisor TRUE
+  extensionSlot [
+    Lidar {
+      translation 0 0 0.3
+      name "lidar"
+      horizontalResolution 360
+      fieldOfView 6.2832
+      verticalFieldOfView 0.05
+      numberOfLayers 1
+      minRange 0.12
+      maxRange 8
+    }
+    Camera {
+      translation 0.15 0 0.24
+      name "camera"
+      fieldOfView 1.2
+      width 320
+      height 240
+      recognition Recognition {
+        maxRange 10
+        occlusion 1
+      }
+    }
+    LightSensor {
+      translation 0.1 0 0.2
+      name "t_px"
+      lookupTable [ 0 0 0, 100 100 0 ]
+      occlusion TRUE
+    }
+    LightSensor {
+      translation 0 0.1 0.2
+      rotation 0 0 1 1.5708
+      name "t_py"
+      lookupTable [ 0 0 0, 100 100 0 ]
+      occlusion TRUE
+    }
+    LightSensor {
+      translation -0.1 0 0.2
+      rotation 0 0 1 3.1416
+      name "t_nx"
+      lookupTable [ 0 0 0, 100 100 0 ]
+      occlusion TRUE
+    }
+    LightSensor {
+      translation 0 -0.1 0.2
+      rotation 0 0 1 -1.5708
+      name "t_ny"
+      lookupTable [ 0 0 0, 100 100 0 ]
+      occlusion TRUE
+    }
+  ]
+}

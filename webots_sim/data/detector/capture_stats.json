@@ -1,0 +1,9 @@
+{
+  "images": 5040,
+  "boxes": {
+    "fire": 931,
+    "gas_leak": 746,
+    "person": 765,
+    "debris": 678
+  }
+}

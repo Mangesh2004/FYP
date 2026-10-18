@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Swarm mission dashboard (read-only)</title>
+<style>
+  :root { --ink:#1d2433; --mute:#6b7385; --line:#e3e6ec; --bg:#ffffff; --panel:#fafbfc;
+          --a:#2563eb; --b:#d97706; --cmd:#7c3aed; --ok:#16a34a; --bad:#dc2626; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:13px/1.45 "Segoe UI", system-ui, sans-serif; color:var(--ink); background:var(--bg); }
+  header { display:flex; gap:24px; align-items:baseline; padding:12px 20px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:16px; margin:0; font-weight:600; }
+  header .meta { color:var(--mute); }
+  header .tag { padding:1px 8px; border:1px solid var(--line); border-radius:10px; margin-right:6px; color:var(--ink); }
+  main { display:grid; grid-template-columns: minmax(520px, 1.25fr) 1fr; gap:16px; padding:16px 20px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px; }
+  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); margin:0 0 8px; font-weight:600; }
+  canvas { width:100%; display:block; background:#fff; border:1px solid var(--line); border-radius:6px; }
+  .agents { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .agent h3 { margin:0 0 6px; font-size:14px; display:flex; justify-content:space-between; }
+  .agent img { width:100%; border:1px solid var(--line); border-radius:4px; background:#fff; min-height:40px; image-rendering:pixelated; }
+  .agent .cam { image-rendering:auto; }
+  .kv { display:grid; grid-template-columns: 92px 1fr; gap:1px 8px; margin-top:6px; }
+  .kv span:nth-child(odd) { color:var(--mute); }
+  .pill { font-size:11px; padding:1px 7px; border-radius:9px; color:#fff; }
+  .live { background:var(--ok); } .dead { background:var(--bad); }
+  #timeline { height:330px; overflow-y:auto; font-family: Consolas, monospace; font-size:12px; }
+  #timeline div { padding:2px 0; border-bottom:1px dashed #eef0f4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #timeline .t { color:var(--mute); display:inline-block; width:62px; }
+  #timeline .s { display:inline-block; width:36px; font-weight:600; }
+  .src-A { color:var(--a); } .src-B { color:var(--b); } .src-CMD { color:var(--cmd); } .src-SIM { color:var(--bad); }
+  .side { display:flex; flex-direction:column; gap:16px; }
+  .legend { color:var(--mute); font-size:12px; margin-top:6px; }
+  .legend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin:0 4px 0 10px; vertical-align:-1px; }
+  table { border-collapse:collapse; width:100%; } td { padding:2px 6px; border-bottom:1px solid var(--line); }
+  #waiting { padding:60px; text-align:center; color:var(--mute); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Disaster-response swarm &middot; live view</h1>
+  <span class="meta" id="episode">waiting for an episode&hellip;</span>
+  <span class="meta" id="simt"></span>
+  <span class="meta" style="margin-left:auto">read-only observer &middot; no controls</span>
+</header>
+<main>
+  <div class="side">
+    <div class="card">
+      <h2>Building, agent poses, plans and findings (as reported by the agents)</h2>
+      <canvas id="plan" width="1140" height="720"></canvas>
+      <div class="legend"><i style="background:var(--a)"></i>agent A <i style="background:var(--b)"></i>agent B
+        <i style="background:var(--cmd)"></i>commander station <i style="background:var(--ok)"></i>confirmed hazard
+        <i style="background:#9ca3af"></i>suspected / rejected <i style="background:var(--bad)"></i>blocked door (reported)</div>
+    </div>
+    <div class="agents" id="agents"></div>
+  </div>
+  <div class="side">
+    <div class="card"><h2>Radio links (each agent's own view)</h2><canvas id="links" width="520" height="220"></canvas>
+      <div class="legend">solid green = heartbeats arriving; dashed red = link considered lost</div></div>
+    <div class="card"><h2>Event timeline</h2><div id="timeline"></div></div>
+    <div class="card"><h2>Episode result</h2><div id="result" class="meta">running&hellip;</div></div>
+  </div>
+</main>
+<script>
+const COL = {A:getComputedStyle(document.documentElement).getPropertyValue('--a').trim(),
+             B:getComputedStyle(document.documentElement).getPropertyValue('--b').trim(),
+             CMD:'#7c3aed', ok:'#16a34a', bad:'#dc2626', mute:'#9ca3af'};
+const imgs = {};
+let layout = null;
+
+function world2px(c, b, x, y) {
+  const s = Math.min(c.width / (b[2]-b[0]), c.height / (b[3]-b[1]));
+  return [(x-b[0])*s, c.height - (y-b[1])*s, s];
+}
+
+function drawPlan(st) {
+  const c = document.getElementById('plan'), g = c.getContext('2d');
+  g.clearRect(0,0,c.width,c.height);
+  if (!layout) return;
+  const b = layout.map_bounds, P = (x,y) => world2px(c,b,x,y);
+  const rect = (r, fill, stroke) => { const [x0,y0] = P(r[0], r[3]); const [x1,y1] = P(r[2], r[1]);
+    g.fillStyle = fill; g.fillRect(x0,y0,x1-x0,y1-y0); g.strokeStyle = stroke; g.lineWidth = 3; g.strokeRect(x0,y0,x1-x0,y1-y0); };
+  rect(layout.corridor, '#f6f7f9', '#c9ced8');
+  const done = new Set(), blocked = new Set();
+  Object.values(st.agents||{}).forEach(a => { (a.done||[]).forEach(d => done.add(d)); (a.blocked||[]).forEach(d => blocked.add(d)); });
+  for (const [rid, r] of Object.entries(layout.rooms)) {
+    rect(r.rect, done.has('inspect:'+rid) ? '#eefaf1' : '#ffffff', '#4b5563');
+    const [cx, cy] = P((r.rect[0]+r.rect[2])/2, (r.rect[1]+r.rect[3])/2);
+    g.fillStyle = '#9aa1ad'; g.font = '600 22px Segoe UI'; g.textAlign='center';
+    g.fillText(rid + (done.has('inspect:'+rid) ? ' \u2713' : ''), cx, cy);
+  }
+  for (const [did, d] of Object.entries(layout.doors)) {
+    const [x,y,s] = P(d.pos[0], d.pos[1]), w = d.width*s/2;
+    g.strokeStyle = blocked.has(did) ? COL.bad : '#ffffff'; g.lineWidth = blocked.has(did) ? 6 : 7;
+    g.beginPath(); if (d.wall==='h') { g.moveTo(x-w,y); g.lineTo(x+w,y); } else { g.moveTo(x,y-w); g.lineTo(x,y+w); } g.stroke();
+    g.fillStyle = '#9aa1ad'; g.font='11px Segoe UI'; g.fillText(did, x+ (d.wall==='h'? 0 : 14), y + (d.wall==='h'? 14 : 0));
+  }
+  if (layout.commander) { const [x,y] = P(...layout.commander);
+    g.fillStyle = COL.CMD; g.fillRect(x-14,y-9,28,18); g.fillStyle='#fff'; g.font='600 10px Segoe UI'; g.fillText('CMD',x,y+4); }
+  const findings = new Map();
+  Object.values(st.agents||{}).forEach(a => (a.findings||[]).forEach(f => findings.set(f.kind+f.pos.join(','), f)));
+  for (const f of findings.values()) {
+    const [x,y] = P(f.pos[0], f.pos[1]);
+    g.fillStyle = f.confirmed ? COL.ok : COL.mute; g.beginPath(); g.arc(x,y,f.confirmed?8:5,0,7); g.fill();
+    g.fillStyle = '#374151'; g.font='11px Segoe UI'; g.textAlign='left'; g.fillText(f.kind, x+9, y-6); g.textAlign='center';
+  }
+  for (const [n, a] of Object.entries(st.agents||{})) {
+    if (a.path && a.path.length) { g.strokeStyle = COL[n]; g.globalAlpha = .45; g.lineWidth = 2; g.setLineDash([6,4]);
+      g.beginPath(); a.path.forEach((p,i) => { const [x,y] = P(p[0],p[1]); i ? g.lineTo(x,y) : g.moveTo(x,y); }); g.stroke();
+      g.setLineDash([]); g.globalAlpha = 1; }
+    if (!a.pose) continue;
+    const [x,y,s] = P(a.pose[0], a.pose[1]), r = 0.25*s, h = a.pose[2];
+    g.fillStyle = a.stale ? '#cbd5e1' : COL[n]; g.beginPath(); g.arc(x,y,r,0,7); g.fill();
+    g.strokeStyle = '#fff'; g.lineWidth = 2; g.beginPath(); g.moveTo(x,y); g.lineTo(x+Math.cos(h)*r, y-Math.sin(h)*r); g.stroke();
+    g.fillStyle = '#111827'; g.font='600 12px Segoe UI'; g.fillText(n + (a.stale ? ' (silent)' : ''), x, y - r - 5);
+  }
+}
+
+function drawLinks(st) {
+  const c = document.getElementById('links'), g = c.getContext('2d');
+  g.clearRect(0,0,c.width,c.height);
+  const pos = {A:[110,160], B:[410,160], CMD:[260,45]};
+  const off = (p,q,k) => { const dx=q[0]-p[0], dy=q[1]-p[1], n=Math.hypot(dx,dy); return [-dy/n*k, dx/n*k]; };
+  for (const l of (st.links||[])) {
+    const p = pos[l.from], q = pos[l.to]; if (!p || !q) continue;
+    const [ox, oy] = off(p,q,5);
+    g.strokeStyle = l.up ? COL.ok : COL.bad; g.lineWidth = 3; g.setLineDash(l.up ? [] : [7,6]);
+    g.beginPath(); g.moveTo(p[0]+ox,p[1]+oy); g.lineTo(q[0]+ox,q[1]+oy); g.stroke(); g.setLineDash([]);
+    const mx = p[0]+(q[0]-p[0])*.62+ox, my = p[1]+(q[1]-p[1])*.62+oy;
+    g.fillStyle = l.up ? COL.ok : COL.bad; g.beginPath(); g.arc(mx,my,4,0,7); g.fill();
+  }
+  for (const [n, p] of Object.entries(pos)) {
+    const a = (st.agents||{})[n], dead = n !== 'CMD' && (!a || a.stale);
+    g.fillStyle = dead ? '#cbd5e1' : COL[n]; g.beginPath(); g.arc(p[0],p[1],26,0,7); g.fill();
+    g.fillStyle = '#fff'; g.font='600 14px Segoe UI'; g.textAlign='center'; g.fillText(n, p[0], p[1]+5);
+    if (a && a.missing_by_seq) { const miss = Object.values(a.missing_by_seq).reduce((s,v)=>s+v,0);
+      g.fillStyle='#6b7385'; g.font='11px Segoe UI'; g.fillText(`rx ${a.msgs_rx}  missed ${miss}`, p[0], p[1]+44); }
+  }
+}
+
+function agentCard(n) {
+  let el = document.getElementById('ag-'+n);
+  if (el) return el;
+  el = document.createElement('div'); el.className = 'card agent'; el.id = 'ag-'+n;
+  el.innerHTML = `<h3><span style="color:${COL[n]}">Agent ${n} <small class="meta" data-k="cap"></small></span><span class="pill" data-k="pill"></span></h3>
+    <img class="cam" data-k="cam" alt="camera with detector boxes">
+    <div style="margin-top:6px;color:#6b7385;font-size:11px">own occupancy map (lidar + peer map deltas)</div>
+    <img data-k="map" alt="occupancy map">
+    <div class="kv" data-k="kv"></div>`;
+  document.getElementById('agents').appendChild(el);
+  return el;
+}
+
+function render(st) {
+  layout = st.layout || layout;
+  const start = (st.timeline||[]).find(e => e.ev === 'episode_start');
+  document.getElementById('episode').innerHTML = st.run_dir ? (start
+      ? `<span class="tag">seed ${start.seed}</span><span class="tag">${start.condition}</span><span class="tag">${start.method}</span>` +
+        (start.faults||[]).map(f => `<span class="tag">${f.kind} @ ${f.t}s</span>`).join('')
+      : st.run_dir) : 'waiting for an episode&hellip;';
+  document.getElementById('simt').textContent = st.sim_t ? `sim time ${st.sim_t.toFixed(1)} s` : '';
+  for (const [n, a] of Object.entries(st.agents||{})) {
+    const el = agentCard(n), q = k => el.querySelector(`[data-k="${k}"]`);
+    q('cap').textContent = `(${a.capability})`;
+    q('pill').textContent = a.stale ? 'silent' : a.mode === 'commander_linked' ? 'linked to commander' : 'peer-only';
+    q('pill').className = 'pill ' + (a.stale ? 'dead' : 'live');
+    if (a.camera_jpg) q('cam').src = 'data:image/jpeg;base64,' + a.camera_jpg;
+    if (a.map_png) q('map').src = 'data:image/png;base64,' + a.map_png;
+    const dets = (a.dets||[]).map(d => `${d.cls} ${(d.score*100|0)}%`).join(', ') || '&ndash;';
+    q('kv').innerHTML = [['state', a.state], ['task', a.task || '&ndash;'], ['thermal', a.heat?.toFixed?.(3)],
+      ['gas (ppm)', a.gas_ppm?.toFixed?.(1)], ['detections', dets], ['tasks done', (a.done||[]).length],
+      ['msgs tx / rx', `${a.msgs_tx} / ${a.msgs_rx}`], ['last report', `${a.t?.toFixed?.(1)} s`]]
+      .map(([k,v]) => `<span>${k}</span><span>${v ?? '&ndash;'}</span>`).join('');
+  }
+  const tl = document.getElementById('timeline'), atBottom = tl.scrollTop + tl.clientHeight >= tl.scrollHeight - 4;
+  tl.innerHTML = (st.timeline||[]).map(e => {
+    const {t, ev, src, ...rest} = e; delete rest.metrics; delete rest.hazards; delete rest.victims;
+    const body = Object.entries(rest).map(([k,v]) => `${k}=${typeof v === 'object' ? JSON.stringify(v) : v}`).join(' ');
+    return `<div><span class="t">${(t||0).toFixed(1)}</span><span class="s src-${src}">${src}</span><b>${ev}</b> ${body}</div>`;
+  }).join('');
+  if (atBottom) tl.scrollTop = tl.scrollHeight;
+  const m = st.metrics;
+  document.getElementById('result').innerHTML = m ? `<table>${[
+      ['rooms inspected', `${m.rooms_inspected}/${m.rooms_total}`], ['hazards confirmed', `${m.hazards_confirmed}/${m.hazards_total}`],
+      ['victims found', `${m.victims_found}/${m.victims_total}`], ['false confirmations', m.false_confirmations],
+      ['mission time', m.mission_complete_time ?? 'not completed'], ['timed out', m.timed_out]]
+      .map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</table>` : 'running&hellip;';
+  drawPlan(st); drawLinks(st);
+}
+
+function connect() {
+  const ws = new WebSocket(`ws://${location.host}/ws`);
+  let last = {};
+  ws.onmessage = ev => {
+    const st = JSON.parse(ev.data);
+    for (const [n, a] of Object.entries(st.agents||{}))
+      for (const k of ['map_png','camera_jpg']) { if (a[k]) imgs[n+k] = a[k]; }
+    render(st);
+  };
+  ws.onclose = () => setTimeout(connect, 1500);
+}
+connect();
+</script>
+</body>
+</html>

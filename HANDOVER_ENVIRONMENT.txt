@@ -1,0 +1,21 @@
+Selected distributions from the working PC on 18 October 2026
+Reference snapshot only; not a validated portable requirements lockfile.
+Python: 3.12.9 | packaged by conda-forge | (main, Mar  4 2025, 22:37:18) [MSC v.1943 64 bit (AMD64)]
+Webots observed: R2025a
+
+numpy==2.2.6
+torch==2.10.0+cu126
+torchvision==0.25.0+cu126
+opencv-python==4.12.0.88
+Pillow==10.4.0
+fastapi==0.116.1
+uvicorn==0.35.0
+websockets==15.0.1
+pytest==9.1.1
+scipy==1.16.0
+matplotlib==3.10.3
+stable-baselines3==2.7.0
+gymnasium==1.1.1
+pettingzoo==1.25.0
+# pygame-ce: distribution metadata not installed under this name
+pygame==2.6.1

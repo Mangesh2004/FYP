@@ -1,0 +1,101 @@
+{
+  "seed": 3,
+  "condition": "normal",
+  "method": "learned",
+  "max_time": 300.0,
+  "hazards": [
+    {
+      "id": "GAS_0",
+      "type": "gas",
+      "room": "R2",
+      "pos": [
+        1.55,
+        2.55
+      ],
+      "yaw": 0.2574465161624335,
+      "strength": 1.0198524668108022
+    },
+    {
+      "id": "GAS_1",
+      "type": "gas",
+      "room": "R4",
+      "pos": [
+        0.75,
+        -1.85
+      ],
+      "yaw": -1.2486721217922871,
+      "strength": 0.8124047005879
+    }
+  ],
+  "victims": [
+    {
+      "id": "VICTIM_0",
+      "room": "R4",
+      "pos": [
+        4.75,
+        -3.45
+      ],
+      "yaw": -1.7782234925839042
+    }
+  ],
+  "distractors": [
+    {
+      "id": "DISTRACT_3",
+      "room": "R4",
+      "pos": [
+        6.35,
+        -2.65
+      ],
+      "yaw": 1.2479403182396132
+    },
+    {
+      "id": "DISTRACT_2",
+      "room": "R3",
+      "pos": [
+        -1.45,
+        -1.85
+      ],
+      "yaw": -0.11308839614278643
+    },
+    {
+      "id": "DISTRACT_1",
+      "room": "R4",
+      "pos": [
+        3.95,
+        -4.25
+      ],
+      "yaw": -1.2950194896675722
+    },
+    {
+      "id": "DISTRACT_0",
+      "room": "R4",
+      "pos": [
+        1.55,
+        -2.65
+      ],
+      "yaw": 0.3195090271441807
+    }
+  ],
+  "blocked_doors": [],
+  "spawns": {
+    "A": [
+      -5.6,
+      0.45
+    ],
+    "B": [
+      -5.6,
+      -0.45
+    ]
+  },
+  "spawn_yaw": {
+    "A": -0.16671008103807497,
+    "B": -0.18930143620849266
+  },
+  "noise_scale": 0.789,
+  "packet_loss": 0.0,
+  "faults": [],
+  "incident_report": {
+    "room": "R4",
+    "text": "Smoke alarm reported in R4"
+  }
+}

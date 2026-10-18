@@ -1,0 +1,237 @@
+{
+  "created_at_utc": "2026-10-17T18:50:32.422983+00:00",
+  "causes": [
+    "Euclidean proximity and failed navigation could start verification across a wall.",
+    "Fixed approach vectors could land outside the hazard room or against obstacles.",
+    "Old map coordinates could point the camera away from the detected object.",
+    "A missing camera match permanently rejected strong sensor evidence.",
+    "Averages admitted isolated sensor spikes; stale samples were not explicitly excluded.",
+    "Distant box-height estimates could produce inaccurate confirmed locations.",
+    "Visual-only person reports accepted low-detail observations with the same range ambiguity.",
+    "Abandoned doorway approaches retained granted reservations and exhausted staging failures, preventing further room inspection."
+  ],
+  "fixes": [
+    "Require reaching a room-safe, locally clear viewpoint, with bounded retries.",
+    "Aim from current camera bearings; search when the object is not reacquired.",
+    "Require eight finite fresh sensor samples and three independent detailed camera observations.",
+    "Use median sensor readings and preserve contradictory strong sensor evidence across views.",
+    "Refine tentative positions and move closer when the image lacks detail.",
+    "Confirmed positions use only detailed camera frames and their own freshness timestamp.",
+    "Apply the detailed-frame rule to visual-only person reports.",
+    "Log readings, thresholds, sample counts, camera quality and decisions.",
+    "Cancel abandoned reservations only with 0.9m approach-side clearance, including after a later safe retreat."
+  ],
+  "baseline_runs": [
+    {
+      "path": "D:\\FYP\\experiments\\two_robot\\final_repeats\\runs\\s000_normal_cbba\\metrics.json",
+      "metrics": {
+        "seed": 0,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 201.41,
+        "timed_out": false,
+        "hazards_total": 3,
+        "hazards_confirmed": 2,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.258,
+        "first_detection_time": 116.32,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 175.328,
+        "mission_complete_time": 197.504,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3309,
+        "messages_received": 3709,
+        "distance_m": 58.99,
+        "true_distance_m": {
+          "A": 34.49,
+          "B": 23.97
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 0,
+        "stuck_recoveries": 6,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 5,
+        "safety": {
+          "samples": 6293,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.5246960551588997,
+          "max_tilt_deg": {
+            "A": 6.654448629964929,
+            "B": 3.3390979903113
+          },
+          "z_range": {
+            "A": [
+              0.08707145671356936,
+              0.0975
+            ],
+            "B": [
+              0.08703272829287059,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "D:\\FYP\\experiments\\two_robot\\final_repeats\\runs\\s001_normal_cbba\\metrics.json",
+      "metrics": {
+        "seed": 1,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 200.42,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 1,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.398,
+        "first_detection_time": 139.01,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 190.176,
+        "mission_complete_time": 196.512,
+        "recovery_time_after_kill": null,
+        "messages_sent": 3295,
+        "messages_received": 3695,
+        "distance_m": 61.58,
+        "true_distance_m": {
+          "A": 25.65,
+          "B": 36.27
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 3,
+        "stuck_recoveries": 4,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 6,
+        "safety": {
+          "samples": 6262,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.6161236928793785,
+          "max_tilt_deg": {
+            "A": 3.7531198034429267,
+            "B": 3.6205452508703906
+          },
+          "z_range": {
+            "A": [
+              0.08772804460437443,
+              0.0975
+            ],
+            "B": [
+              0.08758351410892207,
+              0.0975
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "D:\\FYP\\experiments\\two_robot\\final_faults\\runs\\s003_normal_cbba\\metrics.json",
+      "metrics": {
+        "seed": 3,
+        "condition": "normal",
+        "method": "cbba",
+        "sim_time": 164.7,
+        "timed_out": false,
+        "hazards_total": 2,
+        "hazards_confirmed": 1,
+        "victims_total": 1,
+        "victims_found": 1,
+        "false_confirmations": 0,
+        "localization_error_m": 0.707,
+        "first_detection_time": 112.74,
+        "rooms_inspected": 4,
+        "rooms_total": 4,
+        "duplicate_inspections": 0,
+        "all_rooms_time": 149.184,
+        "mission_complete_time": 160.8,
+        "recovery_time_after_kill": null,
+        "messages_sent": 2830,
+        "messages_received": 3158,
+        "distance_m": 58.76,
+        "true_distance_m": {
+          "A": 20.37,
+          "B": 38.63
+        },
+        "peer_only_time": null,
+        "peer_lost_time": null,
+        "door_blocked_detected_time": null,
+        "replans": 2,
+        "stuck_recoveries": 7,
+        "tasks_done_after_fault": null,
+        "suspected_hazards": 2,
+        "safety": {
+          "samples": 5146,
+          "contact_steps": 0,
+          "doorway_overlap_steps": 0,
+          "minimum_separation": 0.8061316412175241,
+          "max_tilt_deg": {
+            "A": 3.3112643184360544,
+            "B": 5.5821409597404
+          },
+          "z_range": {
+            "A": [
+              0.087042986520763,
+              0.0975
+            ],
+            "B": [
+              0.08704645085875004,
+              0.0975
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "reproduced_gas_miss": {
+    "sensor_ppm": 487.466,
+    "visual_hits": 0,
+    "confirmed": false
+  },
+  "wall_facing_camera": "D:\\FYP\\experiments\\hazard_confirmation\\diagnostic\\runs\\s000_normal_cbba\\verification_frames\\B_85.088.jpg",
+  "calibration_file": "D:\\FYP\\experiments\\hazard_confirmation\\calibration\\results.json",
+  "calibration": {
+    "actual_distance_m": 5.4,
+    "box_estimated_range_m": 3.6976,
+    "lidar_reading_m": 5.6513
+  },
+  "rejected_candidate_dirs": [
+    "D:\\FYP\\experiments\\hazard_confirmation\\final",
+    "D:\\FYP\\experiments\\hazard_confirmation\\final_verified",
+    "D:\\FYP\\experiments\\hazard_confirmation\\verified"
+  ],
+  "rejected_full_suite": {
+    "tests": 136,
+    "passed": 133,
+    "failed_seeds": [
+      5,
+      11,
+      1000
+    ],
+    "report": "D:\\FYP\\experiments\\hazard_confirmation\\full_suite_verified.xml",
+    "reason": "Two stuck reservations and one unfinished longer survey at 300s."
+  },
+  "hazard_matrix_time_budget_s": 600,
+  "regression_test": "D:\\FYP\\webots_sim\\tests\\test_hazard_verification.py",
+  "acceptance_test": "D:\\FYP\\webots_sim\\tests\\test_hazards_webots.py",
+  "unchanged": "Detector weights and score threshold, specialty-sensor thresholds, world and motor guard.",
+  "projection_reference": "https://www.cyberbotics.com/doc/reference/camera?tab=c",
+  "limits": [
+    "Box-size localization remains approximate; detailed views constrain the tested failure mode.",
+    "Thermal sensing uses Webots LightSensor; gas uses a simulated plume model.",
+    "Terminal inconclusive tasks are logged and closed for this mission, without automatic reopening.",
+    "Randomized scene layouts share the public building floor plan.",
+    "The existing observer uses a 1.6m hazard-match radius; its thresholds were not changed."
+  ]
+}

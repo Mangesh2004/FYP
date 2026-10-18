@@ -1,0 +1,275 @@
+{
+  "verified_at_utc": "2026-10-17T19:18:37.379376+00:00",
+  "live_url": "http://127.0.0.1:8770/fire",
+  "screenshot": "D:\\FYP\\webots_sim\\runs\\fire_demo_watch\\dashboard.png",
+  "causes": [
+    "Previous visible run was a repeated navigation fixture with no detector or hazard mission.",
+    "Generic one-layer lidar image is only one pixel high; the combined viewer plots actual range rays.",
+    "Nonfinite lidar diagnostics could produce invalid browser JSON; ingested nonfinite tokens become null."
+  ],
+  "scope": "One thermal robot searches public room R1, discovers fire from camera inference, verifies with measured thermal samples, then holds.",
+  "pytest_full_suite": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "146",
+    "time": "182.428",
+    "timestamp": "2026-10-18T00:43:13.795459+05:30",
+    "hostname": "MANGESH01"
+  },
+  "additional_targeted_checks": {
+    "passed": 41,
+    "includes": "Fresh-directory replay guard plus sensor/dashboard/hazard/traffic checks",
+    "final_ui_checks_passed": 11
+  },
+  "source_sha256": {
+    "controllers/fire_demo_agent/fire_demo_agent.py": "46a9420fac6290f074afb30094df86e26a8cd32cfff92c01304f6d37f6feb507",
+    "controllers/fire_demo_supervisor/fire_demo_supervisor.py": "a230cb9cf650065983cb04f0f9477ae8b017e459908120577a62877a5c365007",
+    "tools/run_fire_demo.py": "3e419ebc6c1dc9f8942cef72fae9a36d791d7b122826aa8c5d39fdcde0ddaf7e",
+    "swarm/live_sensors.py": "e1f7fe0471ec72b68e2fcdc040e523ad4f1f1b823984b28c5b88e979ad1afc43",
+    "dashboard/server.py": "d6e23ab17408c0fe503f5c6e1f3b82083a64da2e56030b775e6c6c77239d7576",
+    "dashboard/static/fire.html": "3e08521fe326e62ff244c8452b9ee68c12a561203bd8944f1ce2bbc96e359962",
+    "tests/test_live_sensors.py": "df8ae768c689131f09ebd62852e7e3cd32f9de81b9b97dea49152043a020e512",
+    "tests/test_dashboard.py": "1c2fe5b4c6aa1eb4ecb413918d92f88090c7e7f2123f869641a0474d4246e747",
+    "tests/test_fire_demo_webots.py": "ac37fbaedfe6944c882adfa44fa3f8d22f71e98064243ddc622ec8e5a827b1c4"
+  },
+  "unchanged_production_source_sha256": {
+    "controllers/agent/agent.py": "842d4f6ac494b01b623fe0ca6c033f111136c446cf3eb428e56ccb67c9fbd5fb",
+    "worlds/facility.wbt": "da322ddbefae86555343adb24c87940df227998c9ed2be517538bb6fb4d6b3e8",
+    "models/detector_frcnn_mnv3.pt": "e7cbe596a8970b90bdc6969ad6f2061f441758fd3977e290219448f13a8b7ffa",
+    "swarm/motion.py": "e2c74e0f0396d56666c1885d241b1d6e2e907f2db2f66e15adc017251ea14a15"
+  },
+  "previous_mission_matrix": "Full suite explicitly reused accepted native mission episodes for the unchanged production agent, model and world; physics cases and the new fire demo ran fresh.",
+  "native_episodes": [
+    {
+      "directory": "D:\\FYP\\webots_sim\\runs\\fire_review_final\\test_robot_discovers_fire_conf0",
+      "confirmed": true,
+      "t": 46.72,
+      "error_m": 0.7655063683601856,
+      "safety": {
+        "samples": 1460,
+        "contact_steps": 0,
+        "doorway_overlap_steps": 0,
+        "minimum_separation": null,
+        "max_tilt_deg": {
+          "A": 2.6365124900279704
+        },
+        "z_range": {
+          "A": [
+            0.09445048728311864,
+            0.09633553344878729
+          ]
+        }
+      },
+      "verification": {
+        "phase": null,
+        "sample_count": 0,
+        "median": null,
+        "threshold": 0.3,
+        "close_visual_frames": 0,
+        "camera_fresh": false,
+        "view": 1,
+        "last_attempt": {
+          "t": 44.192,
+          "task": "verify:fire@-3.0,2.0",
+          "view": 0,
+          "pose": [
+            -4.277611973099579,
+            1.967586211140274,
+            0.5200474512800082
+          ],
+          "target": [
+            -2.78,
+            2.22
+          ],
+          "sensor": 0.3912173108108348,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        "required_samples": 8,
+        "required_frames": 3,
+        "required_camera_age_s": 1
+      },
+      "findings": [
+        {
+          "kind": "fire",
+          "pos": [
+            -2.89,
+            2.93
+          ],
+          "confirmed": true,
+          "by": "A",
+          "t": 44.19,
+          "room": "R1",
+          "sensor": 0.391,
+          "sensor_threshold": 0.3,
+          "visual_hits": 8,
+          "evidence": "thermal=0.391 (thr 0.3) + camera hits 8"
+        }
+      ],
+      "hold_displacement_m": 5.711605099733426e-09,
+      "held_stationary": true
+    },
+    {
+      "directory": "D:\\FYP\\webots_sim\\runs\\fire_demo_live",
+      "confirmed": true,
+      "t": 46.72,
+      "error_m": 0.7571657678474376,
+      "safety": {
+        "samples": 1460,
+        "contact_steps": 0,
+        "doorway_overlap_steps": 0,
+        "minimum_separation": null,
+        "max_tilt_deg": {
+          "A": 2.6365124900279704
+        },
+        "z_range": {
+          "A": [
+            0.09445048728311864,
+            0.09633553344878729
+          ]
+        }
+      },
+      "verification": {
+        "phase": null,
+        "sample_count": 0,
+        "median": null,
+        "threshold": 0.3,
+        "close_visual_frames": 0,
+        "camera_fresh": false,
+        "view": 1,
+        "last_attempt": {
+          "t": 44.32,
+          "task": "verify:fire@-3.0,2.0",
+          "view": 0,
+          "pose": [
+            -4.307335093084056,
+            1.9467777492603562,
+            0.5105333126801528
+          ],
+          "target": [
+            -2.78,
+            2.18
+          ],
+          "sensor": 0.3757673562837003,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        "required_samples": 8,
+        "required_frames": 3,
+        "required_camera_age_s": 1
+      },
+      "findings": [
+        {
+          "kind": "fire",
+          "pos": [
+            -2.88,
+            2.93
+          ],
+          "confirmed": true,
+          "by": "A",
+          "t": 44.32,
+          "room": "R1",
+          "sensor": 0.376,
+          "sensor_threshold": 0.3,
+          "visual_hits": 8,
+          "evidence": "thermal=0.376 (thr 0.3) + camera hits 8"
+        }
+      ],
+      "hold_displacement_m": 6.629785946198122e-09,
+      "held_stationary": true
+    },
+    {
+      "directory": "D:\\FYP\\webots_sim\\runs\\fire_demo_watch",
+      "confirmed": true,
+      "t": 45.728,
+      "error_m": 0.7571657678474376,
+      "safety": {
+        "samples": 1429,
+        "contact_steps": 0,
+        "doorway_overlap_steps": 0,
+        "minimum_separation": null,
+        "max_tilt_deg": {
+          "A": 2.639522215925056
+        },
+        "z_range": {
+          "A": [
+            0.09447215335913271,
+            0.09633553344878729
+          ]
+        }
+      },
+      "verification": {
+        "phase": null,
+        "sample_count": 0,
+        "median": null,
+        "threshold": 0.3,
+        "close_visual_frames": 0,
+        "camera_fresh": false,
+        "view": 1,
+        "last_attempt": {
+          "t": 42.784,
+          "task": "verify:fire@-3.0,2.0",
+          "view": 0,
+          "pose": [
+            -4.240207062852486,
+            1.998409387509156,
+            0.5036544817432007
+          ],
+          "target": [
+            -2.75,
+            2.24
+          ],
+          "sensor": 0.4015908268212547,
+          "threshold": 0.3,
+          "sample_count": 32,
+          "visual_frames": 8,
+          "close_visual_frames": 8,
+          "camera_fresh": true,
+          "accepted_visual": true,
+          "confirmed": true
+        },
+        "required_samples": 8,
+        "required_frames": 3,
+        "required_camera_age_s": 1
+      },
+      "findings": [
+        {
+          "kind": "fire",
+          "pos": [
+            -2.88,
+            2.93
+          ],
+          "confirmed": true,
+          "by": "A",
+          "t": 42.78,
+          "room": "R1",
+          "sensor": 0.402,
+          "sensor_threshold": 0.3,
+          "visual_hits": 8,
+          "evidence": "thermal=0.402 (thr 0.3) + camera hits 8"
+        }
+      ],
+      "hold_displacement_m": 3.5457825823765284e-09,
+      "held_stationary": true
+    }
+  ],
+  "review": "Independent read-only reviewer found a stale-output replay risk; nonempty output is now rejected and the guard regression passes. No remaining blocker on recheck.",
+  "limits": [
+    "Thermal readings are Webots light-sensor proxies, not calibrated temperature.",
+    "Controlled one-room fire demonstration; this is not a general real-world fire detector validation.",
+    "The default multi-robot mission logic and detector weights were not changed.",
+    "The read-only dashboard stays live while Webots is running; it cannot move the robot."
+  ]
+}
